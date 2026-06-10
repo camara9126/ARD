@@ -254,7 +254,7 @@
                                     <div class="col-md-4">
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item">
-                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                                <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
                                             <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                                             </li>
@@ -272,7 +272,7 @@
                                     <div class="page-body">
                                         <!-- Basic table card start -->
                                         <div class="card">
-                                            <div class="card-header">
+                                            <!--<div class="card-header">
                                                 <h5>Ventes</h5>
                                                 <span>use class <code>table</code> inside table element</span>
                                                 <div class="card-header-right">
@@ -285,7 +285,7 @@
                                                         <li><i class="fa fa-trash close-card"></i></li>
                                                     </ul>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div class="card-block table-border-style">
                                                 @if($errors->any())
                                                     <div style="color: red; margin-bottom: 10px;">

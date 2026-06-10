@@ -148,22 +148,27 @@
                             <li class="header-notification">
                                 <a href="#!" class="waves-effect waves-light">
                                     <i class="ti-bell"></i>
-                                    <span class="badge bg-c-red"></span>
+                                    @if($alerte)
+                                        <span class="badge bg-c-red"></span>
+                                    @endif
                                 </a>
                                 <ul class="show-notification">
-                                    <li>
-                                        <h6>Notifications</h6>
-                                        <label class="label label-danger">New</label>
-                                    </li>
-                                    <li class="waves-effect waves-light">
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">⛔Alerte</h5>
-                                                <p class="notification-msg">Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock..</p>
-                                                <span class="notification-time"><a href="{{ route('produit.index') }}">Mettre a jour</a></span>
+                                    
+                                    @if($alerte)
+                                        <li>
+                                            <h6>Notifications</h6>
+                                            <label class="label label-danger">New</label>
+                                        </li>
+                                        <li class="waves-effect waves-light">
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">⛔Alerte</h5>
+                                                    <p class="notification-msg">Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock..</p>
+                                                    <span class="notification-time"><a href="{{ route('produit.index') }}">Mettre a jour</a></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    @endif
                                     <!--<li class="waves-effect waves-light">
                                         <div class="media">
                                             <img class="d-flex align-self-center img-radius" src="assets/images/avatar-4.jpg" alt="Generic placeholder image">
@@ -241,10 +246,10 @@
                                 <div class="main-menu-header mt-3">
                                     <!--<img class="img-80 img-radius" src="assets/images/avatar-4.jpg" alt="User-Profile-Image">-->
                                     @if($alerte)
-                                    <p class="alert alert-danger">
-                                        ⛔ Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock.
-                                    </p>
-                                @endif
+                                        <p class="alert alert-danger">
+                                            ⛔ Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock.
+                                        </p>
+                                    @endif
                                     <div class="user-details">
                                         <span id="more-details">{{ Auth::user()->unite->nom }}<i class="fa fa-caret-down"></i></span>
                                     </div>
@@ -266,7 +271,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="p-15 p-b-0">
+                            <!--<div class="p-15 p-b-0">
                                 <form class="form-material">
                                     <div class="form-group form-primary">
                                         <input type="text" name="footer-email" class="form-control">
@@ -274,7 +279,7 @@
                                         <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Friend</label>
                                     </div>
                                 </form>
-                            </div>
+                            </div>-->
                             <div class="pcoded-navigation-label">Navigation</div>
                             <ul class="pcoded-item pcoded-left-item">
                                 <li class="active">

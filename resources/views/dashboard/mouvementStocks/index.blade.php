@@ -14,7 +14,7 @@
                                     <div class="col-md-4">
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item">
-                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                                <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
                                             <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                                             </li>
@@ -33,17 +33,17 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Produits</h5>
-                                                <span>use class <code>table</code> inside table element</span>
+                                                <h5>Mouvements Stock</h5>
+                                                <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
                                                     <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#exampleModal">Nouveau Mouvement →</a>
-                                                    <ul class="list-unstyled card-option">
+                                                    <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
                                                         <li><i class="fa fa-minus minimize-card"></i></li>
                                                         <li><i class="fa fa-refresh reload-card"></i></li>
                                                         <li><i class="fa fa-trash close-card"></i></li>
-                                                    </ul>
+                                                    </ul>-->
                                                 </div>
                                             </div>
                                             <div class="card-block table-border-style">

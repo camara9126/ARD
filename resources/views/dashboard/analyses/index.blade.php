@@ -461,7 +461,7 @@
                                     <div class="col-md-4">
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item">
-                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                                <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
                                             <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                                             </li>
@@ -478,133 +478,140 @@
                                     <!-- Page-body start -->
                                     <div class="page-body">
                                         <!-- Basic table card start -->
-                                        <div class="card">
-                                            
-                                            <div class="card-block table-border-style">
-                                                <!-- Dashboard Section -->
-                                                <section id="dashboard" class="content-section">
-                                                    
-                                                    <!-- Dashboard -->
-                                                    <section class="dashboard">
-                                                        <div class="dashboard-card">
-                                                            <div class="card-header">
-                                                                <h3 class="card-title">Total Recettes</h3>
-                                                                <div class="card-icon icon-income">
-                                                                    <i class="fas fa-arrow-up"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-value" id="total-revenus">XOF 124,850.00</div>
-                                                            <div class="card-trend trend-up">
-                                                                <!--<i class="fas fa-arrow-up"></i>
-                                                                <span id="revenus-trend">+12% vs mois précédent</span>-->
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="dashboard-card">
-                                                            <div class="card-header">
-                                                                <h3 class="card-title">Total Dépenses</h3>
-                                                                <div class="card-icon icon-expense">
-                                                                    <i class="fas fa-arrow-down"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-value" id="total-depenses">XOF 78,430.00</div>
-                                                            <div class="card-trend trend-down">
-                                                                <!--<i class="fas fa-arrow-down"></i>
-                                                                <span id="depenses-trend">-5% vs mois précédent</span>-->
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="dashboard-card">
-                                                            <div class="card-header">
-                                                                <h3 class="card-title">Résultat Net</h3>
-                                                                <div class="card-icon icon-profit">
-                                                                    <i class="fas fa-chart-line"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-value positive" id="resultat-net">XOF 46,420.00</div>
-                                                            <div class="card-trend trend-up">
-                                                                <i class="fas fa-arrow-up"></i>
-                                                                <span>Bénéfice ce mois</span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="dashboard-card">
-                                                            <div class="card-header">
-                                                                <h3 class="card-title">Trésorerie Actuelle</h3>
-                                                                <div class="card-icon icon-cash">
-                                                                    <i class="fas fa-wallet"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-value" id="tresorerie">XOF 89,250.00</div>
-                                                            <div class="card-trend trend-up">
-                                                                <i class="fas fa-arrow-up"></i>
-                                                                <span>Solde disponible</span>
-                                                            </div>
-                                                        </div>
-                                                    </section>
-                                                    @if(request()->user()->unite->taux_tva == 18)
-                                                        <div class="row mt-2 mb-3">
-                                                            <div class="col-md-12">
-                                                                <div class="stat-card">
-                                                                    <div class="d-flex justify-content-between align-items-center">
-                                                                        <div>
-                                                                            <p class="text-muted mb-1">Montant TVA</p>
-                                                                            <h3 class="value fw-bold">{{ number_format($montant_tva, 0, ',', ' ') }} XOF</h3>
-                                                                        </div>
-                                                                        <div class="icon bg-primary bg-opacity-10 text-primary">
-                                                                            <!--<i class="fas fa-franc-sign"></i>-->
-                                                                            <span>💰</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    <!-- Charts Section avec Graphiques -->
-                                                    <section class="charts-section">
-                                                        <!-- Graphique 1: Évolution des Recettes et Dépenses -->
-                                                        <div class="chart-card">
-                                                            <div class="chart-header">
-                                                                <h3 class="chart-title">Évolution des Recettes et Dépenses</h3>
-                                                                <div class="period-selector" id="period-selector-1">
-                                                                    <button class="period-btn active" data-period="mensuel">Mensuel</button>
-                                                                    <button class="period-btn" data-period="trimestriel">Trimestriel</button>
-                                                                    <button class="period-btn" data-period="annuel">Annuel</button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="chart-container">
-                                                                <canvas id="evolutionChart"></canvas>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <!-- Graphique 2: Répartition des Dépenses -->
-                                                        <div class="chart-card">
-                                                            <div class="chart-header">
-                                                                <h3 class="chart-title">Répartition des Top Produits</h3>
-                                                                <div class="period-selector" id="period-selector-2">
-                                                                    <button class="period-btn active" data-period="mois">Ce mois</button>
-                                                                    <button class="period-btn" data-period="annee">Cette année</button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="chart-container">
-                                                                <canvas id="repartitionChart"></canvas>
-                                                            </div>
-                                                        </div>
-                                                    </section>  
-
-                                                    <div class="stat-card">
-                                                        <div class="col-12">
-                                                        <h1 class="mb-2">Solvabilité de l’unite</h1>
-                                                        
-                                                            @if( $unite->statut_solvabilite == 'solvable')
-                                                                <h4><span class="text-success" style="text-decoration: underline;">NB</span> : Votre unite est solvable .</h4>
-                                                            @else
-                                                                <h4><span class="text-danger"style="text-decoration: underline;">NB</span> : Votre unite est insolvable .</h4>
-                                                            @endif
+                                         
+                                        <div class="row">
+                                            <!-- SITE VISIT CHART start -->
+                                            <div class="col-md-3 col-lg-3">      
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Total Recettes</h3>
+                                                        <div class="card-icon icon-income">
+                                                            <i class="fas fa-arrow-up"></i>
                                                         </div>
                                                     </div>
-                                                </section>
-                        
+                                                    <div class="card-value" id="total-revenus">XOF 124,850.00</div>
+                                                    <div class="card-trend trend-up">
+                                                        <!--<i class="fas fa-arrow-up"></i>
+                                                        <span id="revenus-trend">+12% vs mois précédent</span>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-lg-3">      
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Total Dépenses</h3>
+                                                        <div class="card-icon icon-expense">
+                                                            <i class="fas fa-arrow-down"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-value" id="total-depenses">XOF 78,430.00</div>
+                                                    <div class="card-trend trend-down">
+                                                        <!--<i class="fas fa-arrow-down"></i>
+                                                        <span id="depenses-trend">-5% vs mois précédent</span>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-lg-3">     
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Résultat Net</h3>
+                                                        <div class="card-icon icon-profit">
+                                                            <i class="fas fa-chart-line"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-value positive" id="resultat-net">XOF 46,420.00</div>
+                                                    <div class="card-trend trend-up">
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <span>Bénéfice ce mois</span>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                            <div class="col-md-3 col-lg-3">          
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Trésorerie Actuelle</h3>
+                                                        <div class="card-icon icon-cash">
+                                                            <i class="fas fa-wallet"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-value" id="tresorerie">XOF 89,250.00</div>
+                                                    <div class="card-trend trend-up">
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <span>Solde disponible</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                        <div class="row">
+                                            <!-- SITE VISIT CHART start -->
+                                            <div class="col-md-12 col-lg-8">
+                                                
+                                                <div class="card">
+                                                    <!-- Graphique 1: Évolution des Recettes et Dépenses -->
+                                                    <div class="chart-card">
+                                                        <div class="chart-header">
+                                                            <h3 class="chart-title">Évolution des Recettes et Dépenses</h3>
+                                                            <div class="period-selector" id="period-selector-1">
+                                                                <button class="period-btn active" data-period="mensuel">Mensuel</button>
+                                                                <button class="period-btn" data-period="trimestriel">Trimestriel</button>
+                                                                <button class="period-btn" data-period="annuel">Annuel</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="chart-container">
+                                                            <canvas id="evolutionChart"></canvas>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="col-md-12 col-lg-4">      
+                                                <div class="card"> 
+                                                    <!-- Graphique 2: Répartition des Dépenses -->
+                                                    <div class="chart-card">
+                                                        <div class="chart-header">
+                                                            <h3 class="chart-title">Répartition des Top Produits</h3>
+                                                            <div class="period-selector" id="period-selector-2">
+                                                                <button class="period-btn active" data-period="mois">Ce mois</button>
+                                                                <button class="period-btn" data-period="annee">Cette année</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="chart-container">
+                                                            <canvas id="repartitionChart"></canvas>
+                                                        </div>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                        </div>  
+                                       @if(request()->user()->unite->taux_tva > 0)
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="stat-card">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <p class="text-muted mb-1">Montant TVA</p>
+                                                                <h3 class="value fw-bold">{{ number_format($montant_tva, 0, ',', ' ') }} XOF</h3>
+                                                            </div>
+                                                            <div class="icon bg-primary bg-opacity-10 text-primary">
+                                                                <!--<i class="fas fa-franc-sign"></i>-->
+                                                                <span>💰</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif 
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12 col-lg-12">
+                                                <div class="stat-card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Solvabilité de l’unite</h3>
+                                                    </div>
+                                                    @if( $unite->statut_solvabilite == 'solvable')
+                                                        <div class="card-value"> Votre unite est solvable </div>
+                                                    @else
+                                                        <div class="card-value"> Votre unite est insolvable </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
