@@ -98,8 +98,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-12">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Basic Form Inputs</h5>
-                                                <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                                                <h5 class="m-b-10">Creation Unite</h5>
+                                                <p class="m-b-0">Veuillez renseigner les informations de votre business</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">

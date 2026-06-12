@@ -20,6 +20,10 @@ class Paiement extends Model
         'annule_le',
     ];
 
+     public function achat()
+    {
+        return $this->belongsTo(Achat::class);
+    }
     
     public function vente()
     {

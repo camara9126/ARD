@@ -36,7 +36,7 @@
                                                 <h5>Recettes</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal" data-bs-target="#recetteModal">Nouveau depense →</a>
+                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal" data-bs-target="#recetteModal">Nouvelle recette →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -106,7 +106,7 @@
 
                                                                         <!-- Libellé -->
                                                                         <div class="col-12 mb-3">
-                                                                            <label class="form-label">Libellé de la dépense</label>
+                                                                            <label class="form-label">Libellé de la recette</label>
                                                                             <input type="text" name="libelle" class="form-control" placeholder="Ex : Achat marchandises" required>
                                                                         </div>
 
@@ -118,7 +118,7 @@
 
                                                                         <!-- Date -->
                                                                         <div class="col-6 mb-3">
-                                                                            <label class="form-label">Date de la dépense</label>
+                                                                            <label class="form-label">Date de la recette</label>
                                                                             <input type="date" name="date_recette" class="form-control" value="{{ date('Y-m-d') }}" required>
                                                                         </div>
 

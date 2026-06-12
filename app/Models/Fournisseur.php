@@ -15,7 +15,7 @@ class Fournisseur extends Model
         'statut',
     ];
 
-     public function unite()
+    public function unite()
     {
         return $this->belongsTo((Unite::class));
     }

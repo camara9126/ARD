@@ -12,7 +12,7 @@ class FournisseurController extends Controller
      */
     public function index()
     {
-        $fournisseurs = Fournisseur::with('produit')->latest()->paginate(10);
+        $fournisseurs = Fournisseur::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->paginate(10);
 
         return view('dashboard.fournisseurs.index', compact('fournisseurs'));
     }

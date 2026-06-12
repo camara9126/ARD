@@ -427,12 +427,7 @@
             color: green;
             border-color: var(--secondary-color);
         }
-        
-        .chart-container {
-            height: 300px;
-            position: relative;
-        }
-        
+            
         canvas {
             width: 100% !important;
             height: 100% !important;
@@ -604,14 +599,14 @@
                                         <div class="row">
                                             <div class="col-md-12 col-lg-12">
                                                 <div class="stat-card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">Solvabilité de l’unite</h3>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <h3 class="text-muted mb-1">Solvabilité de l’unite</h3>
+                                                        @if( $unite->statut_solvabilite == 'solvable')
+                                                            <div class="card-value"> Votre unite est solvable </div>
+                                                        @else
+                                                            <div class="card-value"> Votre unite est insolvable </div>
+                                                        @endif
                                                     </div>
-                                                    @if( $unite->statut_solvabilite == 'solvable')
-                                                        <div class="card-value"> Votre unite est solvable </div>
-                                                    @else
-                                                        <div class="card-value"> Votre unite est insolvable </div>
-                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -1104,100 +1099,6 @@
  
         // Exécuter les calculs
         const yearlyStats = calculateYearlyStats();
-    </script>
-
-
-    <script>
-        // Toggle sidebar on mobile
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const mainContent = document.getElementById('mainContent');
-        
-        menuToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        });
-        
-        overlay.addEventListener('click', function() {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-        
-        
-        
-        // Mobile search functionality
-        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
-        if (mobileSearchBtn) {
-            mobileSearchBtn.addEventListener('click', function() {
-                const searchQuery = prompt("Entrez votre recherche :");
-                if (searchQuery) {
-                    alert("Recherche de : " + searchQuery);
-                    // Implement search functionality here
-                }
-            });
-        }
-        
-        // Initialize sales chart
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            const salesChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
-                    datasets: [{
-                        label: 'Ventes (€)',
-                        data: [6500, 8100, 7500, 9200, 12540, 11000, 13500, 12000, 9800, 11200, 14000, 15000],
-                        borderColor: '#4361ee',
-                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return '€' + value.toLocaleString();
-                                }
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                salesChart.resize();
-                
-                // Auto-close sidebar when switching to desktop
-                if (window.innerWidth >= 992) {
-                    sidebar.classList.remove('active');
-                    overlay.classList.remove('active');
-                }
-            });
-        });
-        
-        // Make sure chart resizes properly on load
-        window.dispatchEvent(new Event('resize'));
     </script>
     
     <script src="{{asset('asset/main.js')}}"></script>

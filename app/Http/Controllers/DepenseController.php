@@ -12,7 +12,7 @@ class DepenseController extends Controller
      */
     public function index()
     {
-        $depenses = Depense::latest()->simplePaginate(50);
+        $depenses = Depense::where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(50);
 
         return view('dashboard.depenses.index', compact('depenses'));
     }

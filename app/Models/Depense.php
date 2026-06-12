@@ -17,4 +17,9 @@ class Depense extends Model
         'mode_paiement',
         'statut',
     ];
+
+    public function unite()
+    {
+        return $this->belongsTo((Unite::class));
+    }
 }

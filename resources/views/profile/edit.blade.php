@@ -13,6 +13,22 @@
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    
+                    @if(Session::has('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ Session::get('success') }}
+                        </div>
+                    @elseif(Session::has('danger'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ Session::get('danger') }}
+                        </div>
+                    @endif
+
+                    @include('profile.partials.update-unite')
+                </div>
+            </div>
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">

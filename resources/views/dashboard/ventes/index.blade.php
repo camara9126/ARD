@@ -68,7 +68,7 @@
                                                                 <th>Montant Restant</th>
                                                                 <th>Date</th>
                                                                 <th>Statut</th>
-                                                                <th>Actions</th>
+                                                                <!--<th>Actions</th>-->
                                                                 <!--<th>Facture</th>-->
                                                             </tr>
                                                         </thead>
@@ -84,14 +84,14 @@
                                                                 <td>{{$v->created_at->format('d/m/y')}}</td>
                                                                 <td>
                                                                     @if($v->statut == 'payee')
-                                                                        <span class="status-badge badge-paid">{{$v->statut}}</span>
+                                                                        <span class="status-badge badge bg-success">{{$v->statut}}</span>
                                                                     @elseif($v->statut == 'partielle')
                                                                         <span class="status-badge badge-pending">{{$v->statut}}</span>
                                                                     @else
                                                                         <span class="status-badge badge bg-danger">{{$v->statut}}</span>
                                                                     @endif
                                                                 </td>
-                                                                <td>
+                                                                <!--<td>
                                                                     @if($v->montant_restant == 0)
                                                                         <button type="button" class="status-badge badge bg-secondary">
                                                                             Payée
@@ -100,7 +100,7 @@
                                                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-id="{{$v->id}}" data-bs-target="#paiementModal">Payer
                                                                     </button>
                                                                     @endif
-                                                                </td>
+                                                                </td>-->
                                                                 <!--<td>
                                                                     <div class="row">
                                                                         <div class="col-6">

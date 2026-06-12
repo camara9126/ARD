@@ -19,6 +19,10 @@ class Recette extends Model
         'statut'
     ];
 
+    public function unite()
+    {
+        return $this->belongsTo((Unite::class));
+    }
 
     public function user()
     {

@@ -1,4 +1,60 @@
+<?php
+
+use App\Models\Achat;
+use App\Models\Depense;
+use App\Models\MouvementStock;
+use App\Models\Recette;
+use App\Models\Unite;
+use App\Models\Vente;
+use Illuminate\Support\Carbon;
+
+    // chiffre d'affaire mois actuel ttc
+    $caMoisActuel = Recette::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+    $achatGlobal = Achat::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
+    $depenseGlobal = Depense::where('statut', 'payee')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+
+    $resultatGlobal = $achatGlobal - $depenseGlobal;
+
+    $unite= Unite::Where('id', request()->user()->unite_id)->first();
+
+
+           // ===== SECTION PRODUCTION UNITE =====
+
+            // ===== MENSUEL =====
+
+            $months = [];
+            $revenues = [];
+
+            for ($i = 1; $i <= 12; $i++) {
+
+                $recette = Recette::whereMonth('created_at', $i)->where('statut', 'recu')->where('unite_id', $unite->id)->whereYear('created_at', now()->year)->sum('montant');
+
+                $months[] = Carbon::create()->month($i)->translatedFormat('F');
+                $revenues[] = round($recette, 2);
+            }
+
+            $monthlyData = [
+                'months' => $months,
+                'revenues' => $revenues,
+            ];
+
+?>
     @include('partials.header')
+
+<style>
+    /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+</style>
+
 
                     <div class="pcoded-content">
                         <!-- Page-header start -->
@@ -14,7 +70,7 @@
                                     <div class="col-md-4">
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item">
-                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                                <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
                                             <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                                             </li>
@@ -32,107 +88,51 @@
                                     <div class="page-body">
                                         <div class="row">
                                             <!-- Material statustic card start -->
-                                            <div class="col-xl-4 col-md-12">
+                                            <div class="col-xl-12 col-md-12">
                                                 <div class="card mat-stat-card">
                                                     <div class="card-block">
                                                         <div class="row align-items-center b-b-default">
-                                                            <div class="col-sm-6 b-r-default p-b-20 p-t-20">
+                                                            <div class="col-sm-3 b-r-default p-b-20 p-t-20" style="background-color: #ffd8f2;">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="far fa-user text-c-purple f-24"></i>
+                                                                        <i class="fas fa-money-bill-wave text-c-purple f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>10K</h5>
-                                                                        <p class="text-muted m-b-0">Visitors</p>
+                                                                        <h5>{{ number_format($caMoisActuel, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">CA Glogal</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6 p-b-20 p-t-20">
+                                                            <div class="col-sm-3 b-r-default p-b-20 p-t-20" style="background-color: #ffabab;">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-volume-down text-c-green f-24"></i>
+                                                                        <i class="fas fa-bag-shopping text-c-green f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>100%</h5>
-                                                                        <p class="text-muted m-b-0">Volume</p>
+                                                                        <h5>{{ number_format($achatGlobal, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Achat Produit</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row align-items-center">
-                                                            <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
+                                                            <div class="col-sm-3 p-b-20 p-t-20 b-r-default" style="background-color: #aeffc8;">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="far fa-file-alt text-c-red f-24"></i>
+                                                                        <i class="fas fa-arrow-down text-c-red f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>2000+</h5>
-                                                                        <p class="text-muted m-b-0">Files</p>
+                                                                        <h5>{{ number_format($depenseGlobal, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Depense Global</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6 p-b-20 p-t-20">
+                                                            <div class="col-sm-3 p-b-20 p-t-20" style="background-color: #d9c7ff;">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="far fa-envelope-open text-c-blue f-24"></i>
+                                                                        <i class="fas fa-chart-line text-c-blue f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>120</h5>
-                                                                        <p class="text-muted m-b-0">Mails</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-md-12">
-                                                <div class="card mat-stat-card">
-                                                    <div class="card-block">
-                                                        <div class="row align-items-center b-b-default">
-                                                            <div class="col-sm-6 b-r-default p-b-20 p-t-20">
-                                                                <div class="row align-items-center text-center">
-                                                                    <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-share-alt text-c-purple f-24"></i>
-                                                                    </div>
-                                                                    <div class="col-8 p-l-0">
-                                                                        <h5>1000</h5>
-                                                                        <p class="text-muted m-b-0">Share</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6 p-b-20 p-t-20">
-                                                                <div class="row align-items-center text-center">
-                                                                    <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-sitemap text-c-green f-24"></i>
-                                                                    </div>
-                                                                    <div class="col-8 p-l-0">
-                                                                        <h5>600</h5>
-                                                                        <p class="text-muted m-b-0">Network</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row align-items-center">
-                                                            <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
-                                                                <div class="row align-items-center text-center">
-                                                                    <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-signal text-c-red f-24"></i>
-                                                                    </div>
-                                                                    <div class="col-8 p-l-0">
-                                                                        <h5>350</h5>
-                                                                        <p class="text-muted m-b-0">Returns</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6 p-b-20 p-t-20">
-                                                                <div class="row align-items-center text-center">
-                                                                    <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-wifi text-c-blue f-24"></i>
-                                                                    </div>
-                                                                    <div class="col-8 p-l-0">
-                                                                        <h5>100%</h5>
-                                                                        <p class="text-muted m-b-0">Connections</p>
+                                                                        <h5>{{ number_format($resultatGlobal, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Resultat Global</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -140,229 +140,140 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-4 col-md-12">
-                                                <div class="card mat-clr-stat-card text-white green ">
-                                                    <div class="card-block">
-                                                        <div class="row">
-                                                            <div class="col-3 text-center bg-c-green">
-                                                                <i class="fas fa-star mat-icon f-24"></i>
-                                                            </div>
-                                                            <div class="col-9 cst-cont">
-                                                                <h5>4000+</h5>
-                                                                <p class="m-b-0">Ratings Received</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card mat-clr-stat-card text-white blue">
-                                                    <div class="card-block">
-                                                        <div class="row">
-                                                            <div class="col-3 text-center bg-c-blue">
-                                                                <i class="fas fa-trophy mat-icon f-24"></i>
-                                                            </div>
-                                                            <div class="col-9 cst-cont">
-                                                                <h5>17</h5>
-                                                                <p class="m-b-0">Achievements</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Material statustic card end -->
-                                            <!-- order-visitor start -->
+                                            
+                                        </div>
 
-
-                                            <!-- order-visitor end -->
-
-                                            <!--  sale analytics start -->
-                                            <div class="col-xl-6 col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 col-lg-12">
                                                 <div class="card table-card">
                                                     <div class="card-header">
-                                                        <h5>Member’s performance</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                <li><i class="fa fa-trash close-card"></i></li>
-                                                            </ul>
-                                                        </div>
+                                                        <h5>LISTE DES FACTURES</h5>
+                                                        <a href="{{ route('vente.facture') }}" style="color: var(--secondary); text-decoration: none; font-weight: 500;">Voir plus →</a>
                                                     </div>
                                                     <div class="card-block">
                                                         <div class="table-responsive">
                                                             <table class="table table-hover m-b-0 without-header">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><b>Reference</b></th>
+                                                                        <th><b>Client</b></th>
+                                                                        <th><b>Montant TVA</b></th>
+                                                                        <th><b>Montant Total</b></th>
+                                                                        <th><b>Montant Payer</b></th>
+                                                                        <th><b>Montant Restant</b></th>
+                                                                        <th><b>Date</b></th>
+                                                                        <th><b>Statut</b></th>
+                                                                        <!--<th><b>Actions</b></th>-->
+                                                                        <th><b>Facture</b></th>
+                                                                    </tr>
+                                                                </thead>
                                                                 <tbody>
+                                                                    @forelse($factures->take(3) as $v)
                                                                     <tr>
+                                                                        <td><strong>{{$v->reference}}</strong></td>
+                                                                        <td>{{$v->client->nom ?? 'Vide'}}</td>
+                                                                        <td>{{number_format($v->total_tva, 0, ',',' ')}} XOF</td>
+                                                                        <td>{{number_format($v->total_ttc, 0, ',',' ')}} XOF</td>
+                                                                        <td>{{number_format($v->montant_paye, 0, ',', ' ')}} XOF</td>
+                                                                        <td>{{number_format($v->montant_restant, 0, ',',' ')}} XOF</td>
+                                                                        <td>{{$v->created_at->format('d/m/y')}}</td>
                                                                         <td>
-                                                                            <div class="d-inline-block align-middle">
-                                                                                <img src="assets/images/avatar-4.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                                                <div class="d-inline-block">
-                                                                                    <h6>Shirley Hoe</h6>
-                                                                                    <p class="text-muted m-b-0">Sales executive , NY</p>
-                                                                                </div>
+                                                                            @if($v->statut == 'payee')
+                                                                                <span class="status-badge badge bg-success">{{$v->statut}}</span>
+                                                                            @elseif($v->statut == 'partielle')
+                                                                                <span class="status-badge badge-pending">{{$v->statut}}</span>
+                                                                            @else
+                                                                                <span class="status-badge badge bg-danger">{{$v->statut}}</span>
+                                                                            @endif
+                                                                        </td>
+                                                                        <!--<td>
+                                                                            @if($v->montant_restant == 0)
+                                                                                <button type="button" class="status-badge badge bg-secondary">
+                                                                                    Payée
+                                                                                </button>
+                                                                            @else
+                                                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-id="{{$v->id}}" data-bs-target="#paiementModal">Payer
+                                                                            </button>
+                                                                            @endif
+                                                                        </td>-->
+                                                                        <td>
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    <a href="{{route('vente.show', $v->id)}}" class="action-btn text-primary mr-2" title="afficher la facture">
+                                                                                        <i class="fas fa-file-invoice"></i>
+                                                                                    </a>
+                                                                                </div>  
                                                                             </div>
                                                                         </td>
-                                                                        <td class="text-right">
-                                                                            <h6 class="f-w-700">$78.001<i class="fas fa-level-down-alt text-c-red m-l-10"></i></h6>
-                                                                        </td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="d-inline-block align-middle">
-                                                                                <img src="assets/images/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                                                <div class="d-inline-block">
-                                                                                    <h6>James Alexander</h6>
-                                                                                    <p class="text-muted m-b-0">Sales executive , EL</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="text-right">
-                                                                            <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="d-inline-block align-middle">
-                                                                                <img src="assets/images/avatar-4.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                                                <div class="d-inline-block">
-                                                                                    <h6>Shirley Hoe</h6>
-                                                                                    <p class="text-muted m-b-0">Sales executive , NY</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="text-right">
-                                                                            <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="d-inline-block align-middle">
-                                                                                <img src="assets/images/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                                                <div class="d-inline-block">
-                                                                                    <h6>Nick Xander</h6>
-                                                                                    <p class="text-muted m-b-0">Sales executive , EL</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="text-right">
-                                                                            <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                                                        </td>
-                                                                    </tr>
+                                                                    @empty
+                                                                        <tr>
+                                                                            <td colspan="7" align="center">Donnee vide !</td>
+                                                                        </tr>
+                                                                    @endforelse
                                                                 </tbody>
                                                             </table>
-
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6 col-md-12">
-                                                <div class="row">
-                                                    <!-- sale card start -->
-
-                                                    <div class="col-md-6">
-                                                        <div class="card text-center order-visitor-card">
-                                                            <div class="card-block">
-                                                                <h6 class="m-b-0">Total Subscription</h6>
-                                                                <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-down m-r-15 text-c-red"></i>7652</h4>
-                                                                <p class="m-b-0">48% From Last 24 Hours</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="card text-center order-visitor-card">
-                                                            <div class="card-block">
-                                                                <h6 class="m-b-0">Order Status</h6>
-                                                                <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>6325</h4>
-                                                                <p class="m-b-0">36% From Last 6 Months</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="card bg-c-red total-card">
-                                                            <div class="card-block">
-                                                                <div class="text-left">
-                                                                    <h4>489</h4>
-                                                                    <p class="m-0">Total Comment</p>
-                                                                </div>
-                                                                <span class="label bg-c-red value-badges">15%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="card bg-c-green total-card">
-                                                            <div class="card-block">
-                                                                <div class="text-left">
-                                                                    <h4>$5782</h4>
-                                                                    <p class="m-0">Income Status</p>
-                                                                </div>
-                                                                <span class="label bg-c-green value-badges">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="card text-center order-visitor-card">
-                                                            <div class="card-block">
-                                                                <h6 class="m-b-0">Unique Visitors</h6>
-                                                                <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-down m-r-15 text-c-red"></i>652</h4>
-                                                                <p class="m-b-0">36% From Last 6 Months</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="card text-center order-visitor-card">
-                                                            <div class="card-block">
-                                                                <h6 class="m-b-0">Monthly Earnings</h6>
-                                                                <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>5963</h4>
-                                                                <p class="m-b-0">36% From Last 6 Months</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- sale card end -->
-                                                </div>
-                                            </div>
-
-                                            <!--  sale analytics end -->
-
-                                            <!-- Project statustic start -->
-                                            <div class="col-xl-12">
-                                                <div class="card proj-progress-card">
-                                                    <div class="card-block">
-                                                        <div class="row">
-                                                            <div class="col-xl-3 col-md-6">
-                                                                <h6>Published Project</h6>
-                                                                <h5 class="m-b-30 f-w-700">532<span class="text-c-green m-l-10">+1.69%</span></h5>
-                                                                <div class="progress">
-                                                                    <div class="progress-bar bg-c-red" style="width:25%"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-3 col-md-6">
-                                                                <h6>Completed Task</h6>
-                                                                <h5 class="m-b-30 f-w-700">4,569<span class="text-c-red m-l-10">-0.5%</span></h5>
-                                                                <div class="progress">
-                                                                    <div class="progress-bar bg-c-blue" style="width:65%"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-3 col-md-6">
-                                                                <h6>Successfull Task</h6>
-                                                                <h5 class="m-b-30 f-w-700">89%<span class="text-c-green m-l-10">+0.99%</span></h5>
-                                                                <div class="progress">
-                                                                    <div class="progress-bar bg-c-green" style="width:85%"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-3 col-md-6">
-                                                                <h6>Ongoing Project</h6>
-                                                                <h5 class="m-b-30 f-w-700">365<span class="text-c-green m-l-10">+0.35%</span></h5>
-                                                                <div class="progress">
-                                                                    <div class="progress-bar bg-c-yellow" style="width:45%"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Project statustic end -->
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12 col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-block">
+                                                        <canvas id="evolutionChart"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="col-md-12 col-lg-6">
+                                                <div class="card table-card">
+                                                    <div class="card-header">
+                                                        <h5>MOUVEMENT DE STOCK</h5>
+                                                        <a href="{{ route('stock.index') }}" style="color: var(--secondary); text-decoration: none; font-weight: 500;">Voir plus →</a>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover m-b-0 without-header">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><b>Reference</b></th>
+                                                                        <th><b>Produit</b></th>
+                                                                        <th><b>type</b></th>
+                                                                        <th><b>Quantite</b></th>
+                                                                        <th><b>Date</b></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @forelse($mouvements->take(5) as $m)
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="product-info">
+                                                                                <div>
+                                                                                    <div style="font-weight: 600;">{{$m->reference}}</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{$m->produit->nom}}</td>
+                                                                        <td>{{$m->type}}</td>
+                                                                        <td><strong>{{$m->quantite}}</strong></td>
+                                                                        <td>{{$m->created_at->format('d/m/Y')}}</td>
+                                                                    </tr>
+                                                                    @empty
+                                                                        <tr>
+                                                                            <td colspan="7" align="center">Donnee vide !</td>
+                                                                        </tr>
+                                                                    @endforelse
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div>     
+                                        </div>
+                                       
                                     </div>
                                     <!-- Page-body end -->
                                 </div>
@@ -374,49 +285,151 @@
             </div>
         </div>
     </div>
-    <!-- Warning Section Starts -->
-    <!-- Older IE warning message -->
-    <!--[if lt IE 10]>
-<div class="ie-warning">
-    <h1>Warning!!</h1>
-    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
-    <div class="iew-container">
-        <ul class="iew-download">
-            <li>
-                <a href="http://www.google.com/chrome/">
-                    <img src="assets/images/browser/chrome.png" alt="Chrome">
-                    <div>Chrome</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.mozilla.org/en-US/firefox/new/">
-                    <img src="assets/images/browser/firefox.png" alt="Firefox">
-                    <div>Firefox</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://www.opera.com">
-                    <img src="assets/images/browser/opera.png" alt="Opera">
-                    <div>Opera</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.apple.com/safari/">
-                    <img src="assets/images/browser/safari.png" alt="Safari">
-                    <div>Safari</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                    <img src="assets/images/browser/ie.png" alt="">
-                    <div>IE (9 & above)</div>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <p>Sorry for the inconvenience!</p>
-</div>
-<![endif]-->
-    <!-- Warning Section Ends -->
+   
+    <script>
+
+        const colors = {
+            primary: '#3949ab',
+            secondary: '#5c6bc0',
+            success: '#4caf50',
+            danger: '#f44336',
+            warning: '#ff9800',
+            info: '#2196f3',
+            purple: '#9c27b0',
+            teal: '#009688',
+            orange: '#ff5722',
+            pink: '#e91e63',
+            categories: [
+                '#4caf50', '#f44336', '#2196f3', '#ff9800', 
+                '#9c27b0', '#009688', '#ff5722', '#e91e63',
+                '#3f51b5', '#00bcd4', '#8bc34a', '#ffc107'
+            ]
+        };
+
+         // ============================================
+        // DONNÉES MENSUELLES - ANNÉE EN COURS
+        // ============================================
+        const monthlyData = @json($monthlyData);
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser les graphiques
+            initEvolutionChart('mensuel');
+            initRepartitionChart('mois');
+            
+            // Mettre à jour les valeurs du dashboard
+            updateDashboardValues();
+            
+            // Gestionnaires d'événements pour les boutons de période
+            setupPeriodButtons();
+        });
+
+                let evolutionChart;
+        
+        function initEvolutionChart(period) {
+            const ctx = document.getElementById('evolutionChart').getContext('2d');
+            
+            let labels, revenueData, expenseData, profitData, title;
+            
+            switch(period) {
+                case 'mensuel':
+                    labels = monthlyData.months;
+                    revenueData = monthlyData.revenues;
+                    expenseData = monthlyData.expenses;
+                    profitData = monthlyData.profits;
+                    title = 'ANALYSE & RECETTE UNITÉS  (<?= now()->year ?>)';
+                    break;
+            }
+            
+            // Détruire le graphique existant s'il y en a un
+            if (evolutionChart) {
+                evolutionChart.destroy();
+            }
+            
+            evolutionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Recettes',
+                            data: revenueData,
+                            borderColor: colors.info,
+                            backgroundColor: colors.info,
+                            borderWidth: 3,
+                            pointBackgroundColor: colors.info,
+                            pointBorderColor: 'white',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            tension: 0.3,
+                            fill: false
+                        },
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: title,
+                            font: {
+                                size: 14,
+                                weight: '500'
+                            },
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    let value = context.raw || 0;
+                                    return `${label}: ${value.toLocaleString('fr-FR')} XOF`;
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return  value.toLocaleString('fr-FR') + 'XOF ';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
  @include('partials.footer')

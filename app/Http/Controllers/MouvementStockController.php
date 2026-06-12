@@ -13,9 +13,9 @@ class MouvementStockController extends Controller
      */
     public function index()
     {
-        $mouvements= MouvementStock::with('produit')->latest()->get();
+        $mouvements= MouvementStock::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->get();
 
-        $produits= Produit::latest()->get();
+        $produits= Produit::where('unite_id', request()->user()->unite_id)->latest()->get();
 
         return view('dashboard.mouvementStocks.index', compact('mouvements','produits'));
     }

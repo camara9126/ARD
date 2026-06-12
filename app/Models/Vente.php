@@ -18,6 +18,12 @@ class Vente extends Model
         'total_ttc',
     ];
 
+
+    public function unite()
+    {
+        return $this->belongsTo((Unite::class));
+    }
+    
      public function items()
     {
         return $this->hasMany(VenteItem::class);

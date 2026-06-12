@@ -12,7 +12,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::latest()->paginate(50);
+        $clients = Client::where('unite_id', request()->user()->unite_id)->latest()->paginate(50);
 
         return view('dashboard.clients.index', compact('clients'));
     }

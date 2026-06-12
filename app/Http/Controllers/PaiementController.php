@@ -12,7 +12,7 @@ class PaiementController extends Controller
      */
     public function index()
     {
-        $paiements = Paiement::with('vente.client')->latest()->simplePaginate(50); 
+        $paiements = Paiement::where('unite_id', request()->user()->unite_id)->with('vente.client')->latest()->simplePaginate(50); 
 
         return view('dashboard.paiements.index', compact('paiements'));
     }

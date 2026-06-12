@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AchatController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepenseController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\RapportController;
 use App\Http\Controllers\RecetteController;
 use App\Http\Controllers\UniteController;
 use App\Http\Controllers\VenteController;
+use App\Models\MouvementStock;
+use App\Models\Vente;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,14 +30,23 @@ Route::get('/dashboard', function () {
 
     $user= request()->user();
 
+    $mouvements = MouvementStock::Where('unite_id', $user->unite_id)->latest()->get();
+
+    $factures = Vente::Where('unite_id', $user->unite_id)->with('client')->latest()->get();
+
     if($user->role == 'commercial' && !$user->unite_id) {
 
             return redirect()->route('unite.create');
 
+    } elseif($user->role == 'admin') {
+
+        return redirect()->route('unite.index');
+
     } else {
 
-        return view('dashboard.index');
+        return view('dashboard.index', compact('mouvements', 'factures'));
     }
+     
     
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -53,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/fournisseur', FournisseurController::class);
     Route::resource('/produit', ProduitController::class);
     Route::resource('stock', MouvementStockController::class);
+    Route::resource('/achat', AchatController::class);
 });
 
 

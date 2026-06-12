@@ -2,11 +2,13 @@
     //Alert sotck
 
     use App\Models\Produit;
+    use App\Models\Unite;
 
+    $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
     $alerte = Produit::produitsEnAlerte()->count();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <title>ARD GestioPro - Tableau de bord opérationnel</title>
@@ -47,7 +49,8 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -125,7 +128,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="index.html">
+                        <a href="#">
                             <img class="img-fluid" src="assets/images/logo.png" alt="Theme-Logo" />
                         </a>
                         <a class="mobile-options waves-effect waves-light">
@@ -244,7 +247,7 @@
                         <div class="pcoded-inner-navbar main-menu">
                             <div class="">
                                 <div class="main-menu-header mt-3">
-                                    <!--<img class="img-80 img-radius" src="assets/images/avatar-4.jpg" alt="User-Profile-Image">-->
+                                    <img class="img-90 img-radius mx-auto" src="{{asset('storage/'.$unite->logo)}}" alt="User-Profile-Image">
                                     @if($alerte)
                                         <p class="alert alert-danger">
                                             ⛔ Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock.
@@ -290,143 +293,152 @@
                                     </a>
                                 </li>
                             </ul>
-                            <!--<div class="pcoded-navigation-label">UI Element</div>-->
+                            @if(!$unite->nom == 'ARD')
 
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="pcoded-hasmenu">
-                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
-                                        <span class="pcoded-mtext">Inventaire</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                    <ul class="pcoded-submenu">
-                                        <li class=" ">
-                                            <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Produits</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Fournisseurs</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Mouvement Stock</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>     
-                            
-                            <div class="pcoded-navigation-label">Pages</div>
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="pcoded-hasmenu ">
-                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
-                                        <span class="pcoded-mtext">Commercial</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                    <ul class="pcoded-submenu">
-                                        <li class="">
-                                            <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Ventes</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="{{ route('client.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Clients</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="pcoded-hasmenu ">
+                                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
+                                            <span class="pcoded-mtext">Commercial</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <li class="">
+                                                <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Ventes</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class="">
+                                                <a href="{{ route('client.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Clients</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
 
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="pcoded-hasmenu">
-                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>BC</b></span>
-                                        <span class="pcoded-mtext">Finance</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                    <ul class="pcoded-submenu">
-                                        <li class=" ">
-                                            <a href="{{ route('paiement.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Paiements</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a href="{{ route('recette.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Recettes</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="{{ route('depense.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Depenses</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>     
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
+                                            <span class="pcoded-mtext">Inventaire</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <li class="">
+                                                <a href="{{ route('achat.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Achats</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+                                                <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Produits</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+                                                <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Fournisseurs</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class="">
+                                                <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Mouvement Stock</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>     
 
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="">
-                                    <a href="" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>FC</b></span>
-                                        <span class="pcoded-mtext">Produits</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="">
-                                    <a href="{{ route('vente.facture') }}" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="fas fa-file-invoice"></i><b>FC</b></span>
-                                        <span class="pcoded-mtext">Facturation</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                     
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="">
-                                    <a href="form-elements-component.html" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                                        <span class="pcoded-mtext">Stock</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="pcoded-item pcoded-left-item">
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>BC</b></span>
+                                            <span class="pcoded-mtext">Finance</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <li class=" ">
+                                                <a href="{{ route('paiement.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Paiements</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+                                                <a href="{{ route('recette.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Recettes</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class="">
+                                                <a href="{{ route('depense.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Depenses</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>     
+
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext">Produits</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('vente.facture') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-file-invoice"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext">Facturation</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                        
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="{{ route('stock.index') }}">
+                                        <a href="form-elements-component.html" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext">Stock</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('analyse') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-bar-chart-alt"></i><b>C</b></span>
+                                            <span class="pcoded-mtext">Analyses & Rapport</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endif
+
+                            <!--<ul class="pcoded-item pcoded-left-item">
                                 <li class="">
                                     <a href="bs-basic-table.html" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
                                         <span class="pcoded-mtext">Demande</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="">
-                                    <a href="{{ route('analyse') }}" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-bar-chart-alt"></i><b>C</b></span>
-                                        <span class="pcoded-mtext">Analyses & Rapport</span>
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                 </li>
@@ -440,7 +452,7 @@
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul>-->
 
                         </div>
                     </nav>

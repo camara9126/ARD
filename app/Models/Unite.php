@@ -14,4 +14,20 @@ class Unite extends Model
     'statut',
     'taux_tva',
     ];
+
+    public function produit() {
+        return $this->hasMany(Produit::class);
+    }
+
+    public function recettes() {
+        return $this->hasMany(Recette::class);
+    }
+
+    public function ventes() {
+        return $this->hasMany(Vente::class);
+    }
+
+    public function depense() {
+        return $this->hasMany(Depense::class);
+    }
 }

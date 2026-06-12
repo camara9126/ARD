@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use App\Models\Depense;
 use App\Models\MouvementStock;
 use App\Models\Paiement;
 use App\Models\Produit;
@@ -45,7 +44,7 @@ class VenteController extends Controller
     {
         $query = $request->q;
 
-        $produits = Produit::where('nom', 'LIKE', "%{$query}%")->limit(50)->get();
+        $produits = Produit::where('unite_id', request()->user()->unite_id)->where('nom', 'LIKE', "%{$query}%")->limit(50)->get();
 
         return response()->json($produits);
     }
@@ -247,7 +246,7 @@ class VenteController extends Controller
     // Liste de factures
     public function facture()
     {
-        $factures = Vente::with('client')->latest()->simplePaginate(10); 
+        $factures = Vente::where('unite_id', request()->user()->unite_id)->with('client')->latest()->simplePaginate(10); 
 
         return view('dashboard.ventes.factures', compact('factures'));
     }
