@@ -33,10 +33,10 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Paiements</h5>
+                                                <h5>unites ( {{$unites->count() }} )</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="{{route('vente.create') }}" style="color: var(--primary); text-decoration: none; font-weight: 500;" >Nouvelle commande →</a>
+                                                    <a href="{{route('admin.index') }}" style="color: var(--danger); text-decoration: none; font-weight: 500;" >retour →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -60,48 +60,36 @@
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Reference</th>
-                                                                <th>Client</th>
-                                                                <th>Montant</th>
-                                                                <th>Date de paiement</th>
-                                                                <!--<th>Mode de paiement</th>-->
-                                                                <th>Actions</th>
+                                                                <th><b>Logo</b></th>
+                                                                <th><b>Nom</b></th>
+                                                                <th><b>Contact</b></th>
+                                                                <th><b>Adresse</b></th>
+                                                                <th><b>Date de creation</b></th>
+                                                                <th><b>Statut</b></th>
+                                                                <!--<th><b>Action</b></th>-->
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @forelse($paiements as $p)
+                                                            @foreach($unites as $u)
                                                             <tr>
-                                                                <td>{{$p->reference}}</td>
-                                                                <td>{{optional($p->vente->client)->nom ?? '-'}}</td>
-                                                                <td>{{max(0, number_format($p->montant, 0, ',',' '))}} XOF</td>
-                                                                <td>{{$p->date_paiement}}</td>
-                                                                <!--<td>{{$p->mode_paiement}}</td>-->
                                                                 <td>
-                                                                    @if($p->statut === 'valide')
-                                                                        <form action="{{ route('paiement.update', $p->id) }}" method="POST" onsubmit="return confirm('Confirmer l’annulation du paiement ?')">
-                                                                            @csrf
-                                                                            @method('PUT')
-                                                                            <button class="action-btn text-danger btn-sm" title="Annuler le paiement">
-                                                                                <i class="fas fa-times"></i>
-                                                                            </button>
-                                                                        </form>
+                                                                    <img class="img-50 img-radius" src="{{asset('storage/'.$u->logo)}}" alt="{{ $u->nom }}">
+                                                                </td>
+                                                                <td>{{$u->nom}}</td>
+                                                                <td>{{$u->contact}}</td>
+                                                                <td>{{$u->adresse ?? 'vide'}}</td>
+                                                                <td>{{$u->created_at->format('d-m-y')}}</td>
+                                                                <td>
+                                                                    @if($u->statut)
+                                                                        <span class="badge bg-success">Actif</span>
                                                                     @else
-                                                                            <button class="action-btn text-secondary btn-sm" title="Paiement annule">
-                                                                                <i class="fas fa-times"></i>
-                                                                            </button>
-                                                                    @endif                                    
-                                                                </td>                                                        
+                                                                        <span class="badge bg-danger">Inactif</span>
+                                                                    @endif
+                                                                </td>
                                                             </tr>
-                                                            @empty
-                                                                <tr>
-                                                                    <td colspan="7" align="center">Donnee vide !</td>
-                                                                </tr>
-                                                            @endforelse
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
-                                                    <div class="d-flex justify-content-center mt-4">
-                                                        {{$paiements->links()}}
-                                                    </div>
                                                 </div>
                                             </div>                                                                    
                                         </div>
@@ -115,6 +103,5 @@
             </div>
         </div>
     </div>    
-
 
     @include('partials.footer')

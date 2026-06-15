@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AchatController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepenseController;
@@ -40,15 +41,15 @@ Route::get('/dashboard', function () {
 
     } elseif($user->role == 'admin') {
 
-        return redirect()->route('unite.index');
+        return redirect()->route('admin.index');
 
     } else {
 
         return view('dashboard.index', compact('mouvements', 'factures'));
-    }
-     
+    }    
     
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -57,6 +58,13 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('/unite', UniteController::class)->middleware(['auth', 'verified']);
+
+// Route Admin
+Route::middleware('auth')->group(function () {
+    Route::resource('/admin', AdminController::class);
+    Route::get('/unites', [AdminController::class, 'unites'])->name('admin.unites');
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+});
 
 
 // Routes Inventaires

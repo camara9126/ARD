@@ -247,7 +247,7 @@
                         <div class="pcoded-inner-navbar main-menu">
                             <div class="">
                                 <div class="main-menu-header mt-3">
-                                    <img class="img-90 img-radius mx-auto" src="{{asset('storage/'.$unite->logo)}}" alt="User-Profile-Image">
+                                    <img class="img-90 img-radius mx-auto" src="{{asset('storage/'.$unite->logo)}}" alt="{{ Auth::user()->unite->nom }}">
                                     @if($alerte)
                                         <p class="alert alert-danger">
                                             ⛔ Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock.
@@ -293,7 +293,7 @@
                                     </a>
                                 </li>
                             </ul>
-                            @if(!$unite->nom == 'ARD')
+                            @if(Auth::user()->role == 'commercial')
 
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="pcoded-hasmenu ">
@@ -414,8 +414,8 @@
                                 </ul>
                         
                                 <ul class="pcoded-item pcoded-left-item">
-                                    <li class="{{ route('stock.index') }}">
-                                        <a href="form-elements-component.html" class="waves-effect waves-dark">
+                                    <li class="">
+                                        <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                                             <span class="pcoded-mtext">Stock</span>
                                             <span class="pcoded-mcaret"></span>
@@ -432,27 +432,29 @@
                                         </a>
                                     </li>
                                 </ul>
+                            @elseif(Auth::user()->role == 'admin')
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('admin.unites') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-shop"></i><b>B</b></span>
+                                            <span class="pcoded-mtext">Unites</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('admin.users') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-users"></i><b>M</b></span>
+                                            <span class="pcoded-mtext">Utilisateurs</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
                             @endif
 
-                            <!--<ul class="pcoded-item pcoded-left-item">
-                                <li class="">
-                                    <a href="bs-basic-table.html" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
-                                        <span class="pcoded-mtext">Demande</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="">
-                                    <a href="map-google.html" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-map-alt"></i><b>M</b></span>
-                                        <span class="pcoded-mtext">Maps</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            </ul>-->
+                            
 
                         </div>
                     </nav>

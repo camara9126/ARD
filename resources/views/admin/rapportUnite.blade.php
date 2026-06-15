@@ -66,6 +66,21 @@
 </div>
 
 <div class="section summary">
+    <p>
+        Au cours de mois <?= now()->year ?>, l’unité {{ $unite->nom }} a enregistré un total de ventes de {{ number_format($totalVentes, 0, ',', ' ') }} FCFA
+    </p>
+    <p>
+        Les dépenses totales engagées par l’unité sur la même période s’élèvent à {{ number_format($totalDepenses, 0, ',', ' ') }} FCFA
+    </p>
+    <p>
+        Après déduction des dépenses, le résultat net dégagé par {{ $unite->nom }} au titre du mois s’élève à {{ number_format($net, 0, ',', ' ') }} FCFA.
+    </p>
+    <p>
+        En conclusion: {{ $analyse }} avec un bénéfice de {{ number_format($net, 0, ',', ' ') }} FCFA.
+    </p>
+</div>
+
+<div class="section summary">
     <h3>Résumé exécutif</h3>
 
     <p><strong>Total ventes :</strong> {{ number_format($totalVentes, 0, ',', ' ') }} FCFA</p>
@@ -112,7 +127,7 @@
         @foreach($depenses as $depense)
         <tr>
             <td>{{ $depense->created_at->format('d/m/Y') }}</td>
-            <td>{{ $depense->motif ?? 'N/A' }}</td>
+            <td>{{ $depense->libelle ?? 'N/A' }}</td>
             <td>{{ number_format($depense->montant, 0, ',', ' ') }} FCFA</td>
         </tr>
         @endforeach

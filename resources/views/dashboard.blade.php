@@ -4,6 +4,7 @@ use App\Models\Achat;
 use App\Models\Depense;
 use App\Models\Recette;
 use App\Models\Unite;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 
     // chiffre d'affaire mois actuel ttc
@@ -15,11 +16,13 @@ use Illuminate\Support\Carbon;
 
     // Nombre d'unite
     $nbrUnites= Unite::where('nom', '!=', 'ARD')->latest()->get();
+    // Nombre Utilisateurs
+    $users= User::where('role', 'commercial')->latest()->get();
             
 ?>
     
     @include('partials.header')
-<style>
+    <style>
         .chart-container {
             width: 80%;
             margin: 0 auto;
@@ -36,8 +39,8 @@ use Illuminate\Support\Carbon;
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dashboard</h5>
-                                            <p class="m-b-0">Welcome to Material Able</p>
+                                            <h5 class="m-b-10">Tableau de Bord {{ strtoupper(Auth::user()->role) }}</h5>
+                                            <p class="m-b-0">Bienvenue</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -149,8 +152,8 @@ use Illuminate\Support\Carbon;
                                                                         <i class="far fa-user text-c-purple f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>10K</h5>
-                                                                        <p class="text-muted m-b-0">Visitors</p>
+                                                                        <h5>{{ $users->count() }}</h5>
+                                                                        <p class="text-muted m-b-0">Utilisateurs</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -326,7 +329,7 @@ use Illuminate\Support\Carbon;
                                                                             </td>
 
                                                                             <td>
-                                                                                <span class="badge bg-warning">
+                                                                                <span class="badge bg-warning text-secondary">
                                                                                     {{ number_format($unite->total_ventes, 0, ',', ' ') }} FCFA
                                                                                 </span>
                                                                             </td>
@@ -338,7 +341,7 @@ use Illuminate\Support\Carbon;
                                                                             </td>
 
                                                                             <td>
-                                                                                <a href="{{route('unite.show', $unite->id)}}" class="action-btn text-primary mr-2" title="afficher le rapport">
+                                                                                <a href="{{route('admin.show', $unite->id)}}" class="action-btn text-primary mr-2" title="afficher le rapport">
                                                                                     <i class="fas fa-receipt"></i>
                                                                                 </a>
                                                                             </td>
@@ -381,7 +384,7 @@ use Illuminate\Support\Carbon;
                                         <div class="row">
 
                                             <!--  sale analytics start -->
-                                            <div class="col-xl-6 col-md-12">
+                                            <!--<div class="col-xl-6 col-md-12">
                                                 <div class="card table-card">
                                                     <div class="card-header">
                                                         <h5>Member’s performance</h5>
@@ -464,7 +467,6 @@ use Illuminate\Support\Carbon;
                                             </div>
                                             <div class="col-xl-6 col-md-12">
                                                 <div class="row">
-                                                    <!-- sale card start -->
 
                                                     <div class="col-md-6">
                                                         <div class="card text-center order-visitor-card">
@@ -524,14 +526,13 @@ use Illuminate\Support\Carbon;
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- sale card end -->
                                                 </div>
-                                            </div>
+                                            </div>-->
 
                                             <!--  sale analytics end -->
 
                                             <!-- Project statustic start -->
-                                            <div class="col-xl-12">
+                                            <!--<div class="col-xl-12">
                                                 <div class="card proj-progress-card">
                                                     <div class="card-block">
                                                         <div class="row">
@@ -566,7 +567,7 @@ use Illuminate\Support\Carbon;
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <!-- Project statustic end -->
                                         </div>
                                     </div>

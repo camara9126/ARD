@@ -7,8 +7,8 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Dashboard</h5>
-                                            <p class="m-b-0">Welcome to Material Able</p>
+                                            <h5 class="m-b-10">Tableau de Bord {{ strtoupper(Auth::user()->role) }}</h5>
+                                            <p class="m-b-0">Bienvenue</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -220,7 +220,7 @@
 
                                                                 <input type="hidden" name="id" id="produit_id">
                                                                 <input type="hidden" name="categorie_id" id="categorie_id">
-
+                                                                <input type="hidden" name="stock" id="stock" class="form-control" required>
 
                                                                 <div class="mb-3">
                                                                     <label>Nom produit</label>
@@ -238,11 +238,6 @@
                                                                 <div class="mb-3">
                                                                     <label>Prix</label>
                                                                     <input type="text" name="prix_vente" id="price" class="form-control">
-                                                                </div>
-
-                                                                <div class="mb-3">
-                                                                    <label>Quantite de stock</label>
-                                                                    <input type="number" name="stock" id="stock" class="form-control" required>
                                                                 </div>
                                                             
                                                             </div>

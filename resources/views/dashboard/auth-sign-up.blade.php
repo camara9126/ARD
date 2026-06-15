@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
-    <title>ARD GestioPro - Page inscription</title>
+    <title>SPI GestioPro - Page inscription</title>
     <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 10]>
@@ -127,32 +127,32 @@
                             <div class="card-block">
                                 <div class="row m-b-20">
                                     <div class="col-md-12">
-                                        <h3 class="text-center txt-primary">Sign up</h3>
+                                        <h3 class="text-center txt-primary">Inscription</h3>
                                     </div>
                                 </div>
                                 <div class="form-group form-primary">
                                     <input type="text" name="name" class="form-control">
                                     <span class="form-bar"></span>
-                                    <label class="float-label">Choose Username</label>
+                                    <label class="float-label">Nom utilisateur</label>
                                 </div>
                                 <div class="form-group form-primary">
                                     <input type="email" name="email" class="form-control">
                                     <span class="form-bar"></span>
-                                    <label class="float-label">Your Email Address</label>
+                                    <label class="float-label">Votre Email</label>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group form-primary">
                                             <input type="password" name="password" class="form-control">
                                             <span class="form-bar"></span>
-                                            <label class="float-label">Password</label>
+                                            <label class="float-label">Mot de Passe</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group form-primary">
                                             <input type="password" name="password_confirmation" class="form-control">
                                             <span class="form-bar"></span>
-                                            <label class="float-label">Confirm Password</label>
+                                            <label class="float-label">Confirmez le mot de passe</label>
                                         </div>
                                     </div>
                                 </div>
@@ -162,11 +162,11 @@
                                             <label>
                                                 <input type="checkbox" value="">
                                                 <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                                                <span class="text-inverse">I read and accept <a href="#">Terms &amp; Conditions.</a></span>
+                                                <span class="text-inverse">J'ai lu et j'accepte <a href="#">les conditions générales..</a></span>
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <!--<div class="col-md-12">
                                         <div class="checkbox-fade fade-in-primary">
                                             <label>
                                                 <input type="checkbox" value="">
@@ -174,18 +174,18 @@
                                                 <span class="text-inverse">Send me the <a href="#!">Newsletter</a> weekly.</span>
                                             </label>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Sign up now</button>
+                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Inscrivez-Vous maintenant</button>
                                     </div>
                                 </div>
                                 <hr/>
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <p class="text-inverse text-left m-b-0">Thank you.</p>
-                                        <p class="text-inverse text-left"><a href="index.html"><b>Back to website</b></a></p>
+                                        <p class="text-inverse text-left m-b-0">Merci.</p>
+                                        <p class="text-inverse text-left"><a href="index.html"><b>Retour au site web</b></a></p>
                                     </div>
                                     <div class="col-md-2">
                                         <img src="assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
@@ -203,47 +203,7 @@
     </section>
     <!-- Warning Section Starts -->
     <!-- Older IE warning message -->
-    <!--[if lt IE 10]>
-<div class="ie-warning">
-    <h1>Warning!!</h1>
-    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
-    <div class="iew-container">
-        <ul class="iew-download">
-            <li>
-                <a href="http://www.google.com/chrome/">
-                    <img src="assets/images/browser/chrome.png" alt="Chrome">
-                    <div>Chrome</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.mozilla.org/en-US/firefox/new/">
-                    <img src="assets/images/browser/firefox.png" alt="Firefox">
-                    <div>Firefox</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://www.opera.com">
-                    <img src="assets/images/browser/opera.png" alt="Opera">
-                    <div>Opera</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.apple.com/safari/">
-                    <img src="assets/images/browser/safari.png" alt="Safari">
-                    <div>Safari</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                    <img src="assets/images/browser/ie.png" alt="">
-                    <div>IE (9 & above)</div>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <p>Sorry for the inconvenience!</p>
-</div>
-<![endif]-->
+  
 <!-- Warning Section Ends -->
 @include('partials.footer')
 
