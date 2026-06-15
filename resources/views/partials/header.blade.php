@@ -129,7 +129,7 @@
                             </div>
                         </div>
                         <a href="#">
-                            <img class="img-fluid" src="assets/images/logo.png" alt="Theme-Logo" />
+                            <img class="img-fluid" src="assets/images/logo-b.png" alt="Theme-Logo" />
                         </a>
                         <a class="mobile-options waves-effect waves-light">
                             <i class="ti-more"></i>
@@ -298,7 +298,7 @@
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="pcoded-hasmenu ">
                                         <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
+                                            <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i><b>A</b></span>
                                             <span class="pcoded-mtext">Commercial</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
