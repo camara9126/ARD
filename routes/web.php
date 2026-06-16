@@ -97,4 +97,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/analyse', [RapportController::class, 'rapport'])->name('analyse');
 });
 
+
 require __DIR__.'/auth.php';
