@@ -5,9 +5,10 @@ use App\Http\Controllers\Api\UniteController;
 use Illuminate\Support\Facades\Route;
 
 // Route API produits
-Route::get('/produit', [ProduitController::class, 'index']);
-Route::get('/produit/{id}', [ProduitController::class, 'show']);
+Route::get('/produits', [ProduitController::class, 'index']);
+Route::get('/produits/{id}', [ProduitController::class, 'show']);
 
 // Route API unites
-Route::get('/unite', [UniteController::class, 'index']);
-Route::get('/unite/{id}', [UniteController::class, 'show']);
+Route::get('/unites', [UniteController::class, 'index']);
+Route::get('/unites/{id}', [UniteController::class, 'show']);
+
