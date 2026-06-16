@@ -2,6 +2,7 @@
 
 use App\Models\Achat;
 use App\Models\Depense;
+use App\Models\Fonds;
 use App\Models\Recette;
 use App\Models\Unite;
 use App\Models\User;
@@ -18,6 +19,8 @@ use Illuminate\Support\Carbon;
     $nbrUnites= Unite::where('nom', '!=', 'ARD')->latest()->get();
     // Nombre Utilisateurs
     $users= User::where('role', 'commercial')->latest()->get();
+    // Fonds
+    $fonds= Fonds::where('statut', 'recu')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');;
             
 ?>
     
@@ -66,7 +69,7 @@ use Illuminate\Support\Carbon;
                                         <!-- Statistique start -->
                                         <div class="row">
                                             <!-- Material statustic card start -->
-                                            <div class="col-xl-12 col-md-12">
+                                            <!--<div class="col-xl-12 col-md-12">
                                                 <div class="card mat-stat-card">
                                                     <div class="card-block">
                                                         <div class="row align-items-center b-b-default">
@@ -117,7 +120,7 @@ use Illuminate\Support\Carbon;
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <!--<div class="col-xl-2 col-md-12">
                                                 <div class="card mat-stat-card">
                                                     <div class="card-block">
@@ -149,22 +152,22 @@ use Illuminate\Support\Carbon;
                                                             <div class="col-sm-6 b-r-default p-b-20 p-t-20">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="far fa-user text-c-purple f-24"></i>
+                                                                        <i class="fas fa-money-bill-wave text-c-purple f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>{{ $users->count() }}</h5>
-                                                                        <p class="text-muted m-b-0">Utilisateurs</p>
+                                                                        <h5>{{ number_format($caMoisActuel, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">CA Global</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6 p-b-20 p-t-20">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-volume-down text-c-green f-24"></i>
+                                                                        <i class="fas fa-bag-shopping text-c-green f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>100%</h5>
-                                                                        <p class="text-muted m-b-0">Volume</p>
+                                                                        <h5>{{ number_format($achatGlobal, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Achat Marchandise</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -173,22 +176,22 @@ use Illuminate\Support\Carbon;
                                                             <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="far fa-file-alt text-c-red f-24"></i>
+                                                                        <i class="fas fa-arrow-down text-c-red f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>2000+</h5>
-                                                                        <p class="text-muted m-b-0">Files</p>
+                                                                        <h5>{{ number_format($depenseGlobal, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Depense Global</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6 p-b-20 p-t-20">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="far fa-envelope-open text-c-blue f-24"></i>
+                                                                        <i class="fas fa-chart-line text-c-blue f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>120</h5>
-                                                                        <p class="text-muted m-b-0">Mails</p>
+                                                                        <h5>{{ number_format($resultatGlobal, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Resultat Global</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -203,11 +206,11 @@ use Illuminate\Support\Carbon;
                                                             <div class="col-sm-6 b-r-default p-b-20 p-t-20">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-share-alt text-c-purple f-24"></i>
+                                                                        <i class="fas fa-users text-c-purple f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>1000</h5>
-                                                                        <p class="text-muted m-b-0">Share</p>
+                                                                        <h5>{{ $users->count() }}</h5>
+                                                                        <p class="text-muted m-b-0">Utilisateurs</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -217,13 +220,13 @@ use Illuminate\Support\Carbon;
                                                                         <i class="fas fa-sitemap text-c-green f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>600</h5>
-                                                                        <p class="text-muted m-b-0">Network</p>
+                                                                        <h5>{{ number_format($fonds, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Fonds/Partenaires</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row align-items-center">
+                                                        <!--<div class="row align-items-center">
                                                             <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
@@ -246,7 +249,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>

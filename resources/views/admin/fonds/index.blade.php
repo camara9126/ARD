@@ -33,10 +33,10 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Depenses</h5>
+                                                <h5>Fonds</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal" data-bs-target="#depenseModal">Nouveau depense →</a>
+                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal" data-bs-target="#fondModal">Nouveau fonds →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -68,14 +68,14 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @forelse($depenses as $d)
+                                                            @forelse($fonds as $d)
                                                                 <tr>
                                                                     <td>{{$d->reference}}</td>
-                                                                    <td>{{$d->date_depense}}</td>
+                                                                    <td>{{$d->date_fond}}</td>
                                                                     <td>{{$d->libelle}}</td>
                                                                     <td>{{number_format($d->montant, 0, ',',' ')}} XOF</td>
                                                                     <td>
-                                                                        <span class="badge bg-{{ $d->statut == 'payee' ? 'success' : 'danger' }}">
+                                                                        <span class="badge bg-{{ $d->statut == 'recu' ? 'success' : 'danger' }}">
                                                                             {{ ucfirst($d->statut) }}
                                                                         </span>
                                                                     </td>
@@ -89,16 +89,16 @@
                                                         </table>    
                                                     </div>
                                                     <div class="d-flex justify-content-center mt-4">
-                                                        {{$depenses->links()}}
+                                                        {{$fonds->links()}}
                                                     </div>
                                                     <!-- Modal paiement -->
-                                                    <div class="modal fade" id="depenseModal" tabindex="-1">
+                                                    <div class="modal fade" id="fondModal" tabindex="-1">
                                                         <div class="modal-dialog">
-                                                        <form action="{{ route('depense.store') }}" method="POST" class="contact-form">
+                                                        <form action="{{ route('fond.store') }}" method="POST" class="contact-form">
                                                                 @csrf
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title">Depense</h5>
+                                                                        <h5 class="modal-title">Fonds</h5>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                                     </div>
                                                                     <div class="modal-body">
@@ -106,8 +106,8 @@
 
                                                                             <!-- Libellé -->
                                                                             <div class="col-12 mb-3">
-                                                                                <label class="form-label">Libellé de la dépense</label>
-                                                                                <input type="text" name="libelle" class="form-control" placeholder="Ex : Achat materiels" required>
+                                                                                <label class="form-label">Libellé du fonds</label>
+                                                                                <input type="text" name="libelle" class="form-control" placeholder="Ex : Fonds investissement" required>
                                                                             </div>
 
                                                                             <!-- Montant -->
@@ -118,8 +118,8 @@
 
                                                                             <!-- Date -->
                                                                             <div class="col-6 mb-3">
-                                                                                <label class="form-label">Date de la dépense</label>
-                                                                                <input type="date" name="date_depense" class="form-control" value="{{ date('Y-m-d') }}" required>
+                                                                                <label class="form-label">Date du fonds</label>
+                                                                                <input type="date" name="date_fond" class="form-control" value="{{ date('Y-m-d') }}" required>
                                                                             </div>
 
                                                                             <!-- Mode de paiement -->
@@ -145,7 +145,7 @@
                                                                         <!-- Bouton -->
                                                                         <div class="text-end">
                                                                             <button type="submit" class="btn btn-primary">
-                                                                                💾 Enregistrer la dépense
+                                                                                💾 Enregistrer le fond
                                                                             </button>
                                                                         </div>
                                                                     </div>

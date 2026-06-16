@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepenseController;
+use App\Http\Controllers\FondController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\MouvementStockController;
 use App\Http\Controllers\PaiementController;
@@ -64,6 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/admin', AdminController::class);
     Route::get('/unites', [AdminController::class, 'unites'])->name('admin.unites');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+
+    Route::resource('/fond', FondController::class);
 });
 
 
@@ -96,6 +99,12 @@ Route::middleware('auth')->group(function () {
     // Analyse
     Route::get('/analyse', [RapportController::class, 'rapport'])->name('analyse');
 });
+
+// Route Support & Assistance
+Route::get('/support', function() {
+
+    return view('assistance');
+})->middleware(['auth', 'verified'])->name('assistance');
 
 
 require __DIR__.'/auth.php';
