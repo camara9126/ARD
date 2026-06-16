@@ -55,7 +55,7 @@ class UniteController extends Controller
             'nom' => $request->nom,
             'adresse' => $request->adresse,
             'contact' => $request->contact,
-            'logo' =>  $request->contact,
+            'logo' =>  $path ?? null,
          ]);
 
          $user->update([
