@@ -11,7 +11,7 @@ class UniteController extends Controller
      public function index()
     {
         return response()->json(
-            Unite::with('user')->get()
+            Unite::with('user')->where('nom', '!=', 'ARD')->latest()->get()
         );
     }
 
