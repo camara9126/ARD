@@ -483,8 +483,9 @@
                                                         <div class="card-icon icon-income">
                                                             <i class="fas fa-arrow-up"></i>
                                                         </div>
+                                                        <div class="card-value" id="total-revenus">XOF 124,850.00</div>
                                                     </div>
-                                                    <div class="card-value" id="total-revenus">XOF 124,850.00</div>
+                                                    
                                                     <div class="card-trend trend-up">
                                                         <!--<i class="fas fa-arrow-up"></i>
                                                         <span id="revenus-trend">+12% vs mois précédent</span>-->
