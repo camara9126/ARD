@@ -350,7 +350,7 @@
         
         .card-value {
             font-size: 32px;
-            font-weight: 700;
+            font-weight: 300;
             margin-bottom: 10px;
         }
         
