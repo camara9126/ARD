@@ -18,7 +18,8 @@ class UniteController extends Controller
     public function show($id)
     {
         return response()->json(
-            Unite::with('user')->findOrFail($id)
+        Produit::with('unite')->where('unite_id', $id)->findOrFail()
+
         );
     }
 }
