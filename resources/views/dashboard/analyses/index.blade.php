@@ -349,7 +349,7 @@
         }
         
         .card-value {
-            font-size: 10px;
+            font-size: 20px;
             font-weight: 300;
             margin-bottom: 10px;
         }
