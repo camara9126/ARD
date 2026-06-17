@@ -18,7 +18,7 @@ class ProduitController extends Controller
     public function show($id)
     {
         return response()->json(
-            Produit::with('unite')->where('unite_id', $id)->findOrFail()
+            Produit::with('unite')->where('unite_id', $id)->get()
         );
     }
 }
