@@ -387,11 +387,11 @@
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
                     <h1>CONTENT DE VOUS REVOIR !</h1>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut provident dolorem, error</p>
+                    <p>Bienvenue sur le portail ARD DIGITAL CENTER. Contacter le support technique en cas de besoin: contact@bcmgroupe.com / +221 78 752 40 26</p>
                 </div>
                 <div class="overlay-panel overlay-right">
                     <h1>CONTENT DE VOUS REVOIR !</h1>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut provident dolorem, error</p>
+                    <p>Bienvenue sur le portail ARD DIGITAL CENTER. Contacter le support technique en cas de besoin: contact@bcmgroupe.com / +221 78 752 40 26</p>
                 </div>
             </div>
         </div>
