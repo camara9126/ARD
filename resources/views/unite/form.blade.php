@@ -107,10 +107,9 @@
                                                 <li class="breadcrumb-item">
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">Form Components</a>
+                                                <li class="breadcrumb-item"><a href="#!">Formulaire Unite</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">Basic Form Inputs</a>
-                                                </li>
+                                                
                                             </ul>
                                         </div>
                                     </div>
