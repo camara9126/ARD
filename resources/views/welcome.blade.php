@@ -356,7 +356,7 @@
                     <i class="fas fa-lock"></i>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="password_comfirmation" placeholder="Confirmez le mot de passe" required>
+                    <input type="password" name="password_confirmation" placeholder="Confirmez le mot de passe" required>
                     <i class="fas fa-lock"></i>
                 </div>
                 <button type="submit" class="btn-main">S'inscrire</button>
