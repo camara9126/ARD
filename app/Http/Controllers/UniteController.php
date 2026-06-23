@@ -56,6 +56,7 @@ class UniteController extends Controller
             'adresse' => $request->adresse,
             'contact' => $request->contact,
             'logo' =>  $path ?? null,
+            'statut' => 0,
          ]);
 
          $user->update([
@@ -133,7 +134,16 @@ class UniteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $unite= Unite::findorFail($id);
+
+        if($unite->statut) {
+            $unite->update(['statut' => false]);
+            return redirect()->back()->with('success', 'Unite désactivé');
+        }
+        else {
+            $unite->update(['statut' => true]);
+            return redirect()->back()->with('success', 'Unite activé');
+        }
     }
 
 

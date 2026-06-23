@@ -13,6 +13,9 @@ use Illuminate\Support\Carbon;
     $achatGlobal = Achat::where('statut', 'recu')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
     $depenseGlobal = Depense::where('statut', 'payee')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
 
+    // Deopense Direction
+    $depenseDirection = Depense::where('unite_id', 5)->where('statut', 'payee')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+
     $resultatGlobal = $achatGlobal - $depenseGlobal;
 
     // Nombre d'unite
@@ -156,7 +159,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
                                                                         <h5>{{ number_format($caMoisActuel, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">CA Global</p>
+                                                                        <p class="text-muted m-b-0">CA Global (Unite)</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -167,7 +170,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
                                                                         <h5>{{ number_format($achatGlobal, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">Achat Marchandise</p>
+                                                                        <p class="text-muted m-b-0">Achat Marchandise (Unite)</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -180,7 +183,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
                                                                         <h5>{{ number_format($depenseGlobal, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">Depense Global</p>
+                                                                        <p class="text-muted m-b-0">Depense (Unite)</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -191,7 +194,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
                                                                         <h5>{{ number_format($resultatGlobal, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">Resultat Global</p>
+                                                                        <p class="text-muted m-b-0">Resultat Global (Unite)</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -226,8 +229,19 @@ use Illuminate\Support\Carbon;
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!--<div class="row align-items-center">
+                                                        <div class="row align-items-center">
                                                             <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
+                                                                <div class="row align-items-center text-center">
+                                                                    <div class="col-4 p-r-0">
+                                                                        <i class="fas fa-arrow-down text-c-red f-24"></i>
+                                                                    </div>
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5>{{ number_format($depenseDirection, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Depense (Direction)</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--<div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-signal text-c-red f-24"></i>
@@ -248,8 +262,8 @@ use Illuminate\Support\Carbon;
                                                                         <p class="text-muted m-b-0">Connections</p>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>-->
+                                                            </div>-->
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

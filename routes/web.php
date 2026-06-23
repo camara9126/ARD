@@ -44,10 +44,14 @@ Route::get('/dashboard', function () {
 
         return redirect()->route('admin.index');
 
+    } elseif($user->unite->statut == 0) {
+
+        return view('unite.attenteValidation');
+
     } else {
 
         return view('dashboard.index', compact('mouvements', 'factures'));
-    }    
+    }
     
 })->middleware(['auth', 'verified'])->name('dashboard');
 

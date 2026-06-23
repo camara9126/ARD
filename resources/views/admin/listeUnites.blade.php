@@ -66,7 +66,7 @@
                                                                 <th><b>Adresse</b></th>
                                                                 <th><b>Date de creation</b></th>
                                                                 <th><b>Statut</b></th>
-                                                                <!--<th><b>Action</b></th>-->
+                                                                <th><b>Action</b></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -84,6 +84,25 @@
                                                                         <span class="badge bg-success">Actif</span>
                                                                     @else
                                                                         <span class="badge bg-danger">Inactif</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if($u->statut)
+                                                                        <form action="{{route('unite.destroy', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous desactiver cette unite ?')">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="text-danger" title="desactiver">
+                                                                                <i class="fas fa-toggle-off" aria-hidden="true"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    @else
+                                                                        <form action="{{route('unite.destroy', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous activer cette unite ?')">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="text-success" title="activer">
+                                                                                <i class="fas fa-toggle-on" aria-hidden="true"></i>
+                                                                            </button>
+                                                                        </form>
                                                                     @endif
                                                                 </td>
                                                             </tr>
