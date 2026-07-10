@@ -42,6 +42,7 @@ class FournisseurController extends Controller
             'telephone' => $request->telephone,
             'email' => $request->email,
             'adresse' => $request->adresse,
+            'unite_id' => request()->user()->unite_id,
         ]);
 
         return redirect()->back()->with('success', 'Fournisseur ajouté avec succès');

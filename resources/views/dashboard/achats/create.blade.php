@@ -47,6 +47,15 @@
                                                 </div>
                                             </div>
                                             <div class="card-block table-border-style">
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger text-center">
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success" role="alert">
                                                         {{ Session::get('success') }}
@@ -212,6 +221,7 @@
     </div>
 
   
+    <!-- Bouton Ajouter ligne -->
 <script>
 
     let index = 1;
@@ -222,22 +232,16 @@
         let row = `
         <tr>
             <td>
-                <select name="produits[${index}][produit_id]" class="form-control produit-select">
-                    <option value="">Choisir</option>
-                    @foreach($produits as $produit)
-                        <option value="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}">
-                            {{ $produit->nom }}
-                        </option>
-                    @endforeach
-                </select>
+                <input type="text" name="designation[${index}][nom]" class="form-control placeholder="nouveau produit" produit-select">
+                
             </td>
 
             <td>
-                <input type="number" name="produits[${index}][prix_vente]" class="form-control prix_vente">
+                <input type="number" name="designation[${index}][prix]" class="form-control prix_vente">
             </td>
 
             <td>
-                <input type="number" name="produits[${index}][quantite]" class="form-control quantite" value="1">
+                <input type="number" name="designation[${index}][quantite]" class="form-control quantite" value="1">
             </td>
 
             <td>
@@ -331,6 +335,8 @@
     });
 </script>
 
+
+<!-- Bouton ajouter produit rechercher -->
 <script>
     function selectproduit(id, nom, prix_vente) {
         console.log("Produit sélectionné :", nom);

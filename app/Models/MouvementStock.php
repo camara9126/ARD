@@ -14,6 +14,7 @@ class MouvementStock extends Model
         'reference',
         'note',
         'user_id',
+        'designation'
     ];
 
     public function produit()

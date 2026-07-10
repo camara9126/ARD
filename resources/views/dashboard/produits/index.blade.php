@@ -150,14 +150,30 @@
                                                                     <input type="text" name="nom" class="form-control" required>
                                                                 </div>
                                                             
-                                                                <div class="mb-3">
-                                                                    <label>Categorie</label>
-                                                                    <select name="produit_id" class="form-control">
-                                                                        @foreach($categorie as $m)
-                                                                            <option value="{{ $m->id }}">{{ $m->nom }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>                                                    
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label>Categorie</label>
+                                                                            <select name="categorie_id" class="form-control">
+                                                                                <option value="">-- Selectionner une categorie --</option>
+                                                                                @foreach($categorie as $m)
+                                                                                    <option value="{{ $m->id }}">{{ $m->nom }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>  
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label>Fournisseur</label>
+                                                                            <select name="fournisseur_id" class="form-control">
+                                                                                <option value="">-- Selectionner un fournisseur --</option>
+                                                                                @foreach($fournisseur as $f)
+                                                                                    <option value="{{ $f->id }}">{{ $f->nom }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div> 
+                                                                    </div>
+                                                                </div>                                                  
 
                                                                 <div class="row">
                                                                     <div class="col-md-6">
@@ -227,14 +243,29 @@
                                                                     <input type="text" name="nom" id="name" class="form-control" required>
                                                                 </div>
 
-                                                                <div class="mb-3">
-                                                                    <label>Categorie</label>
-                                                                    <select name="categorie_id" class="form-control">
-                                                                        @foreach($categorie as $m)
-                                                                            <option value="{{ $m->id }}">{{ $m->nom }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>  
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label>Categorie</label>
+                                                                            <select name="categorie_id" class="form-control">
+                                                                                @foreach($categorie as $m)
+                                                                                    <option value="{{ $m->id }}">{{ $m->nom }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>  
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label>Fournisseur</label>
+                                                                            <select name="fournisseur_id" class="form-control">
+                                                                                @foreach($fournisseur as $f)
+                                                                                    <option value="{{ $f->id }}">{{ $f->nom }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div> 
+                                                                    </div>
+                                                                </div>
+                                                                
                                                                 <div class="mb-3">
                                                                     <label>Prix</label>
                                                                     <input type="text" name="prix_vente" id="price" class="form-control">

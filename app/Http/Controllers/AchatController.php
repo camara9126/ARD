@@ -46,6 +46,10 @@ class AchatController extends Controller
         $request->validate([
             'fournisseur_id' => 'exists:fournisseurs,id',
             'produits' => 'required|array',
+            'designation',
+            'designation.*.nom',
+            'designation.*.prix',
+            'designation.*.quantite',
             'produits.*.produit_id' => 'required',
             'produits.*.quantite' => 'required|numeric|min:1',
             'produits.*.prix_vente' => 'required|numeric|min:0',
@@ -53,7 +57,7 @@ class AchatController extends Controller
         ]);
 
          DB::beginTransaction();
-    
+    //dd($request);
         try {
 
             // Création du bon de commande
@@ -68,7 +72,46 @@ class AchatController extends Controller
 
             $total = 0;
 
+
+            // Enregistrement du nouveau produit (designation) dans le AchatDetails
+            if($request->designation) {
+
+                foreach ($request->designation as $item) {
+                    // Récupération de l'unite
+                    $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
+
+                    $ligneTotal = $request->quantite * $request->prix;
+
+                    AchatDetail::create([
+                        'unite_id' => $unite->id,
+                        'achat_id' => $achat->id,
+                        'produit_id' => null,
+                        'designation' => $item['nom'],
+                        'quantite' => $item['quantite'],
+                        'prix_unitaire' => $item['prix'],
+                        'total' => $ligneTotal,
+                    ]);
+
+                    $total += $ligneTotal;
+
+                    // Mise a jour du stock
+                    MouvementStock::create([
+                        'unite_id' => $unite->id,
+                        'user_id' => request()->user()->id,
+                        'produit_id' => null,
+                        'designation' => $item['nom'],
+                        'type' => 'entree',
+                        'quantite' => $item['quantite'],
+                        'reference' => 'MVT-' . now()->timestamp,
+                    ]);
+                }
+                
+            }
+
             foreach ($request->produits as $item) {
+
+               
+
 
                 // Récupération de l'produit original 
                 $produit = produit::where('id', $item['produit_id'])->lockForUpdate()->first();
@@ -181,5 +224,14 @@ class AchatController extends Controller
         $achat->delete();
 
         return back()->with('success', 'Achat supprimé');
+    }
+
+    private function generateCode(int $uniteId): string
+    {
+        $lastProduit = Produit::where('unite_id', $uniteId)->orderBy('id', 'desc')->first();
+
+        $number = $lastProduit ? intval(substr($lastProduit->code, -5)) + 1 : 1;
+
+        return 'PRD-' . str_pad($number, 5, '0', STR_PAD_LEFT);
     }
 }

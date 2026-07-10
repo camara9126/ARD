@@ -250,7 +250,7 @@
                     @endphp
                     <tr>
                         <td>{{ $item->quantite }}</td>
-                        <td style="text-align: left;">{{ $item->produit->nom }}</td>
+                        <td style="text-align: left;">{{ $item->produit->nom ?? $item->designation }}</td>
                         <td>{{ number_format($item->prix_unitaire, 0, ',', ' ') }}</td>
                         <td>{{ number_format($montant, 0, ',', ' ') }}</td>
                     </tr>

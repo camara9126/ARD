@@ -22,7 +22,7 @@ class VenteController extends Controller
      */
     public function index()
     {
-        $ventes = Vente::with('client')->where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(5); 
+        $ventes = Vente::with('client')->where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(10); 
 
         return view('dashboard.ventes.index', compact('ventes'));
     }

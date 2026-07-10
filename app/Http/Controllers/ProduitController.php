@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categorie;
+use App\Models\Fournisseur;
 use App\Models\MouvementStock;
 use App\Models\Produit;
 use Illuminate\Http\Request;
@@ -15,8 +16,9 @@ class ProduitController extends Controller
     public function index()
     {
         $produits= Produit::with('fournisseur')->where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(10);
-        $categorie= Categorie::latest()->get();
-        return view('dashboard.produits.index', compact('produits', 'categorie'));
+        $categorie= Categorie::where('unite_id', request()->user()->unite_id)->latest()->get();
+        $fournisseur = Fournisseur::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->paginate(10);
+        return view('dashboard.produits.index', compact('produits', 'categorie','fournisseur'));
     }
 
     /**
@@ -34,18 +36,37 @@ class ProduitController extends Controller
     {
         $request->validate([
             'nom' => 'required|string|max:255',
-            'fournisseur_id' => 'exists:fournisseurs,id',
-            'categorie_id' => 'exists:categories,id',
-            'prix_achat' => 'numeric|min:0',
+            'fournisseur_id',
+            'categorie_id',
+            'prix_achat',
             'prix_vente' => 'required|numeric|min:0',
             'stock_min' => 'integer|min:0',
             'stock' => 'integer|min:1',
+            'categorie',
+            'fournisseur',
         ]);
+
+        // Creation de categorie et ou fournisseur
+        if($request->categorie) {
+            
+            $categorie= Categorie::create([
+                'nom' => $request->categorie
+            ]);
+
+        }
+
+        //Creation de fournisseur
+        if($request->fournisseur) {
+            
+            $fournisseur= Fournisseur::create([
+                'nom' => $request->fournisseur
+            ]);
+        }
 
         $produit= Produit::create([
             'unite_id' => $request->user()->unite_id,
-            'fournisseur_id' => $request->fournisseur_id ?? null,
-            'categorie_id' => $request->categorie_id ?? null,
+            'fournisseur_id' => $request->fournisseur_id ?? $fournisseur->id ?? null,
+            'categorie_id' => $request->categorie_id ?? $categorie->id ?? null,
             'nom' => $request->nom,
             'code' => $this->generateCode($request->user()->unite_id),
             'prix_achat' => $request->prix_achat ?? 0,

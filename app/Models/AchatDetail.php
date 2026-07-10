@@ -13,6 +13,7 @@ class AchatDetail extends Model
         'quantite',
         'prix_unitaire',
         'total',
+        'designation'
     ];
 
     public function produit() {
