@@ -47,6 +47,16 @@
                                                 </div>
                                             </div>
                                             <div class="card-block table-border-style">
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger text-center">
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
@@ -75,23 +85,23 @@
                                                                 <td>{{$c->email ?? 'Vide'}}</td>
                                                                 <td>{{$c->adresse ?? 'Vide'}}</td>
                                                                 <td>
-                                                                <div class="row">
-                                                                    <div class="col-4">
-                                                                        <a href="" class="action-btn text-warning" data-bs-toggle="modal" data-id="{{ $c->id }}" data-name="{{ $c->nom }}" data-phone="{{ $c->telephone }}" data-email="{{ $c->email }}" data-adress="{{$c->adresse }}" data-bs-target="#clientEditModal" title="Modifier">
-                                                                            <i class="fas fa-edit"></i>
-                                                                        </a>
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <a href="" class="action-btn text-warning" data-bs-toggle="modal" data-id="{{ $c->id }}" data-name="{{ $c->nom }}" data-phone="{{ $c->telephone }}" data-email="{{ $c->email }}" data-adress="{{$c->adresse }}" data-bs-target="#clientEditModal" title="Modifier">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <form action="{{route('client.destroy', $c->id)}}" type="button" method="post" onsubmit="return confirm('Supprimer ?')">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                                <button type="submit" class="text-danger" title="Supprimer">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="col-4">
-                                                                         <form action="{{route('client.destroy', $c->id)}}" type="button" method="post" onsubmit="return confirm('Supprimer ?')">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                            <button type="submit" class="text-danger" title="Supprimer">
-                                                                                <i class="fa fa-trash"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
+                                                                </td>
                                                             </tr>
                                                             @empty
                                                             <tr>

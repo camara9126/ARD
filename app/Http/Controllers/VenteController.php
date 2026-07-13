@@ -224,7 +224,15 @@ class VenteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $vente = Vente::with('client', 'items')->where('unite_id', request()->user()->unite_id)->findOrFail($id); 
+
+        $clients = Client::where('unite_id', request()->user()->unite_id)->latest()->get();
+
+        $unite= request()->user()->unite;
+        
+        $produits = Produit::where( 'unite_id', request()->user()->unite_id)->where('statut', true)->latest()->get();
+
+        return view('dashboard.ventes.edit', compact('clients', 'produits', 'unite', 'vente'));
     }
 
     /**
@@ -232,7 +240,58 @@ class VenteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'client_id' ,
+            'produits' => 'required|array',
+            'produits.*.produit_id' => 'required',
+            'produits.*.quantite' => 'required|numeric|min:1',
+            'produits.*.prix_vente' => 'numeric|min:0',
+        ]);
+
+        $vente= Vente::with('client', 'items')->findOrFail($id);
+
+        $unite= Unite::Where('id', request()->user()->unite_id)->first(); // Recuperation de la TVA de l'unite
+
+        // Suppressionm des anciens details vente
+        $vente->items()->delete();
+
+        $total = 0;
+        $total_tva = 0;
+        $total_ttc = 0;
+        //dd($request->produits);
+
+        // Recreer les nouveaux details
+        foreach ($request->produits as $item) {
+
+            $ligneTotal = $item['quantite'] * $item['prix_vente'];
+
+            VenteItem::create([
+                'unite_id' => $request->user()->unite_id,
+                'vente_id' => $vente->id,
+                'produit_id' => $item['produit_id'],
+                'quantite' => $item['quantite'],
+                'prix_unitaire' => $item['prix_vente'],
+                'taux_tva' => $unite->taux_tva,
+                'montant_tva' => ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ),
+                'total_ttc' => ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 )),
+                'total' => $item['quantite'] * $item['prix_vente'],
+            ]);
+
+            $total += $ligneTotal;
+            $total_tva += ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 );
+            $total_ttc += ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ));
+        }
+
+        // Mise à jour du total
+        $vente->update([
+            'client_id' => $request->client_id,
+            'total' => $total,
+            'total_tva' => $total_tva,
+            'total_ttc' => $total_ttc,
+            'date' => now()
+        ]);
+
+        return redirect()->route('vente.index')->with('success', 'Vente modifié avec succès');
     }
 
     /**

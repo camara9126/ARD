@@ -258,6 +258,13 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
+                                            <li class="">
+                                                <a href="{{ route('chargefixe.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Charges Fixe</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>     
@@ -270,7 +277,7 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                </ul>
+                                </ul>-->
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="">
                                         <a href="{{ route('vente.facture') }}" class="waves-effect waves-dark">
@@ -279,7 +286,7 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                </ul> -->
+                                </ul> 
                         
                             @elseif(Auth::user()->role == 'admin')
                                 <ul class="pcoded-item pcoded-left-item">

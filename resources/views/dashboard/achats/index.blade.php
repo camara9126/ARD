@@ -47,6 +47,16 @@
                                                 </div>
                                             </div>
                                             <div class="card-block table-border-style">
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger text-center">
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+                                                
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
@@ -66,7 +76,7 @@
                                                                 <th>Total</th>
                                                                 <th>Statut</th>
                                                                 <th>Facture</th>
-                                                                <th>Details</th>
+                                                                <th>Action</th>
                                                             </tr>
                                                         </thead>
 

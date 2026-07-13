@@ -74,43 +74,45 @@
                                                         </thead>
                                                         <tbody>
                                                             @forelse($factures as $v)
-                                                            <tr>
-                                                                <td><strong>{{$v->reference}}</strong></td>
-                                                                <td>{{$v->client->nom ?? 'Vide'}}</td>
-                                                                <td>{{number_format($v->total_tva, 0, ',',' ')}} XOF</td>
-                                                                <td>{{number_format($v->total_ttc, 0, ',',' ')}} XOF</td>
-                                                                <td>{{number_format($v->montant_paye, 0, ',', ' ')}} XOF</td>
-                                                                <td>{{number_format($v->montant_restant, 0, ',',' ')}} XOF</td>
-                                                                <td>{{$v->created_at->format('d/m/y')}}</td>
-                                                                <td>
-                                                                    @if($v->statut == 'payee')
-                                                                        <span class="status-badge badge bg-success">{{$v->statut}}</span>
-                                                                    @elseif($v->statut == 'partielle')
-                                                                        <span class="status-badge badge-pending">{{$v->statut}}</span>
-                                                                    @else
-                                                                        <span class="status-badge badge bg-danger">{{$v->statut}}</span>
-                                                                    @endif
-                                                                </td>
-                                                                <!--<td>
-                                                                    @if($v->montant_restant == 0)
-                                                                        <button type="button" class="status-badge badge bg-secondary">
-                                                                            Payée
+                                                            @if($v->montant_restant == 0)
+                                                                <tr>
+                                                                    <td><strong>{{$v->reference}}</strong></td>
+                                                                    <td>{{$v->client->nom ?? 'Vide'}}</td>
+                                                                    <td>{{number_format($v->total_tva, 0, ',',' ')}} XOF</td>
+                                                                    <td>{{number_format($v->total_ttc, 0, ',',' ')}} XOF</td>
+                                                                    <td>{{number_format($v->montant_paye, 0, ',', ' ')}} XOF</td>
+                                                                    <td>{{number_format($v->montant_restant, 0, ',',' ')}} XOF</td>
+                                                                    <td>{{$v->created_at->format('d/m/y')}}</td>
+                                                                    <td>
+                                                                        @if($v->statut == 'payee')
+                                                                            <span class="status-badge badge bg-success">{{$v->statut}}</span>
+                                                                        @elseif($v->statut == 'partielle')
+                                                                            <span class="status-badge badge-pending">{{$v->statut}}</span>
+                                                                        @else
+                                                                            <span class="status-badge badge bg-danger">{{$v->statut}}</span>
+                                                                        @endif
+                                                                    </td>
+                                                                    <!--<td>
+                                                                        @if($v->montant_restant == 0)
+                                                                            <button type="button" class="status-badge badge bg-secondary">
+                                                                                Payée
+                                                                            </button>
+                                                                        @else
+                                                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-id="{{$v->id}}" data-bs-target="#paiementModal">Payer
                                                                         </button>
-                                                                    @else
-                                                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-id="{{$v->id}}" data-bs-target="#paiementModal">Payer
-                                                                    </button>
-                                                                    @endif
-                                                                </td>-->
-                                                                <td>
-                                                                    <div class="row">
-                                                                        <div class="col-6">
-                                                                            <a href="{{route('vente.show', $v->id)}}" class="action-btn text-primary mr-2" title="afficher la facture">
-                                                                                <i class="fas fa-file-invoice"></i>
-                                                                            </a>
-                                                                        </div>  
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                                        @endif
+                                                                    </td>-->
+                                                                    <td>
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <a href="{{route('vente.show', $v->id)}}" class="action-btn text-primary mr-2" title="afficher la facture">
+                                                                                    <i class="fas fa-file-invoice"></i>
+                                                                                </a>
+                                                                            </div>  
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
                                                             @empty
                                                                 <tr>
                                                                     <td colspan="7" align="center">Donnee vide !</td>

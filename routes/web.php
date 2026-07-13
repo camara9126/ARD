@@ -3,6 +3,7 @@
 use App\Http\Controllers\AchatController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\ChargeFixeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\FondController;
@@ -100,6 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('paiement', PaiementController::class);
     Route::resource('/recette', RecetteController::class);
     Route::resource('/depense', DepenseController::class);
+    Route::resource('/chargefixe', ChargeFixeController::class);
     // Analyse
     Route::get('/analyse', [RapportController::class, 'rapport'])->name('analyse');
 });

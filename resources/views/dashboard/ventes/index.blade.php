@@ -47,6 +47,16 @@
                                                 </div>
                                             </div>
                                             <div class="card-block table-border-style">
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger text-center">
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+                                                
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
@@ -61,14 +71,14 @@
                                                          <thead>
                                                             <tr>
                                                                 <th>Reference</th>
-                                                                <th>Client</th>
+                                                                <!-- <th>Client</th> -->
                                                                 <th>Montant TVA</th>
                                                                 <th>Montant Total</th>
                                                                 <th>Montant Payer</th>
                                                                 <th>Montant Restant</th>
                                                                 <th>Date</th>
                                                                 <th>Statut</th>
-                                                                <!--<th>Actions</th>-->
+                                                                <th>Actions</th>
                                                                 <!--<th>Facture</th>-->
                                                             </tr>
                                                         </thead>
@@ -76,7 +86,7 @@
                                                             @forelse($ventes as $v)
                                                             <tr>
                                                                 <td><strong>{{$v->reference}}</strong></td>
-                                                                <td>{{$v->client->nom ?? 'Vide'}}</td>
+                                                                <!-- <td>{{$v->client->nom ?? 'Vide'}}</td> -->
                                                                 <td>{{number_format($v->total_tva, 0, ',',' ')}} XOF</td>
                                                                 <td>{{number_format($v->total_ttc, 0, ',',' ')}} XOF</td>
                                                                 <td>{{number_format($v->montant_paye, 0, ',', ' ')}} XOF</td>
@@ -86,12 +96,12 @@
                                                                     @if($v->statut == 'payee')
                                                                         <span class="status-badge badge bg-success">{{$v->statut}}</span>
                                                                     @elseif($v->statut == 'partielle')
-                                                                        <span class="status-badge badge-pending">{{$v->statut}}</span>
+                                                                        <span class="status-badge badge bg-warning">{{$v->statut}}</span>
                                                                     @else
                                                                         <span class="status-badge badge bg-danger">{{$v->statut}}</span>
                                                                     @endif
                                                                 </td>
-                                                                <!--<td>
+                                                                <td>
                                                                     @if($v->montant_restant == 0)
                                                                         <button type="button" class="status-badge badge bg-secondary">
                                                                             Payée
@@ -100,21 +110,15 @@
                                                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-id="{{$v->id}}" data-bs-target="#paiementModal">Payer
                                                                     </button>
                                                                     @endif
-                                                                </td>-->
-                                                                <!--<td>
-                                                                    <div class="row">
-                                                                        <div class="col-6">
-                                                                            <a href="{{route('vente.show', $v->id)}}" class="action-btn text-warning mr-2" title="afficher la facture">
-                                                                                <i class="fas fa-eye"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="col-6">
-                                                                            <a href="{{route('vente.edit', $v->id)}}" class="action-btn text-primary ml-2" title="telecharger la facture">
-                                                                                <i class="fas fa-file-invoice"></i>
-                                                                            </a>
-                                                                        </div>      
-                                                                    </div>
-                                                                </td>-->
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{route('vente.edit', $v->id)}}" class="action-btn text-warning mr-2" title="modifier la vente">
+                                                                        <i class="fas fa-edit"></i>
+                                                                    </a>
+                                                                    <!-- <a href="{{route('vente.edit', $v->id)}}" class="action-btn text-primary ml-2" title="telecharger la facture">
+                                                                        <i class="fas fa-file-invoice"></i>
+                                                                    </a> -->
+                                                                </td>
                                                             </tr>
                                                             @empty
                                                                 <tr>

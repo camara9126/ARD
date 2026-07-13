@@ -34,7 +34,8 @@ class DepenseController extends Controller
             'libelle' => 'required',
             'montant' => 'required|numeric|min:0',
             'date_depense' => 'required|date',
-            'mode_paiement' => 'required'
+            'mode_paiement' => 'required',
+            'description',
         ]);
 
         Depense::create([
@@ -42,7 +43,7 @@ class DepenseController extends Controller
             'user_id' => $request->user()->id,
             'reference' => 'DEP-' . now()->timestamp,
             'libelle' => $request->libelle,
-            'description' => $request->description,
+            'description' => $request->description ?? null,
             'montant' => $request->montant,
             'date_depense' => $request->date_depense,
             'mode_paiement' => $request->mode_paiement,
