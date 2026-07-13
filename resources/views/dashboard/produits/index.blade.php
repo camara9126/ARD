@@ -48,11 +48,11 @@
                                             </div>
                                             <div class="card-block table-border-style">
                                                 @if(Session::has('success'))
-                                                    <div class="alert alert-success" role="alert">
+                                                    <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
                                                     </div>
                                                 @elseif(Session::has('danger'))
-                                                    <div class="alert alert-danger" role="alert">
+                                                    <div class="alert alert-danger text-center" role="alert">
                                                         {{ Session::get('danger') }}
                                                     </div>
                                                 @endif
@@ -149,7 +149,22 @@
                                                                     <label>Nom produit</label>
                                                                     <input type="text" name="nom" class="form-control" required>
                                                                 </div>
-                                                            
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">
+                                                                            <label>Prix d'achat</label>
+                                                                            <input type="text" name="prix_achat" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">
+                                                                            <label>Prix vente</label>
+                                                                            <input type="text" name="prix_vente" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                                 <div class="row">
                                                                     <div class="col-6">
                                                                         <div class="mb-3">
@@ -194,21 +209,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Prix d'achat</label>
-                                                                            <input type="text" name="prix_achat" class="form-control">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Prix vente</label>
-                                                                            <input type="text" name="prix_vente" class="form-control">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
                                                             </div>
 
                                                             <div class="modal-footer">
@@ -248,6 +248,7 @@
                                                                         <div class="mb-3">
                                                                             <label>Categorie</label>
                                                                             <select name="categorie_id" class="form-control">
+                                                                                    <option value="">Categorie</option>
                                                                                 @foreach($categorie as $m)
                                                                                     <option value="{{ $m->id }}">{{ $m->nom }}</option>
                                                                                 @endforeach
@@ -258,6 +259,7 @@
                                                                         <div class="mb-3">
                                                                             <label>Fournisseur</label>
                                                                             <select name="fournisseur_id" class="form-control">
+                                                                                    <option value="">Fournisseur</option>
                                                                                 @foreach($fournisseur as $f)
                                                                                     <option value="{{ $f->id }}">{{ $f->nom }}</option>
                                                                                 @endforeach

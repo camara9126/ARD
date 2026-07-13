@@ -256,7 +256,7 @@ use Illuminate\Support\Carbon;
                                                                                 </div>
                                                                             </div>
                                                                         </td>
-                                                                        <td>{{$m->produit->nom}}</td>
+                                                                        <td>{{$m->produit->nom ?? $m->designation}}</td>
                                                                         <td>{{$m->type}}</td>
                                                                         <td><strong>{{$m->quantite}}</strong></td>
                                                                         <td>{{$m->created_at->format('d/m/Y')}}</td>

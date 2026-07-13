@@ -194,15 +194,17 @@
             @if($unite->logo)
                 <img src="{{ public_path('storage/'.$unite->logo) }}" style="width: 120px; height: auto; margin-bottom: 10px;" alt="Logo">
             @endif
+
             <div class="unite-name">{{ strtoupper($unite->nom) }}</div>
+
             @if($unite->slogan)
                 <div class="unite-slogan">{{ $unite->slogan }}</div>
             @endif
             <div class="unite-infos">
-                NINEA: {{ $unite->ninea ?? '------------' }} | 
-                RCCM: {{ $unite->rccm ?? '------------' }}<br>
-                Tél: {{ $unite->telephone ?? '------------' }} | 
-                Fax: {{ $unite->fax ?? '' }}<br>
+                <!-- NINEA: {{ $unite->ninea ?? '------------' }} |  -->
+                <!-- RCCM: {{ $unite->rccm ?? '------------' }}<br> -->
+                Tél: {{ $unite->contact ?? '------------' }} <br> 
+                <!-- Fax: {{ $unite->fax ?? '' }} -->
                 {{ $unite->adresse ?? '------------' }}
             </div>
         </div>

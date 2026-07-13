@@ -48,11 +48,11 @@
                                             </div>
                                             <div class="card-block table-border-style">
                                                 @if(Session::has('success'))
-                                                    <div class="alert alert-success" role="alert">
+                                                    <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
                                                     </div>
                                                 @elseif(Session::has('danger'))
-                                                    <div class="alert alert-danger" role="alert">
+                                                    <div class="alert alert-danger text-center" role="alert">
                                                         {{ Session::get('danger') }}
                                                     </div>
                                                 @endif

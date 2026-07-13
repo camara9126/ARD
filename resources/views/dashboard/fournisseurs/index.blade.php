@@ -48,11 +48,11 @@
                                             </div>
                                             <div class="card-block table-border-style">
                                                 @if(Session::has('success'))
-                                                    <div class="alert alert-success" role="alert">
+                                                    <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
                                                     </div>
                                                 @elseif(Session::has('danger'))
-                                                    <div class="alert alert-danger" role="alert">
+                                                    <div class="alert alert-danger text-center" role="alert">
                                                         {{ Session::get('danger') }}
                                                     </div>
                                                 @endif
@@ -84,7 +84,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <div class="action-buttons">
-                                                                        <a href="" class="action-btn" data-bs-toggle="modal" data-id="{{ $f->id }}" data-name="{{ $f->nom }}" data-phone="{{ $f->telephone }}" data-email="{{ $f->email }}" data-adress="{{$f->adresse }}" data-bs-target="#fournisseurEditModal" title="Modifier">
+                                                                        <a href="" class="action-btn text-info" data-bs-toggle="modal" data-id="{{ $f->id }}" data-name="{{ $f->nom }}" data-phone="{{ $f->telephone }}" data-email="{{ $f->email }}" data-adress="{{$f->adresse }}" data-bs-target="#fournisseurEditModal" title="Modifier">
                                                                             <i class="fas fa-edit"></i>
                                                                         </a>
                                                                         @if($f->statut)
@@ -92,7 +92,7 @@
                                                                                 @csrf
                                                                                 @method('DELETE')
                                                                                 <button type="submit" class="text-success" title="Desactiver">
-                                                                                    <i class="fa fa-toggle-on"></i>
+                                                                                    <i class="fa fa-toggle-on "></i>
                                                                                 </button>
                                                                             </form>
                                                                         @else

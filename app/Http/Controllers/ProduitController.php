@@ -116,7 +116,8 @@ class ProduitController extends Controller
             'nom' => 'required|string|max:255',
             'prix_vente' => 'numeric|min:0',
             'stock' => 'integer|min:0',
-            'categorie_id' => 'exists:categories,id',
+            'categorie_id',
+            'fournisseur_id' ,
         ]);
 
         $produit->update([
@@ -124,6 +125,7 @@ class ProduitController extends Controller
             'prix_vente' => $request->prix_vente,
             'stock' => $request->stock  ?? $produit->stock,
             'categorie_id' => $request->categorie_id ?? $produit->categorie_id,
+            'fournisseur_id' => $request->fournisseur_id ?? $produit->fournisseur_id,
         ]);
 
         return redirect()->route('produit.index')->with('success', 'Produit modifié');

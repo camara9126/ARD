@@ -1,4 +1,4 @@
-    @include('partials.header')
+@include('partials.header')
 
 <style>
     /* Styles spécifiques à la caisse */
@@ -302,7 +302,7 @@
                                                 <form action="{{ route('vente.store') }}" method="POST">
                                                     @csrf
                                                     @if(Session::has('success'))
-                                                        <div class="alert alert-success" role="alert">
+                                                        <div class="alert alert-success text-center" role="alert">
                                                             {{ Session::get('success') }}
                                                         </div>
                                                     @elseif(Session::has('danger'))
@@ -388,7 +388,7 @@
                                                                         <tbody id="panierRows">
                                                                             <tr id="row-0">
                                                                                 <td>
-                                                                                    <select name="produits[0][produit_id]" class="form-control-sm produit-select" style="width: 100%;">
+                                                                                    <select name="produits[0][produit_id]" class="form-control produit-select">
                                                                                         <option value="">Choisir un produit</option>
                                                                                         @foreach($produits as $produit)
                                                                                             <option value="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}" data-nom="{{ $produit->nom }}">
@@ -398,13 +398,13 @@
                                                                                     </select>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="number" name="produits[0][prix_vente]" class="form-control-sm prix_vente" step="any" style="width: 100px;">
+                                                                                    <input type="number" name="produits[0][prix_vente]" class="form-control-sm prix_vente" step="any">
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="number" name="produits[0][quantite]" class="form-control-sm quantite" value="1" style="width: 80px;">
+                                                                                    <input type="number" name="produits[0][quantite]" class="form-control-sm quantite" value="1">
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="number" class="form-control-sm total-ligne" readonly style="width: 100px; background:#f8f9fa;">
+                                                                                    <input type="number" class="form-control-sm total-ligne" readonly style="background:#f8f9fa;">
                                                                                 </td>
                                                                                 <td>
                                                                                     <button type="button" class="btn-icon remove-row">🗑️</button>
@@ -565,19 +565,19 @@
         let rowHtml = `
             <tr id="row-${rowIndex}">
                 <td>
-                    <select name="produits[${rowIndex}][produit_id]" class="form-control-sm produit-select" style="width: 100%;">
+                    <select name="produits[${rowIndex}][produit_id]" class="form-control-sm produit-select">
                         <option value="">Choisir un produit</option>
                         ${options}
                     </select>
                 </td>
                 <td>
-                    <input type="number" name="produits[${rowIndex}][prix_vente]" class="form-control-sm prix_vente" step="any" style="width: 100px;">
+                    <input type="number" name="produits[${rowIndex}][prix_vente]" class="form-control-sm prix_vente" step="any">
                 </td>
                 <td>
-                    <input type="number" name="produits[${rowIndex}][quantite]" class="form-control-sm quantite" value="1" style="width: 80px;">
+                    <input type="number" name="produits[${rowIndex}][quantite]" class="form-control-sm quantite" value="1">
                 </td>
                 <td>
-                    <input type="number" class="form-control-sm total-ligne" readonly style="width: 100px; background:#f8f9fa;">
+                    <input type="number" class="form-control-sm total-ligne" readonly style="background:#f8f9fa;">
                 </td>
                 <td>
                     <button type="button" class="btn-icon remove-row">🗑️</button>

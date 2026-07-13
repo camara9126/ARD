@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <a href="#">
-                            <img class="img-fluid" src="assets/images/logo-b.png" alt="Theme-Logo" />
+                            <img class="img-fluid" src="{{ asset('assets/images/logo-b.png') }}" alt="Theme-Logo" />
                         </a>
                         <a class="mobile-options waves-effect waves-light">
                             <i class="ti-more"></i>
@@ -119,12 +119,12 @@
                                     </li>-->
                                     <li class="waves-effect waves-light">
                                         <form method="POST" action="{{ route('logout') }}">
-                                                @csrf
+                                            @csrf
 
-                                                <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                                    <i class="ti-layout-sidebar-left"></i>Logout
-                                                </a>
-                                            </form>
+                                            <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                                <i class="ti-layout-sidebar-left"></i>Logout
+                                            </a>
+                                        </form>
                                         <!--<a href="auth-normal-sign-in.html">
                                              Logout-->
                                         </a>

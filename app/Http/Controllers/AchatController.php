@@ -45,14 +45,14 @@ class AchatController extends Controller
     {
         $request->validate([
             'fournisseur_id' => 'exists:fournisseurs,id',
-            'produits' => 'required|array',
-            'designation',
+            'produits' ,
+            'designation' ,
             'designation.*.nom',
             'designation.*.prix',
             'designation.*.quantite',
-            'produits.*.produit_id' => 'required',
-            'produits.*.quantite' => 'required|numeric|min:1',
-            'produits.*.prix_vente' => 'required|numeric|min:0',
+            'produits.*.produit_id' ,
+            'produits.*.quantite' => 'nullable|numeric|min:1',
+            'produits.*.prix_vente' => 'nullable|numeric|min:0',
             'note' => 'nullable',
         ]);
 
@@ -77,6 +77,7 @@ class AchatController extends Controller
             if($request->designation) {
 
                 foreach ($request->designation as $item) {
+
                     // Récupération de l'unite
                     $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
@@ -104,56 +105,56 @@ class AchatController extends Controller
                         'quantite' => $item['quantite'],
                         'reference' => 'MVT-' . now()->timestamp,
                     ]);
+
                 }
                 
             }
 
-            foreach ($request->produits as $item) {
+            if($request->produits) {
+                foreach ($request->produits as $item) {
 
-               
+                    // Récupération de l'produit original 
+                    $produit = produit::where('id', $item['produit_id'])->lockForUpdate()->first();
 
+                    // Récupération de l'unite
+                    $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
-                // Récupération de l'produit original 
-                $produit = produit::where('id', $item['produit_id'])->lockForUpdate()->first();
+                    $ligneTotal = $item['quantite'] * $item['prix_vente'];
 
-                // Récupération de l'unite
-                $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
+                    AchatDetail::create([
+                        'unite_id' => $unite->id,
+                        'achat_id' => $achat->id,
+                        'produit_id' => $item['produit_id'],
+                        'quantite' => $item['quantite'],
+                        'prix_unitaire' => $item['prix_vente'],
+                        'total' => $ligneTotal,
+                    ]);
 
-                $ligneTotal = $item['quantite'] * $item['prix_vente'];
+                    $total += $ligneTotal;
 
-                AchatDetail::create([
-                    'unite_id' => $unite->id,
-                    'achat_id' => $achat->id,
-                    'produit_id' => $item['produit_id'],
-                    'quantite' => $item['quantite'],
-                    'prix_unitaire' => $item['prix_vente'],
-                    'total' => $ligneTotal,
-                ]);
-
-                $total += $ligneTotal;
-
-                // Ajouter la quantité au stock existant
-                $ancienStock = $produit->stock;
-                $nouvelleQuantite = $ancienStock + $item['quantite'];
-        
-                $produit->update([
-                    'stock' => $nouvelleQuantite,
-                    'prix_achat' => $detail->prix_achat ?? $produit->prix_achat,
-                    'prix_vente' => $detail->prix_vente ?? $produit->prix_vente, 
-                    'fournisseur_id' => $achat->fournisseur_id, 
-                ]);
+                    // Ajouter la quantité au stock existant
+                    $ancienStock = $produit->stock;
+                    $nouvelleQuantite = $ancienStock + $item['quantite'];
+            
+                    $produit->update([
+                        'stock' => $nouvelleQuantite,
+                        'prix_achat' => $detail->prix_achat ?? $produit->prix_achat,
+                        'prix_vente' => $detail->prix_vente ?? $produit->prix_vente, 
+                        'fournisseur_id' => $achat->fournisseur_id, 
+                    ]);
 
 
-                // Mise a jour du stock
-                MouvementStock::create([
-                    'unite_id' => $unite->id,
-                    'user_id' => request()->user()->id,
-                    'produit_id' => $item['produit_id'],
-                    'type' => 'entree',
-                    'quantite' => $item['quantite'],
-                    'reference' => 'MVT-' . now()->timestamp,
-                ]);
-                
+                    // Mise a jour du stock
+                    MouvementStock::create([
+                        'unite_id' => $unite->id,
+                        'user_id' => request()->user()->id,
+                        'produit_id' => $item['produit_id'],
+                        'type' => 'entree',
+                        'quantite' => $item['quantite'],
+                        'reference' => 'MVT-' . now()->timestamp,
+                    ]);
+                    
+                }
             }
 
             // Mise à jour du total
