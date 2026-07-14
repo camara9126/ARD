@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Achat;
+use App\Models\ChargeFixe;
 use App\Models\Depense;
 use App\Models\Fonds;
 use App\Models\Recette;
@@ -11,9 +12,10 @@ use Illuminate\Support\Carbon;
     // chiffre d'affaire mois actuel ttc
     $caMoisActuel = Recette::where('statut', 'recu')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
     $achatGlobal = Achat::where('statut', 'recu')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
+    $chargeFixe= ChargeFixe::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
     $depenseGlobal = Depense::where('statut', 'payee')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
 
-    // Deopense Direction
+    // Depense Direction
     $depenseDirection = Depense::where('unite_id', 5)->where('statut', 'payee')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
 
     $resultatGlobal = $achatGlobal - $depenseGlobal;
@@ -169,8 +171,8 @@ use Illuminate\Support\Carbon;
                                                                         <i class="fas fa-bag-shopping text-c-green f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>{{ number_format($achatGlobal, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">Achat Marchandise (Unite)</p>
+                                                                        <h5>{{ number_format($chargeFixe, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Charges Fixes (Unite)</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -330,10 +332,6 @@ use Illuminate\Support\Carbon;
                                                                 <tbody>
                                                                     @foreach($repUnites as $unite)
 
-                                                                        @php
-                                                                            $recette = $unite->total_ventes - $unite->total_depenses;
-                                                                        @endphp
-
                                                                         <tr>
                                                                             <td>{{ $unite->nom }}</td>
 
@@ -353,7 +351,7 @@ use Illuminate\Support\Carbon;
 
                                                                             <td>
                                                                                 <span class="badge bg-success">
-                                                                                    {{ number_format($recette, 0, ',', ' ') }} FCFA
+                                                                                    {{ number_format($unite->total_recettes, 0, ',', ' ') }} FCFA
                                                                                 </span>
                                                                             </td>
 

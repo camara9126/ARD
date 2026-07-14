@@ -31,8 +31,14 @@ class Unite extends Model
         return $this->hasMany(Depense::class);
     }
 
-     public function user()
+    public function user()
     {
         return $this->hasMany(User::class);
     }
+
+    public function equipements()
+    {
+        return $this->hasMany(Equipement::class);
+    }
+    
 }

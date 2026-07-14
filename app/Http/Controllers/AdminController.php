@@ -21,13 +21,17 @@ class AdminController extends Controller
 
        $repUnites = Unite::select('unites.id','unites.nom')->where('id', '!=', $currentUserUniteId)->selectSub(function ($query) {
 
-                $query->from('ventes')->selectRaw('COALESCE(SUM(total))')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
+                $query->from('ventes')->selectRaw('COALESCE(SUM(total))')->where('statut', 'payee')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
+
 
             }, 'total_ventes')->selectSub(function ($query) {
 
-                $query->from('depenses')->selectRaw('COALESCE(SUM(montant))')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
+                $query->from('depenses')->selectRaw('COALESCE(SUM(montant))')->where('statut', 'payee')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
 
-            }, 'total_depenses')->get();
+            }, 'total_depenses')->selectSub(function ($query) {  
+
+                $query->from('recettes')->selectRaw('COALESCE(SUM(montant))')->where('statut', 'recu')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
+            }, 'total_recettes')->get();
 //dd($unites);
 
              // Permettre de changer de mois via l'URL ?mois=5&annee=2026
@@ -50,7 +54,7 @@ class AdminController extends Controller
             $labels = $unites->pluck('nom')->toArray();
             $data = $unites->pluck('productivite')->toArray();
 
-                return view('dashboard', compact('repUnites','unites', 'labels', 'data', 'mois', 'annee', 'moisListe'));
+            return view('dashboard', compact('repUnites','unites', 'labels', 'data', 'mois', 'annee', 'moisListe'));
     }
 
 
@@ -99,19 +103,19 @@ class AdminController extends Controller
         $fin = Carbon::now()->endOfMonth();
 
         // VENTES
-        $ventes = Vente::where('unite_id', $id)->whereBetween('created_at', [$debut, $fin])->get();
+        $ventes = Vente::where('unite_id', $id)->where('statut', 'payee')->whereBetween('created_at', [$debut, $fin])->get();
 
         $totalVentes = $ventes->sum('total_ttc');
 
         // DEPENSES
-        $depenses = Depense::where('unite_id', $id)->whereBetween('created_at', [$debut, $fin])->get();
+        $depenses = Depense::where('unite_id', $id)->where('statut', 'payee')->whereBetween('created_at', [$debut, $fin])->get();
 
         $totalDepenses = $depenses->sum('montant');
 
         $net = $totalVentes - $totalDepenses;
 
         // Analyse automatique
-        $analyse = $net >= 0 ? "L'unité est bénéficiaire sur la période" : "L'unité est en déficit sur la période";
+        $analyse = $net >= 0 ? "L'unité est bénéficiaire sur la période" : ($net <= 0 ? "L'unité est en déficit sur la période" : "L'unité est en equilibre sur la période" );
 
         $data = compact('unite','ventes','depenses','totalVentes','totalDepenses','net','analyse','debut','fin');
 
@@ -126,11 +130,11 @@ class AdminController extends Controller
     {
         $unites = Unite::select('unites.id','unites.nom')->selectSub(function ($query) {
 
-        $query->from('ventes')->selectRaw('COALESCE(SUM(total),0)')->whereColumn('unite_id', 'unites.id');
+        $query->from('ventes')->selectRaw('COALESCE(SUM(total),0)')->where('statut', 'recu')->whereColumn('unite_id', 'unites.id');
 
             }, 'total_ventes')->selectSub(function ($query) {
 
-                $query->from('depenses')->selectRaw('COALESCE(SUM(montant),0)')->whereColumn('unite_id', 'unites.id');
+                $query->from('depenses')->selectRaw('COALESCE(SUM(montant),0)')->where('statut', 'payee')->whereColumn('unite_id', 'unites.id');
 
             }, 'total_depenses')->get();
 

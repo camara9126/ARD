@@ -36,7 +36,7 @@
                                                 <h5>Factures</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="{{route('vente.create') }}" style="color: var(--primary); text-decoration: none; font-weight: 500;" >Nouvelle Facture →</a>
+                                                    <a href="{{route('dashboard') }}" style="color: var(--danger); text-decoration: none; font-weight: 500;" >Retour →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -64,8 +64,8 @@
                                                                 <th>Client</th>
                                                                 <th>Montant TVA</th>
                                                                 <th>Montant Total</th>
-                                                                <th>Montant Payer</th>
-                                                                <th>Montant Restant</th>
+                                                                <!-- <th>Montant Payer</th> -->
+                                                                <!-- <th>Montant Restant</th> -->
                                                                 <th>Date</th>
                                                                 <th>Statut</th>
                                                                 <!--<th>Actions</th>-->
@@ -76,12 +76,12 @@
                                                             @forelse($factures as $v)
                                                             @if($v->montant_restant == 0)
                                                                 <tr>
-                                                                    <td><strong>{{$v->reference}}</strong></td>
-                                                                    <td>{{$v->client->nom ?? 'Vide'}}</td>
+                                                                    <td><strong>FAC-{{$v->reference}}</strong></td>
+                                                                    <td>{{$v->client->nom ?? 'Anonyme'}}</td>
                                                                     <td>{{number_format($v->total_tva, 0, ',',' ')}} XOF</td>
                                                                     <td>{{number_format($v->total_ttc, 0, ',',' ')}} XOF</td>
-                                                                    <td>{{number_format($v->montant_paye, 0, ',', ' ')}} XOF</td>
-                                                                    <td>{{number_format($v->montant_restant, 0, ',',' ')}} XOF</td>
+                                                                    <!-- <td>{{number_format($v->montant_paye, 0, ',', ' ')}} XOF</td> -->
+                                                                    <!-- <td>{{number_format($v->montant_restant, 0, ',',' ')}} XOF</td> -->
                                                                     <td>{{$v->created_at->format('d/m/y')}}</td>
                                                                     <td>
                                                                         @if($v->statut == 'payee')

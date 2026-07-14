@@ -128,13 +128,13 @@
                                 <div class="main-menu-content">
                                     <ul>
                                         <li class="more-details">
-                                            <a href="{{ route('profile.edit') }}"><i class="ti-user"></i>View Profile</a>
-                                            <a href="{{ route('assistance') }}"><i class="fas fa-tools"></i>Supports & assistance</a>
+                                            <a href="{{ route('profile.edit') }}"><i class="ti-user"></i>Profile</a>
+                                            <a href="{{ route('assistance') }}"><i class="fas fa-cog"></i>Supports & Assistance</a>
                                             <form method="POST" action="{{ route('logout') }}">
                                                 @csrf
 
                                                 <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                                    <i class="ti-layout-sidebar-left"></i>Logout
+                                                    <i class="ti-layout-sidebar-left"></i>Deconnexion
                                                 </a>
                                             </form>
                                             <!--<a href="auth-normal-sign-in.html"><i class="ti-layout-sidebar-left"></i>Logout</a>-->
@@ -287,7 +287,39 @@
                                         </a>
                                     </li>
                                 </ul> 
-                        
+                               
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('analyse') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-chart-bar"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext">Rapport & Analyse</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul> 
+
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('equipements.index') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-tools"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext">Equip/Amortissement</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul> 
+
+                                <hr>
+
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('assistance') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-cog"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext">Supports & Assistance</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul> 
+
                             @elseif(Auth::user()->role == 'admin')
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="">

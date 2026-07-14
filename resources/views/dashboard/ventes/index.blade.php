@@ -86,7 +86,7 @@
                                                             @forelse($ventes as $v)
                                                             <tr>
                                                                 <td><strong>{{$v->reference}}</strong></td>
-                                                                <!-- <td>{{$v->client->nom ?? 'Vide'}}</td> -->
+                                                                <!-- <td>{{$v->client->nom ?? 'Anonyme'}}</td> -->
                                                                 <td>{{number_format($v->total_tva, 0, ',',' ')}} XOF</td>
                                                                 <td>{{number_format($v->total_ttc, 0, ',',' ')}} XOF</td>
                                                                 <td>{{number_format($v->montant_paye, 0, ',', ' ')}} XOF</td>

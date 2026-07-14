@@ -6,6 +6,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ChargeFixeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepenseController;
+use App\Http\Controllers\EquipementController;
 use App\Http\Controllers\FondController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\MouvementStockController;
@@ -102,9 +103,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('/recette', RecetteController::class);
     Route::resource('/depense', DepenseController::class);
     Route::resource('/chargefixe', ChargeFixeController::class);
-    // Analyse
-    Route::get('/analyse', [RapportController::class, 'rapport'])->name('analyse');
 });
+
+
+// Analyse
+Route::get('/analyse', [RapportController::class, 'rapport'])->middleware(['auth', 'verified'])->name('analyse');
+
 
 // Route Support & Assistance
 Route::get('/support', function() {
@@ -112,5 +116,8 @@ Route::get('/support', function() {
     return view('assistance');
 })->middleware(['auth', 'verified'])->name('assistance');
 
+
+// Route Equipements
+Route::resource('/equipements', EquipementController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

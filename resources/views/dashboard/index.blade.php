@@ -1,42 +1,50 @@
 <?php
 
 use App\Models\Achat;
+use App\Models\ChargeFixe;
 use App\Models\Depense;
-use App\Models\MouvementStock;
 use App\Models\Recette;
 use App\Models\Unite;
-use App\Models\Vente;
 use Illuminate\Support\Carbon;
-
-    // chiffre d'affaire mois actuel ttc
-    $caMoisActuel = Recette::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
-    $achatGlobal = Achat::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
-    $depenseGlobal = Depense::where('statut', 'payee')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
-
-    $resultatGlobal = $achatGlobal - $depenseGlobal;
 
     $unite= Unite::Where('id', request()->user()->unite_id)->first();
 
+    $amortissements= $unite->equipements->sum('amortissement_mensuel');
 
-           // ===== SECTION PRODUCTION UNITE =====
+    $chargeFixes= ChargeFixe::Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+    
+    // chiffre d'affaire mois actuel
+    $caMoisActuel = Recette::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+   
+    // chiffre d'affaire global actuel ttc
+    $caGlobal= Recette::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereYear('created_at', now()->year)->sum('montant');
 
-            // ===== MENSUEL =====
+    $achatGlobal = Achat::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
 
-            $months = [];
-            $revenues = [];
+    $depenseGlobal = Depense::where('statut', 'payee')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
 
-            for ($i = 1; $i <= 12; $i++) {
+    $resultatGlobal = $caMoisActuel - $depenseGlobal -  $chargeFixes - $amortissements;
 
-                $recette = Recette::whereMonth('created_at', $i)->where('statut', 'recu')->where('unite_id', $unite->id)->whereYear('created_at', now()->year)->sum('montant');
+   
+        // ===== SECTION PRODUCTION UNITE =====
 
-                $months[] = Carbon::create()->month($i)->translatedFormat('F');
-                $revenues[] = round($recette, 2);
-            }
+        // ===== MENSUEL =====
 
-            $monthlyData = [
-                'months' => $months,
-                'revenues' => $revenues,
-            ];
+        $months = [];
+        $revenues = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+
+            $recette = Recette::whereMonth('created_at', $i)->where('statut', 'recu')->where('unite_id', $unite->id)->whereYear('created_at', now()->year)->sum('montant');
+
+            $months[] = Carbon::create()->month($i)->translatedFormat('F');
+            $revenues[] = round($recette, 2);
+        }
+
+        $monthlyData = [
+            'months' => $months,
+            'revenues' => $revenues,
+        ];
 
 ?>
     @include('partials.header')
@@ -99,18 +107,18 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
                                                                         <h5>{{ number_format($caMoisActuel, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">CA Glogal</p>
+                                                                        <p class="text-muted m-b-0">CA Glogal </p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-3 b-r-default p-b-20 p-t-20" style="background-color: #ffabab;">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-bag-shopping text-c-green f-24"></i>
+                                                                        <i class="fas fa-tools text-c-green f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>{{ number_format($achatGlobal, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">Achat Produit</p>
+                                                                        <h5>{{ number_format($amortissements, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Amortissements</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -144,7 +152,70 @@ use Illuminate\Support\Carbon;
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-12 col-lg-12">
+                                            <div class="col-md-5 col-lg-5">
+                                                <div class="card table-card">
+                                                    <div class="card-header">
+                                                        <h5>TABLEAU DE SYNTHESE DE L'UNITE</h5>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover m-b-0 without-header">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><b>Indicateur</b></th>
+                                                                        <th><b>Montant</b></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Chiffre d'affaires</td>
+                                                                        <td>{{ number_format($caMoisActuel, 0, ',', ' ') }} XOF</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Depenses</td>
+                                                                        <td>{{ number_format($depenseGlobal, 0, ',', ' ') }} XOF</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Charges fixes</td>
+                                                                        <td>{{ number_format($chargeFixes, 0, ',', ' ') }} XOF</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Amortissements</td>
+                                                                        <td>{{ number_format($amortissements, 0, ',', ' ') }} XOF</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><strong>Resultats net</strong></td>
+                                                                        <td><strong>{{ number_format($resultatGlobal, 0, ',', ' ') }} XOF</strong></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="7" align="center">
+                                                                            @if($resultatGlobal > 0)
+                                                                                <span class="text-success fw-bold">L'unité est Beneficiaire ce mois-ci.</span>
+                                                                            @elseif($resultatGlobal < 0)
+                                                                                <span class="text-danger fw-bold"> L'unité est Déficitaire (en Perte) ce mois-ci.</span>
+                                                                            @else
+                                                                                <span class="text-primary fw-bold">L'unité est Equilibrée ce mois-ci.</span>
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7 col-lg-7">
+                                                <div class="card">
+                                                    <div class="card-block">
+                                                        <canvas id="evolutionChart"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12 col-lg-6">
                                                 <div class="card table-card">
                                                     <div class="card-header">
                                                         <h5>LISTE DES FACTURES</h5>
@@ -214,16 +285,6 @@ use Illuminate\Support\Carbon;
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-block">
-                                                        <canvas id="evolutionChart"></canvas>
                                                     </div>
                                                 </div>
                                             </div>

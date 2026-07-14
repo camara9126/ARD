@@ -97,7 +97,7 @@
                                                                     <td>
                                                                         <div class="row">
                                                                             <div class="col-4">
-                                                                                <a href="" class="action-btn text-warning" data-bs-toggle="modal" data-id="{{ $c->id }}" data-designation="{{ $c->designation }}" data-intitulait="{{ $c->intitulait }}" data-preiode="{{ $c->periode }}" data-montant="{{ $c->montant }}" data-date_debut="{{ $c->date_debut }}" data-date_fin="{{ $c->date_fin }}" data-description="{{$c->description }}" data-bs-target="#chargeEditModal" title="Modifier">
+                                                                                <a href="" class="action-btn text-warning" data-bs-toggle="modal" data-id="{{ $c->id }}" data-designation="{{ $c->designation }}" data-intitulait="{{ $c->intitulait }}" data-periode="{{ $c->periode }}" data-montant="{{ $c->montant }}" data-date_debut="{{ $c->date_debut }}" data-date_fin="{{ $c->date_fin }}" data-description="{{$c->description }}" data-bs-target="#chargeEditModal" title="Modifier">
                                                                                     <i class="fas fa-edit"></i>
                                                                                 </a>
                                                                             </div>

@@ -104,7 +104,7 @@
                                     </li>
                                     <li class="waves-effect waves-light">
                                         <a href="{{ route('assistance') }}">
-                                            <i class="fas fa-tools"></i> Supports & assistance
+                                            <i class="fas fa-cog"></i> Supports & Assistance
                                         </a>
                                     </li>
                                     <!--<li class="waves-effect waves-light">
@@ -122,7 +122,7 @@
                                             @csrf
 
                                             <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                                <i class="ti-layout-sidebar-left"></i>Logout
+                                                <i class="ti-layout-sidebar-left"></i>Deconnexion
                                             </a>
                                         </form>
                                         <!--<a href="auth-normal-sign-in.html">
