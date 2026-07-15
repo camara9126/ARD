@@ -81,7 +81,7 @@ class AchatController extends Controller
                     // Récupération de l'unite
                     $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
-                    $ligneTotal = $request->quantite * $request->prix;
+                    $ligneTotal = $item['quantite'] * $item['prix'];
 
                     AchatDetail::create([
                         'unite_id' => $unite->id,
