@@ -56,7 +56,7 @@
                                                         </ul>
                                                     </div>
                                                 @endif
-                                                
+
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
@@ -75,7 +75,7 @@
                                                                 <th>Fournisseur</th>
                                                                 <th>Prix d'achat</th>
                                                                 <th>Prix de vente</th>
-                                                                <th>Stock</th>
+                                                                <th>Quantité</th>
                                                                 <th>Statut</th>
                                                                 <th>Actions</th>
                                                             </tr>
@@ -203,7 +203,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
-                                                                            <label>Quantite de stock</label>
+                                                                            <label>Quantité de stock</label>
                                                                             <input type="number" name="stock" class="form-control" required>
                                                                         </div>
                                                                     </div>
