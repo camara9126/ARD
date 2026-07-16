@@ -22,7 +22,7 @@
 
             <div>
                 <x-input-label for="nom" :value="__('Nom')" />
-                <x-text-input id="nom" name="nom" readOnly type="text" class="mt-1 block w-full" :value="old('nom', $unite->nom)" required autofocus autocomplete="nom" />
+                <x-text-input id="nom" name="nom" type="text" class="mt-1 block w-full" :value="old('nom', $unite->nom)" required autofocus autocomplete="nom" />
                 <x-input-error class="mt-2" :messages="$errors->get('nom')" />
             </div>
 

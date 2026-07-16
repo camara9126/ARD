@@ -91,6 +91,7 @@ class UniteController extends Controller
         $unite = unite::FindOrFail($id);
 
          $request->validate([
+            'nom' => 'string',
             'contact' => 'nullable|string|max:50',
             'taux_tva' => 'numeric|max:100',
             'adresse' => 'nullable|string',
@@ -114,6 +115,7 @@ class UniteController extends Controller
         }
 
         $unite->update([
+            'nom' => $request->nom,
             'contact' => $request->contact,
             'taux_tva' => $request->taux_tva,
             'adresse' => $request->adresse,
