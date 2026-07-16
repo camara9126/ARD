@@ -83,7 +83,7 @@ class ProduitController extends Controller
             // Création du bon de commande
             $achat = Achat::create([
                 'unite_id' => request()->user()->unite_id,
-                'reference' => 'FAC/ACT-' . strtoupper(Str::random(6)),
+                'reference' => 'FAC-ACT-' . strtoupper(Str::random(6)),
                 'fournisseur_id' => $request->fournisseur_id,
                 'total' => 0,
                 'note' => $request->note ?? 'null',
@@ -95,14 +95,14 @@ class ProduitController extends Controller
             // Récupération de l'unite
             $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
-            $ligneTotal = $produit->stock * $produit->prix_vente;
+            $ligneTotal = $produit->stock * $produit->prix_achat;
 
             AchatDetail::create([
                 'unite_id' => $unite->id,
                 'achat_id' => $achat->id,
                 'produit_id' => $produit->id,
                 'quantite' => $produit->stock,
-                'prix_unitaire' => $produit->prix_vente,
+                'prix_unitaire' => $produit->prix_achat,
                 'total' => $ligneTotal,
             ]);
 
