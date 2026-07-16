@@ -108,6 +108,10 @@ class ProduitController extends Controller
 
             $total += $ligneTotal;
     
+            // Mise à jour du total
+            $achat->update([
+                'total' => $total
+            ]);
         }
 
         // Enregistrement d'un historique de mouvement
