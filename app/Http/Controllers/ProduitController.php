@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Achat;
 use App\Models\AchatDetail;
 use App\Models\Categorie;
+use App\Models\Depense;
 use App\Models\Fournisseur;
 use App\Models\MouvementStock;
 use Illuminate\Support\Str;
@@ -123,6 +124,17 @@ class ProduitController extends Controller
             'reference' => 'MVT-PRD-' . now()->timestamp,
             'user_id' => $request->user()->id,
         ]);
+
+         Depense::create([
+                'unite_id' => $unite->id,
+                'user_id' => request()->user()->id,
+                'reference' => 'DEP-' . now()->timestamp,
+                'libelle' => 'Achat - '. $achat->reference,
+                'description' => 'Achat produit',
+                'montant' => $achat->total,
+                'date_depense' => now(),
+                'mode_paiement' => 'cash',
+            ]);
 
         return redirect()->route('produit.index')->with('success', 'Produit ajouté avec succès');
     }
