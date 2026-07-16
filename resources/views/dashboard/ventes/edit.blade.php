@@ -156,8 +156,8 @@
 
                                                         <!-- NOTE -->
                                                         <div class="mt-3">
-                                                            <label>Note</label>
-                                                            <textarea name="note" class="form-control"></textarea>
+                                                            <label>Montant Global</label>
+                                                            <input type="number" name="montant" class="form-control">
                                                         </div>
 
                                                         <button type="submit" class="btn btn-success mt-3">

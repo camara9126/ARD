@@ -22,7 +22,7 @@ class VenteController extends Controller
      */
     public function index()
     {
-        $ventes = Vente::with('client')->where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(5); 
+        $ventes = Vente::with('client')->where('unite_id', request()->user()->unite_id)->latest()->paginate(5); 
 
         return view('dashboard.ventes.index', compact('ventes'));
     }
@@ -260,6 +260,7 @@ class VenteController extends Controller
             'produits.*.produit_id' => 'required',
             'produits.*.quantite' => 'required|numeric|min:1',
             'produits.*.prix_vente' => 'numeric|min:0',
+            'montant',
         ]);
 
        DB::beginTransaction();
@@ -342,14 +343,24 @@ class VenteController extends Controller
             ]);
 
             // Mise à jour du statut de la vente
-            $paiements = $vente->paiements()->where('statut', 'valide')->latest()->first();
+            $paiements = $vente->paiements()->where('statut', 'valide')->get();
 
             if ($paiements) {
-                $paiements->update([
-                    'montant' => $vente->total_ttc,
-                    'date_paiement' => now()
-                ]);
+                $vente->paiements()->where('statut', 'valide')->delete();
+
+                $newPaiement= Paiement::create([
+                        'vente_id' => $vente->id,
+                        'unite_id' => request()->user()->unite_id,
+                        'user_id' => request()->user()->id,
+                        'montant' => $request->montant,
+                        'mode_paiement' => 'cash',
+                        'date_paiement' => now(),
+                        'statut' => 'valide',
+                        'reference' => 'PAY-' . time()
+                    ]);
             }
+
+            $vente = $newPaiement->vente;
 
             $totalPaye = $vente->paiements()->where('statut', 'valide')->sum('montant');
 
