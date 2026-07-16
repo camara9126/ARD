@@ -133,7 +133,7 @@ class VenteController extends Controller
                         'produit_id' => $produit->id,
                         'type' => 'sortie',
                         'quantite' => $item['quantite'],
-                        'reference' => 'MVT/VNT-' . now()->timestamp,
+                        'reference' => 'MVT-VNT-' . now()->timestamp,
                         'unite_id' => request()->user()->unite_id,
                         'user_id' => request()->user()->id,
                     ]);
@@ -321,7 +321,7 @@ class VenteController extends Controller
                         'produit_id' => $item['produit_id'],
                         'type' => $differenceQuantite > 0 ? 'sortie' : 'entree',
                         'quantite' => abs($differenceQuantite),
-                        'reference' => 'MVT/PRD-' . now()->timestamp . '-MODIF',
+                        'reference' => 'MVT-PRD-' . now()->timestamp . '-MODIF',
                         'unite_id' => request()->user()->unite_id,
                         'user_id' => request()->user()->id,
                         'commentaire' => 'Ajustement lors de la modification de la vente #' . $vente->id

@@ -46,7 +46,7 @@ class MouvementStockController extends Controller
             'produit_id' => $produit->id,
             'type' => $request->type,
             'quantite' => $request->quantite,
-            'reference' => 'MVT/TCK-' . now()->timestamp,
+            'reference' => 'MVT-TCK-' . now()->timestamp,
             'user_id' => $request->user()->id,
         ]);
 

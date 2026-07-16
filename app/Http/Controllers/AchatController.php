@@ -63,7 +63,7 @@ class AchatController extends Controller
             // Création du bon de commande
             $achat = Achat::create([
                 'unite_id' => request()->user()->unite_id,
-                'reference' => 'FAC/ACT-' . strtoupper(Str::random(6)),
+                'reference' => 'FAC-ACT-' . strtoupper(Str::random(6)),
                 'fournisseur_id' => $request->fournisseur_id,
                 'total' => 0,
                 'note' => $request->note ?? 'null',
@@ -103,7 +103,7 @@ class AchatController extends Controller
                         'designation' => $item['nom'],
                         'type' => 'entree',
                         'quantite' => $item['quantite'],
-                        'reference' => 'MVT/ACT-' . now()->timestamp,
+                        'reference' => 'MVT-ACT-' . now()->timestamp,
                     ]);
 
                 }
@@ -151,7 +151,7 @@ class AchatController extends Controller
                         'produit_id' => $item['produit_id'],
                         'type' => 'entree',
                         'quantite' => $item['quantite'],
-                        'reference' => 'MVT/ACT-' . now()->timestamp,
+                        'reference' => 'MVT-ACT-' . now()->timestamp,
                     ]);
                     
                 }
