@@ -9,6 +9,9 @@ use App\Models\Vente;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+
 
 class AdminController extends Controller
 {
@@ -63,7 +66,7 @@ class AdminController extends Controller
     {
         $unites= Unite::where('nom', '!=', 'ARD')->latest()->get();
 
-        return view('admin.listeUnites', compact('unites'));
+        return view('admin.unites.listeUnites', compact('unites'));
     }
 
 
@@ -72,7 +75,14 @@ class AdminController extends Controller
     {
         $users= User::where('role', '!=', 'admin')->latest()->get();
 
-        return view('admin.listeUsers', compact('users'));
+        return view('admin.users.listeUsers', compact('users'));
+    }
+
+
+    // Ajout Nouvelle Unite
+    public function addUnite()
+    {
+        return view('admin.unites.addUnite');
     }
 
     /**
@@ -88,7 +98,48 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'string|max:255',
+            'adresse' => 'string',
+            'contact' => 'numeric|min:9',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'taux_tva' => 'nullable|numeric',
+            // Info User
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()], 
+        ]);
+
+        // Gestion des logo
+        if ($request->hasFile('logo')) {
+
+            $filename = time().$request->file('logo')->getClientOriginalName();
+            $path = $request->file('logo')->storeAs('logo', $filename, 'public');
+            $request['logo'] = '/storage/' . $path;
+        }
+
+
+         $unites= Unite::create([
+            'nom' => $request->nom,
+            'adresse' => $request->adresse,
+            'contact' => $request->contact,
+            'logo' =>  $path ?? null,
+            'statut' => 0,
+            'taux_tva' => $request->taux_tva ?? 0
+         ]);
+
+        //  Info User
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+            'password' => Hash::make($request->password),
+            'role' => 'commercial',
+            'unite_id' => $unites->id
+        ]);
+
+        return view('admin.unites.listeUnites', compact('unites'))->with('success', 'Unite cree avec success');
+
     }
 
     /**

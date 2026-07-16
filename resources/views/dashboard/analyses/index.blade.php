@@ -312,7 +312,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         
         .card-title {
@@ -322,13 +322,13 @@
         }
         
         .card-icon {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             color: white;
         }
         
@@ -338,6 +338,10 @@
         
         .icon-expense {
             background: linear-gradient(135deg, #f44336, #ff9800);
+        }
+
+        .icon-amort {
+            background: linear-gradient(135deg, #f2d810, #e88017);
         }
         
         .icon-profit {
@@ -441,184 +445,335 @@
         }
     </style>
 
+ <!-- Barre d'outils de téléchargement  -->
+    <style>
 
-                    <div class="pcoded-content">
-                        <!-- Page-header start -->
-                        <div class="page-header">
-                            <div class="page-block">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8">
-                                        <div class="page-header-title">
-                                            <h5 class="m-b-10">Tableau de Bord {{ strtoupper(Auth::user()->role) }}</h5>
-                                            <p class="m-b-0">Bienvenue</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <ul class="breadcrumb">
-                                            <li class="breadcrumb-item">
-                                                <a href="#"> <i class="fa fa-home"></i> </a>
-                                            </li>
-                                            <li class="breadcrumb-item"><a href="#!">Dashboard</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Page-header end -->
-                        <div class="pcoded-inner-content">
-                            <!-- Main-body start -->
-                            <div class="main-body">
-                                <div class="page-wrapper">
-                                    <!-- Page-body start -->
-                                    <div class="page-body">
-                                        <!-- Basic table card start -->
-                                         
-                                        <div class="row">
-                                            <!-- SITE VISIT CHART start -->
-                                            <div class="col-md-3 col-lg-3">      
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">Total Recettes</h3>
-                                                        <div class="card-icon icon-income">
-                                                            <i class="fas fa-arrow-up"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-value" id="total-revenus">XOF 124,850.00</div>
-                                                    <div class="card-trend trend-up">
-                                                        <!--<i class="fas fa-arrow-up"></i>
-                                                        <span id="revenus-trend">+12% vs mois précédent</span>-->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 col-lg-3">      
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">Total Dépenses</h3>
-                                                        <div class="card-icon icon-expense">
-                                                            <i class="fas fa-arrow-down"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-value" id="total-depenses">XOF 78,430.00</div>
-                                                    <div class="card-trend trend-down">
-                                                        <!--<i class="fas fa-arrow-down"></i>
-                                                        <span id="depenses-trend">-5% vs mois précédent</span>-->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 col-lg-3">     
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">Résultat Net</h3>
-                                                        <div class="card-icon icon-profit">
-                                                            <i class="fas fa-chart-line"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-value positive" id="resultat-net">XOF 46,420.00</div>
-                                                    <div class="card-trend trend-up">
-                                                        <i class="fas fa-arrow-up"></i>
-                                                        <span>Bénéfice ce mois</span>
-                                                    </div>
-                                                </div> 
-                                            </div>
-                                            <div class="col-md-3 col-lg-3">          
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">Trésorerie Actuelle</h3>
-                                                        <div class="card-icon icon-cash">
-                                                            <i class="fas fa-wallet"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-value" id="tresorerie">XOF 89,250.00</div>
-                                                    <div class="card-trend trend-up">
-                                                        <i class="fas fa-arrow-up"></i>
-                                                        <span>Solde disponible</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>                                      
-                                        <div class="row">
-                                            <!-- SITE VISIT CHART start -->
-                                            <div class="col-md-12 col-lg-8">
-                                                
-                                                <div class="card">
-                                                    <!-- Graphique 1: Évolution des Recettes et Dépenses -->
-                                                    <div class="chart-card">
-                                                        <div class="chart-header">
-                                                            <h3 class="chart-title">Évolution des Recettes et Dépenses</h3>
-                                                            <div class="period-selector" id="period-selector-1">
-                                                                <button class="period-btn active" data-period="mensuel">Mensuel</button>
-                                                                <button class="period-btn" data-period="trimestriel">Trimestriel</button>
-                                                                <button class="period-btn" data-period="annuel">Annuel</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="chart-container">
-                                                            <canvas id="evolutionChart"></canvas>
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        
-                                            <div class="col-md-12 col-lg-4">      
-                                                <div class="card"> 
-                                                    <!-- Graphique 2: Répartition des Dépenses -->
-                                                    <div class="chart-card">
-                                                        <div class="chart-header">
-                                                            <h3 class="chart-title">Répartition des Top Produits</h3>
-                                                            <div class="period-selector" id="period-selector-2">
-                                                                <button class="period-btn active" data-period="mois">Ce mois</button>
-                                                                <button class="period-btn" data-period="annee">Cette année</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="chart-container">
-                                                            <canvas id="repartitionChart"></canvas>
-                                                        </div>
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                        </div>  
-                                       @if(request()->user()->unite->taux_tva > 0)
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="stat-card">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <div>
-                                                                <p class="text-muted mb-1">Montant TVA</p>
-                                                                <h3 class="value fw-bold">{{ number_format($montant_tva, 0, ',', ' ') }} XOF</h3>
-                                                            </div>
-                                                            <div class="icon bg-primary bg-opacity-10 text-primary">
-                                                                <!--<i class="fas fa-franc-sign"></i>-->
-                                                                <span>💰</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif 
-                                        
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-12">
-                                                <div class="stat-card">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <h3 class="text-muted mb-1">Solvabilité de l’unite</h3>
-                                                        @if( $unite->statut_solvabilite == 'solvable')
-                                                            <div class="card-value"> Votre unite est solvable </div>
-                                                        @else
-                                                            <div class="card-value"> Votre unite est insolvable </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
+        .download-toolbar {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .download-toolbar .btn-download {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-toolbar .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .btn-download-png {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-download-pdf {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-download-all {
+            background: #2196F3;
+            color: white;
+        }
+
+        /* Indicateur de chargement */
+        #loading-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        #loading-indicator.active {
+            display: flex;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Zone à capturer */
+        #dashboard-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+        <div class="pcoded-content">
+           
+            <!-- INDICATEUR DE CHARGEMENT -->
+            <div id="loading-indicator">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <p style="font-size: 16px; margin: 0;" id="loading-message">Génération en cours...</p>
+                    <p style="font-size: 13px; color: #7f8c8d; margin-top: 5px;">Veuillez patienter</p>
                 </div>
             </div>
-        </div>
-    </div>       
+
+
+            <!-- Page-header start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Tableau de Bord {{ strtoupper(Auth::user()->role) }}</h5>
+                                <p class="m-b-0">Bienvenue</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#"> <i class="fa fa-home"></i> </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FICHIER A TELECHARGER -->
+            <div id="dashboard-content">
+                <!-- BARRE D'OUTILS DE TÉLÉCHARGEMENT -->
+                <div class="download-toolbar">
+                    <span style="font-weight: 600; color: #495057; margin-right: auto;">
+                        📊 Rapport {{ strtoupper(Auth::user()->unite->nom) }}
+                    </span>
+                    <button onclick="downloadPageAsPNG()" class="btn-download btn-download-png">
+                        📸 PNG
+                    </button>
+                    <button onclick="downloadPageAsPDF()" class="btn-download btn-download-pdf">
+                        📄 PDF
+                    </button>
+                    <button onclick="downloadAllCharts()" class="btn-download btn-download-all">
+                        📊 Tous les graphiques
+                    </button>
+                </div>
+                <!-- Page-header end -->
+                <div class="pcoded-inner-content">
+                    <!-- Main-body start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- Page-body start -->
+                            <div class="page-body">
+                                <!-- Basic table card start -->
+                                    
+                                <div class="row">
+                                    <!-- SITE VISIT CHART start -->
+                                    <div class="col-md-2 col-lg-2">      
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Total Recettes</h3>
+                                                <div class="card-icon icon-income">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-value" id="total-revenus">XOF 124,850.00</div>
+                                            <!-- <div class="card-trend trend-up">
+                                                <i class="fas fa-arrow-up"></i>
+                                                <span id="revenus-trend">+12% vs mois précédent</span>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-lg-2">      
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Total Dépenses</h3>
+                                                <div class="card-icon icon-expense">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-value" id="total-depenses">XOF 78,430.00</div>
+                                            <!-- <div class="card-trend trend-down">
+                                                <i class="fas fa-arrow-down"></i>
+                                                <span id="depenses-trend">-5% vs mois précédent</span>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-lg-2">      
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Total Amortissement</h3>
+                                                <div class="card-icon icon-amort">
+                                                    <i class="fas fa-tools"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-value">{{ number_format($amortissements, 0, ',', ' ')}} XOF</div>
+                                            <!-- <div class="card-trend trend-down">
+                                                <i class="fas fa-arrow-down"></i>
+                                                <span id="depenses-trend">-5% vs mois précédent</span>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3">     
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Résultat Net</h3>
+                                                <div class="card-icon icon-profit">
+                                                    <i class="fas fa-chart-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-value positive" id="resultat-net">XOF 46,420.00</div>
+                                            <div class="card-trend trend-up">
+                                                <i class="fas fa-arrow-up"></i>
+                                                <span>Bénéfice ce mois</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-3 col-lg-3">          
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Trésorerie Actuelle</h3>
+                                                <div class="card-icon icon-cash">
+                                                    <i class="fas fa-wallet"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-value" id="tresorerie">XOF 89,250.00</div>
+                                            <div class="card-trend trend-up">
+                                                <i class="fas fa-arrow-up"></i>
+                                                <span>Solde disponible</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                      
+                                <div class="row">
+                                    <!-- SITE VISIT CHART start -->
+                                    <div class="col-md-12 col-lg-8">
+                                        
+                                        <div class="card">
+                                            <!-- Graphique 1: Évolution des Recettes et Dépenses -->
+                                            <div class="chart-card">
+                                                <div class="chart-header">
+                                                    <h3 class="chart-title">Évolution des Recettes et Dépenses</h3>
+                                                    <div class="period-selector" id="period-selector-1">
+                                                        <button class="period-btn active" data-period="mensuel">Mensuel</button>
+                                                        <button class="period-btn" data-period="trimestriel">Trimestriel</button>
+                                                        <button class="period-btn" data-period="annuel">Annuel</button>
+                                                    </div>
+                                                    <!-- BOUTON DE TÉLÉCHARGEMENT POUR GRAPHIQUE 1 -->
+                                                    <button onclick="downloadChart('evolutionChart', 'evolution_recettes_depenses')" 
+                                                            class="download-btn" 
+                                                            style="margin-left: 10px; padding: 6px 12px; background: #4CAF50; color: white; 
+                                                                border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">
+                                                        ⬇️ Télécharger
+                                                    </button>
+                                                </div>
+                                                <div class="chart-container">
+                                                    <canvas id="evolutionChart"></canvas>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-md-12 col-lg-4">      
+                                        <div class="card"> 
+                                            <!-- Graphique 2: Répartition des Dépenses -->
+                                            <div class="chart-card">
+                                                <div class="chart-header">
+                                                    <h3 class="chart-title">Répartition des Top Produits</h3>
+                                                    <div class="period-selector" id="period-selector-2">
+                                                        <button class="period-btn active" data-period="mois">Ce mois</button>
+                                                        <button class="period-btn" data-period="annee">Cette année</button>
+                                                    </div>
+                                                    <!-- BOUTON DE TÉLÉCHARGEMENT POUR GRAPHIQUE 2 -->
+                                                    <button onclick="downloadChart('repartitionChart', 'repartition_top_produits')" 
+                                                            class="download-btn" 
+                                                            style="margin-left: 10px; padding: 6px 12px; background: #2196F3; color: white; 
+                                                                border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">
+                                                        ⬇️ Télécharger
+                                                    </button>
+                                                </div>
+                                                <div class="chart-container">
+                                                    <canvas id="repartitionChart"></canvas>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
+                                </div>  
+                                @if(request()->user()->unite->taux_tva > 0)
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="stat-card">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="text-muted mb-1">Montant TVA</p>
+                                                        <h3 class="value fw-bold">{{ number_format($montant_tva, 0, ',', ' ') }} XOF</h3>
+                                                    </div>
+                                                    <div class="icon bg-primary bg-opacity-10 text-primary">
+                                                        <!--<i class="fas fa-franc-sign"></i>-->
+                                                        <span>💰</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif  
+                                
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h1 class="text-center">Solvabilité de l’unite</h1>
+                                    </div>
+                                    <div class="card-body">
+                                        @if( $unite->statut_solvabilite == 'solvable')
+                                            <div class="card-value text-success"> L'Unite est solvable </div>
+                                        @else
+                                            <div class="card-value text-danger"> L'Unite est insolvable </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+                
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -1035,70 +1190,220 @@
             }
         }
 
-        // ============================================
-        // FONCTIONS D'EXPORT POUR LES GRAPHIQUES
-        // ============================================
-        
-        function exportChartAsImage(chartId, fileName) {
-            const canvas = document.getElementById(chartId);
-            const link = document.createElement('a');
-            link.download = `${fileName}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
-
-        // ============================================
-        // SIMULATION DE DONNÉES EN TEMPS RÉEL
-        // ============================================
-        
-        // Fonction pour générer des données aléatoires (démonstration)
-        function generateRandomData() {
-            const newRevenue = monthlyData.revenues[10] + (Math.random() * 2000 - 1000);
-            const newExpense = monthlyData.expenses[10] + (Math.random() * 1000 - 500);
-            
-            document.getElementById('total-revenus').textContent = 
-                `XOF ${Math.round(newRevenue).toLocaleString('fr-FR')}.00`;
-            document.getElementById('total-depenses').textContent = 
-                `XOF ${Math.round(newExpense).toLocaleString('fr-FR')}.00`;
-            document.getElementById('resultat-net').textContent = 
-                `XOF ${Math.round(newRevenue - newExpense).toLocaleString('fr-FR')}.00`;
-        }
-
-        // ============================================
-        // EXPORT DES DONNÉES AU FORMAT CSV
-        // ============================================
-        
-        function exportMonthlyDataToCSV() {
-            let csv = "Mois,Recettes,Dépenses,Bénéfice\n";
-            
-            monthlyData.months.forEach((month, index) => {
-                csv += `${month},${monthlyData.revenues[index]},${monthlyData.expenses[index]},${monthlyData.profits[index]}\n`;
-            });
-            
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'donnees_comptables_2023.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-
-        // Ajouter des écouteurs pour les boutons d'export
-        document.addEventListener('DOMContentLoaded', function() {
-            // Exemple d'utilisation
-            const exportBtn = document.querySelector('.btn-primary i.fa-file-export').parentElement;
-            if (exportBtn) {
-                exportBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    exportMonthlyDataToCSV();
-                });
-            }
-        });
-
  
         // Exécuter les calculs
         const yearlyStats = calculateYearlyStats();
+    </script>
+
+   <!-- ============================================
+    SCRIPT DE TÉLÉCHARGEMENT COMPLET
+    ============================================ -->
+    <script>
+        /**
+         * Afficher/masquer l'indicateur de chargement
+         */
+        function showLoading(message = 'Génération en cours...') {
+            const indicator = document.getElementById('loading-indicator');
+            const msg = document.getElementById('loading-message');
+            if (indicator) {
+                indicator.classList.add('active');
+                if (msg) msg.textContent = message;
+            }
+        }
+
+        function hideLoading() {
+            const indicator = document.getElementById('loading-indicator');
+            if (indicator) {
+                indicator.classList.remove('active');
+            }
+        }
+
+        /**
+         * Télécharger toute la page en PNG
+         */
+        function downloadPageAsPNG() {
+            const element = document.getElementById('dashboard-content');
+            
+            if (!element) {
+                alert('Contenu introuvable !');
+                return;
+            }
+            
+            showLoading('Génération du PNG en cours...');
+            
+            // Attendre un peu que tout soit bien chargé
+            setTimeout(() => {
+                html2canvas(element, {
+                    scale: 2, // Qualité haute
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: element.scrollWidth,
+                    height: element.scrollHeight,
+                    windowWidth: element.scrollWidth,
+                    windowHeight: element.scrollHeight
+                }).then(canvas => {
+                    hideLoading();
+                    const link = document.createElement('a');
+                    const date = new Date().toISOString().slice(0,10);
+                    link.download = `dashboard_${date}.png`;
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.click();
+                }).catch(error => {
+                    hideLoading();
+                    console.error('Erreur PNG:', error);
+                    alert('Erreur lors de la génération du PNG : ' + error.message);
+                });
+            }, 500);
+        }
+
+        /**
+         * Télécharger toute la page en PDF
+         */
+        function downloadPageAsPDF() {
+            const element = document.getElementById('dashboard-content');
+            
+            if (!element) {
+                alert('Contenu introuvable !');
+                return;
+            }
+            
+            showLoading('Génération du PDF en cours...');
+            
+            setTimeout(() => {
+                html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: element.scrollWidth,
+                    height: element.scrollHeight,
+                    windowWidth: element.scrollWidth,
+                    windowHeight: element.scrollHeight
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    
+                    let heightLeft = pdfHeight;
+                    let position = 0;
+                    
+                    // Ajouter la première page
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+                    
+                    // Ajouter des pages supplémentaires si nécessaire
+                    let pageCount = 1;
+                    while (heightLeft > 0) {
+                        position = heightLeft - pdfHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                        heightLeft -= pdf.internal.pageSize.getHeight();
+                        pageCount++;
+                    }
+                    
+                    hideLoading();
+                    const date = new Date().toISOString().slice(0,10);
+                    pdf.save(`dashboard_${date}.pdf`);
+                }).catch(error => {
+                    hideLoading();
+                    console.error('Erreur PDF:', error);
+                    alert('Erreur lors de la génération du PDF : ' + error.message);
+                });
+            }, 500);
+        }
+
+        /**
+         * Télécharger tous les graphiques individuellement
+         */
+        function downloadAllCharts() {
+            const charts = [
+                { id: 'evolutionChart', name: 'evolution_recettes_depenses' },
+                { id: 'repartitionChart', name: 'repartition_top_produits' }
+            ];
+            
+            let downloaded = 0;
+            let errors = 0;
+            
+            charts.forEach((chart, index) => {
+                setTimeout(() => {
+                    const canvas = document.getElementById(chart.id);
+                    if (canvas) {
+                        try {
+                            const link = document.createElement('a');
+                            const date = new Date().toISOString().slice(0,10);
+                            link.download = `${chart.name}_${date}.png`;
+                            link.href = canvas.toDataURL('image/png', 1.0);
+                            link.click();
+                            downloaded++;
+                        } catch (e) {
+                            errors++;
+                            console.error(`Erreur pour ${chart.id}:`, e);
+                        }
+                    } else {
+                        errors++;
+                        console.warn(`Graphique ${chart.id} introuvable`);
+                    }
+                    
+                    // Afficher un résumé quand tous sont traités
+                    if (index === charts.length - 1) {
+                        setTimeout(() => {
+                            if (errors > 0) {
+                                alert(`⚠️ ${downloaded} graphiques téléchargés, ${errors} erreur(s)`);
+                            } else {
+                                alert(`✅ ${downloaded} graphiques téléchargés avec succès !`);
+                            }
+                        }, 300);
+                    }
+                }, index * 400);
+            });
+        }
+
+        /**
+         * Version améliorée de downloadChart pour les boutons individuels
+         * (Garder la fonction existante et l'améliorer)
+         */
+        function downloadChart(chartId, fileName) {
+            const canvas = document.getElementById(chartId);
+            
+            if (!canvas) {
+                alert('Graphique introuvable !');
+                return;
+            }
+            
+            try {
+                const link = document.createElement('a');
+                const date = new Date().toISOString().slice(0,10);
+                link.download = `${fileName}_${date}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            } catch (error) {
+                alert('Erreur lors du téléchargement : ' + error.message);
+            }
+        }
+
+        // Ajouter un raccourci clavier (Ctrl+P pour PDF, Ctrl+Shift+P pour PNG)
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+P = PNG
+            if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+                e.preventDefault();
+                downloadPageAsPNG();
+            }
+            // Ctrl+P = PDF (si pas déjà pris par l'impression)
+            if (e.ctrlKey && !e.shiftKey && e.key === 'p') {
+                // Laisser le comportement par défaut (impression)
+                // mais on pourrait aussi proposer le PDF
+            }
+        });
+
+        console.log('📊 Dashboard avec téléchargement prêt !');
+        console.log('📸 Ctrl+Shift+P pour PNG');
+        console.log('📄 Ctrl+P pour impression (ou PDF)');
     </script>
     
     <script src="{{asset('asset/main.js')}}"></script>

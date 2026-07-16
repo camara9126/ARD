@@ -294,8 +294,6 @@
                                                         @endforeach
                                                     </div>
                                                 @endif
-
-
                                                 
                                                 <h2 class="text-center mb-3">Nouvelle vente</h2>
                                                 <br>
@@ -429,29 +427,29 @@
                                                                         <span>Sous-total</span>
                                                                         <span id="subtotal">0</span> CFA
                                                                     </div>
-                                                                    <!--<div class="tax-box">
+                                                                    <!-- <div class="tax-box">
                                                                         <div class="summary-line">
                                                                             <span>Taxes (TVA 18%)</span>
                                                                             <span id="taxAmount">0</span> CFA
                                                                         </div>
-                                                                    </div>-->
+                                                                    </div> -->
                                                                     <div class="summary-total">
                                                                         <span>TOTAL TTC</span>
                                                                         <span id="totalGlobal">0</span> CFA
                                                                     </div>
 
                                                                     <!-- Suggestions combos -->
-                                                                    <div style="margin-top: 20px;">
+                                                                    <!-- <div style="margin-top: 20px;">
                                                                         <div class="category-header" style="margin-bottom: 10px;">🔥 Combos populaires</div>
                                                                         <div>
                                                                             @foreach($produits->take(4) as $combo)
                                                                                 <span class="badge-combo">{{ $combo->nom }}</span>
                                                                             @endforeach
                                                                         </div>
-                                                                    </div>
+                                                                    </div> -->
 
                                                                     <!-- Module client / Paiement -->
-                                                                    <!--<div class="client-pad">
+                                                                    <div class="client-pad">
                                                                         <div style="font-weight: 600; margin-bottom: 10px;">👤 Paiement</div>
                                                                         <div class="numpad" id="numpad">
                                                                             <div class="num-btn" data-value="1">1</div>
@@ -467,7 +465,7 @@
                                                                             <div class="num-btn" data-value=".">.</div>
                                                                             <div class="num-btn" data-value="clear">⌫</div>
                                                                         </div>
-                                                                        <input type="text" id="montantPaye" name="montant" class="form-control-sm" placeholder="Montant reçu" style="width: 100%; margin-bottom: 10px;">-->
+                                                                        <input type="text" id="montantPaye" name="montant" class="form-control-sm" placeholder="Montant reçu" style="width: 100%; margin-bottom: 10px;">
                                                                         
                                                                         <div class="action-buttons">
                                                                             <a href="{{ route('vente.index') }}" class="btn-custom btn-secondary-custom" style="text-align: center; text-decoration: none;">Annuler</a>

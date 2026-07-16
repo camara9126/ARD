@@ -82,7 +82,7 @@ class ProduitController extends Controller
             'produit_id' => $produit->id,
             'type' => 'entree',
             'quantite' => $request->stock ?? 100,
-            'reference' => 'MVT-' . now()->timestamp,
+            'reference' => 'MVT/PRD-' . now()->timestamp,
             'user_id' => $request->user()->id,
         ]);
 

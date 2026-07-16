@@ -41,6 +41,13 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/font-awesome.min.css') }}">
     <!-- scrollbar.css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery.mCustomScrollbar.css') }}"> 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- AJOUTER CES BIBLIOTHÈQUES POUR LE TÉLÉCHARGEMENT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <!-- Scripts -->
@@ -341,7 +348,7 @@
                                     </li>
                                 </ul>
 
-                                <ul class="pcoded-item pcoded-left-item">
+                                <!-- <ul class="pcoded-item pcoded-left-item">
                                     <li class="">
                                         <a href="{{ route('fond.index') }}" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>M</b></span>
@@ -359,7 +366,7 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             @endif
 
                         </div>

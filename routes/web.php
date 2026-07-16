@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/admin', AdminController::class);
     Route::get('/unites', [AdminController::class, 'unites'])->name('admin.unites');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/addUnite', [AdminController::class, 'addUnite'])->name('admin.addUnite');
 
     Route::resource('/fond', FondController::class);
 });

@@ -33,10 +33,10 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>unites ( {{$unites->count() }} )</h5>
+                                                <h5>Unites ( {{$unites->count() }} )</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="{{route('admin.index') }}" style="color: var(--danger); text-decoration: none; font-weight: 500;" >retour →</a>
+                                                    <a href="{{route('admin.addUnite') }}" style="color: var(--success); text-decoration: none; font-weight: 500;" >Nouvelle unite →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -87,20 +87,23 @@
                                                                     @endif
                                                                 </td>
                                                                 <td>
+                                                                        <a href="{{route('unite.show', $u->id)}}" class="label bg-info mr-2" title="afficher l'unite">
+                                                                            <i class="fas fa-eye"></i>&nbsp;Afficher
+                                                                        </a>
                                                                     @if($u->statut)
                                                                         <form action="{{route('unite.destroy', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous desactiver cette unite ?')">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <button type="submit" class="text-danger" title="desactiver">
-                                                                                <i class="fas fa-toggle-off" aria-hidden="true"></i>
+                                                                            <button type="submit" class="label bg-danger" title="desactiver">
+                                                                                <i class="fas fa-toggle-off"></i>&nbsp; desactiver
                                                                             </button>
                                                                         </form>
                                                                     @else
                                                                         <form action="{{route('unite.destroy', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous activer cette unite ?')">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <button type="submit" class="text-success" title="activer">
-                                                                                <i class="fas fa-toggle-on" aria-hidden="true"></i>
+                                                                            <button type="submit" class="label bg-success" title="activer">
+                                                                                <i class="fas fa-toggle-on""></i>&nbsp; activer
                                                                             </button>
                                                                         </form>
                                                                     @endif

@@ -79,7 +79,7 @@
                                                                 <th>Date</th>
                                                                 <th>Statut</th>
                                                                 <th>Actions</th>
-                                                                <!--<th>Facture</th>-->
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -115,9 +115,17 @@
                                                                     <a href="{{route('vente.edit', $v->id)}}" class="action-btn text-warning mr-2" title="modifier la vente">
                                                                         <i class="fas fa-edit"></i>
                                                                     </a>
-                                                                    <!-- <a href="{{route('vente.edit', $v->id)}}" class="action-btn text-primary ml-2" title="telecharger la facture">
-                                                                        <i class="fas fa-file-invoice"></i>
-                                                                    </a> -->
+                                                                    <!-- Supprimer -->
+                                                                    <form action="{{ route('vente.destroy', $v->id) }}" 
+                                                                        method="POST" 
+                                                                        onsubmit="return confirm('Supprimer la vente ?')">
+                                                                        @csrf
+                                                                        @method('DELETE')
+
+                                                                        <button class="action-btn text-danger ml-2">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+                                                                    </form>
                                                                 </td>
                                                             </tr>
                                                             @empty

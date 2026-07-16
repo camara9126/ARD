@@ -22,7 +22,7 @@ class VenteController extends Controller
      */
     public function index()
     {
-        $ventes = Vente::with('client')->where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(10); 
+        $ventes = Vente::with('client')->where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(5); 
 
         return view('dashboard.ventes.index', compact('ventes'));
     }
@@ -60,7 +60,7 @@ class VenteController extends Controller
             'produits.*.produit_id' => 'required',
             'produits.*.quantite' => 'required|numeric|min:1',
             'produits.*.prix_vente' => 'required|numeric|min:0',
-            'montant' => 'numeric|min:0'
+            'montant'
         ]);
 
         DB::beginTransaction();
@@ -133,7 +133,7 @@ class VenteController extends Controller
                         'produit_id' => $produit->id,
                         'type' => 'sortie',
                         'quantite' => $item['quantite'],
-                        'reference' => 'MVT-' . now()->timestamp,
+                        'reference' => 'MVT/VNT-' . now()->timestamp,
                         'unite_id' => request()->user()->unite_id,
                         'user_id' => request()->user()->id,
                     ]);
@@ -157,17 +157,31 @@ class VenteController extends Controller
 
                 $totalPaye = $paiement->paiements()->where('statut','valide')->sum('montant');
 
-                $paiements= Paiement::create([
-                    'vente_id' => $vente->id,
-                    'unite_id' => request()->user()->unite_id,
-                    'user_id' => request()->user()->id,
-                    'montant' => $vente->total_ttc,
-                    'mode_paiement' => 'cash',
-                    'date_paiement' => now(),
-                    'statut' => 'valide',
-                    'reference' => 'PAY-' . time()
-                ]);
+                if($request->montant > 0) {
+                    $paiements= Paiement::create([
+                        'vente_id' => $vente->id,
+                        'unite_id' => request()->user()->unite_id,
+                        'user_id' => request()->user()->id,
+                        'montant' => $request->montant,
+                        'mode_paiement' => 'cash',
+                        'date_paiement' => now(),
+                        'statut' => 'valide',
+                        'reference' => 'PAY-' . time()
+                    ]);
 
+                } else {
+                    $paiements= Paiement::create([
+                        'vente_id' => $vente->id,
+                        'unite_id' => request()->user()->unite_id,
+                        'user_id' => request()->user()->id,
+                        'montant' => $vente->total_ttc,
+                        'mode_paiement' => 'cash',
+                        'date_paiement' => now(),
+                        'statut' => 'valide',
+                        'reference' => 'PAY-' . time()
+                    ]);
+                }
+                
 
                 // Mise à jour du statut de la vente
                 $vente = $paiements->vente;
@@ -194,13 +208,13 @@ class VenteController extends Controller
                     ]);
                 }
            
-                DB::commit();
-                return redirect()->route('vente.index')->with('success', 'Vente effectuée avec succès');
+            DB::commit();
+            return redirect()->route('vente.index')->with('success', 'Vente effectuée avec succès');
 
-            } catch (\Exception $e) {
-                DB::rollBack();
-                return redirect()->back()->with('danger', 'Erreur lors de la conversion: ' . $e->getMessage());
-            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('danger', 'Erreur lors de la conversion: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -211,7 +225,7 @@ class VenteController extends Controller
         $unite= Unite::Where('id', request()->user()->unite_id)->first();
         
         $vente= Vente::with('client', 'items', 'paiements')->findOrFail($id);
-//dd($vente);
+        //dd($vente);
         $vente->load(['client', 'items', 'paiements']);
 
         $pdf = Pdf::loadView('dashboard.ventes.PDF', compact('vente', 'unite'));
@@ -248,50 +262,107 @@ class VenteController extends Controller
             'produits.*.prix_vente' => 'numeric|min:0',
         ]);
 
-        $vente= Vente::with('client', 'items')->findOrFail($id);
+       DB::beginTransaction();
 
-        $unite= Unite::Where('id', request()->user()->unite_id)->first(); // Recuperation de la TVA de l'unite
+        try {
+            $vente = Vente::with('client', 'items')->findOrFail($id);
+            $unite = Unite::where('id', request()->user()->unite_id)->first();
 
-        // Suppressionm des anciens details vente
-        $vente->items()->delete();
+            // Récupérer les anciens items pour ajuster le stock
+            $anciensItems = $vente->items()->get()->keyBy('produit_id');
 
-        $total = 0;
-        $total_tva = 0;
-        $total_ttc = 0;
-        //dd($request->produits);
+            // Suppression des anciens details vente
+            $vente->items()->delete();
 
-        // Recreer les nouveaux details
-        foreach ($request->produits as $item) {
+            $total = 0;
+            $total_tva = 0;
+            $total_ttc = 0;
 
-            $ligneTotal = $item['quantite'] * $item['prix_vente'];
+            foreach ($request->produits as $item) {
+                $produit = Produit::where('id', $item['produit_id'])->lockForUpdate()->first();
 
-            VenteItem::create([
-                'unite_id' => $request->user()->unite_id,
-                'vente_id' => $vente->id,
-                'produit_id' => $item['produit_id'],
-                'quantite' => $item['quantite'],
-                'prix_unitaire' => $item['prix_vente'],
-                'taux_tva' => $unite->taux_tva,
-                'montant_tva' => ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ),
-                'total_ttc' => ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 )),
-                'total' => $item['quantite'] * $item['prix_vente'],
+                if (!$produit) {
+                    throw new \Exception('Produit non trouvé: ' . $item['produit_id']);
+                }
+
+                // Calculer la différence de quantité par rapport à l'ancienne vente
+                $ancienneQuantite = isset($anciensItems[$item['produit_id']]) ? $anciensItems[$item['produit_id']]->quantite : 0;
+                $differenceQuantite = $item['quantite'] - $ancienneQuantite;
+
+                // Si on ajoute des produits, vérifier le stock disponible
+                if ($differenceQuantite > 0 && $produit->stock < $differenceQuantite) {
+                    throw new \Exception('Stock insuffisant pour le produit: ' . $produit->nom . '. Disponible: ' . $produit->stock . ', Demandé: ' . $differenceQuantite);
+                }
+
+                $ligneTotal = $item['quantite'] * $item['prix_vente'];
+
+                VenteItem::create([
+                    'unite_id' => $request->user()->unite_id,
+                    'vente_id' => $vente->id,
+                    'produit_id' => $item['produit_id'],
+                    'quantite' => $item['quantite'],
+                    'prix_unitaire' => $item['prix_vente'],
+                    'taux_tva' => $unite->taux_tva,
+                    'montant_tva' => ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100),
+                    'total_ttc' => ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100)),
+                    'total' => $item['quantite'] * $item['prix_vente'],
+                ]);
+
+                // Ajuster le stock en fonction de la différence
+                if ($differenceQuantite != 0) {
+                    // Si différence > 0 : on retire plus de stock (sortie supplémentaire)
+                    // Si différence < 0 : on remet en stock (annulation partielle)
+                    $produit->stock -= $differenceQuantite;
+                    $produit->save();
+
+                    // Enregistrer le mouvement de stock
+                    MouvementStock::create([
+                        'produit_id' => $item['produit_id'],
+                        'type' => $differenceQuantite > 0 ? 'sortie' : 'entree',
+                        'quantite' => abs($differenceQuantite),
+                        'reference' => 'MVT/PRD-' . now()->timestamp . '-MODIF',
+                        'unite_id' => request()->user()->unite_id,
+                        'user_id' => request()->user()->id,
+                        'commentaire' => 'Ajustement lors de la modification de la vente #' . $vente->id
+                    ]);
+                }
+
+                $total += $ligneTotal;
+                $total_tva += ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100);
+                $total_ttc += ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100));
+            }
+
+            // Mise à jour du total
+            $vente->update([
+                'client_id' => $request->client_id,
+                'total' => $total,
+                'total_tva' => $total_tva,
+                'total_ttc' => $total_ttc,
+                'date' => now()
             ]);
 
-            $total += $ligneTotal;
-            $total_tva += ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 );
-            $total_ttc += ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ));
+            // Mise à jour du statut de la vente
+            $paiements = $vente->paiements()->where('statut', 'valide')->latest()->first();
+
+            if ($paiements) {
+                $paiements->update([
+                    'montant' => $vente->total_ttc,
+                    'date_paiement' => now()
+                ]);
+            }
+
+            $totalPaye = $vente->paiements()->where('statut', 'valide')->sum('montant');
+
+            $vente->statut = $totalPaye == 0 ? 'impayee' : ($totalPaye < $vente->total_ttc ? 'partielle' : 'payee');
+            $vente->save();
+
+            DB::commit();
+            return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('danger', 'Erreur lors de la modification: ' . $e->getMessage());
         }
-
-        // Mise à jour du total
-        $vente->update([
-            'client_id' => $request->client_id,
-            'total' => $total,
-            'total_tva' => $total_tva,
-            'total_ttc' => $total_ttc,
-            'date' => now()
-        ]);
-
-        return redirect()->route('vente.index')->with('success', 'Vente modifié avec succès');
     }
 
     /**

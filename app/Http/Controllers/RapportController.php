@@ -19,6 +19,8 @@ class RapportController extends Controller
         $unite = request()->user()->unite;
         $alerte = Produit::produitsEnAlerte()->count();
 
+        $amortissements= $unite->equipements->sum('amortissement_mensuel');
+
         /* Changement de mois */ 
         $mois = $request->mois ?? now()->month;
         $annee = $request->annee ?? now()->year;
@@ -161,6 +163,6 @@ class RapportController extends Controller
             $yearCategories = $yearTopProduits->pluck('produit');
             $yearAmounts = $yearTopProduits->pluck('total');
 
-        return view('dashboard.analyses.index', compact('commandesMoisLabels','commandesMoisData','caLabels','caData','topProduitsLabels','topProduitsData','statutLabels','statutData', 'unite','alerte','monthlyData','quarterlyData','yearlyData','categories', 'amounts','yearAmounts','yearCategories'));
+        return view('dashboard.analyses.index', compact('amortissements','commandesMoisLabels','commandesMoisData','caLabels','caData','topProduitsLabels','topProduitsData','statutLabels','statutData', 'unite','alerte','monthlyData','quarterlyData','yearlyData','categories', 'amounts','yearAmounts','yearCategories'));
     }
 }

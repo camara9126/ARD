@@ -72,7 +72,7 @@
                                                             <tr>
                                                                 <td>{{$u->name}}</td>
                                                                 <td>{{$u->email}}</td>
-                                                                <td>{{$u->unite->nom}}</td>
+                                                                <td><b>{{$u->unite->nom}}</b></td>
                                                                 <td>{{$u->role}}</td>
                                                                 <td>{{$u->created_at}}</td>
                                                             </tr>
