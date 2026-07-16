@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Achat;
+use App\Models\AchatDetail;
 use App\Models\Categorie;
 use App\Models\Fournisseur;
 use App\Models\MouvementStock;
+use Illuminate\Support\Str;
 use App\Models\Produit;
+use App\Models\Unite;
 use Illuminate\Http\Request;
 
 class ProduitController extends Controller
@@ -75,6 +79,36 @@ class ProduitController extends Controller
             'stock' => $request->stock ?? 0,
         ]);
 
+        IF($request->prix_achat) {
+            // Création du bon de commande
+            $achat = Achat::create([
+                'unite_id' => request()->user()->unite_id,
+                'reference' => 'FAC/ACT-' . strtoupper(Str::random(6)),
+                'fournisseur_id' => $request->fournisseur_id,
+                'total' => 0,
+                'note' => $request->note ?? 'null',
+                'statut' => 'recu'
+            ]);
+
+            $total = 0;       
+
+            // Récupération de l'unite
+            $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
+
+            $ligneTotal = $produit->stock * $produit->prix_vente;
+
+            AchatDetail::create([
+                'unite_id' => $unite->id,
+                'achat_id' => $achat->id,
+                'produit_id' => $produit->id,
+                'quantite' => $produit->stock,
+                'prix_unitaire' => $produit->prix_vente,
+                'total' => $ligneTotal,
+            ]);
+
+            $total += $ligneTotal;
+    
+        }
 
         // Enregistrement d'un historique de mouvement
         MouvementStock::create([
