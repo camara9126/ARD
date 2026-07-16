@@ -316,9 +316,9 @@
         }
         
         .card-title {
-            font-size: 18px;
+            font-size: 15px;
             color: var(--gray-color);
-            font-weight: 500;
+            font-weight: 400;
         }
         
         .card-icon {
@@ -353,8 +353,8 @@
         }
         
         .card-value {
-            font-size: 20px;
-            font-weight: 300;
+            font-size: 15px;
+            font-weight: 250;
             margin-bottom: 10px;
         }
         
@@ -370,7 +370,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         .trend-up {
