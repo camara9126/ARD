@@ -157,7 +157,7 @@
                                                         <!-- NOTE -->
                                                         <div class="mt-3 text-center fw-bold">
                                                             <label class="">Montant Global</label>
-                                                            <input type="number" name="montant" class="form-control" placeholder="Veuillez saisir le nouveau montant">
+                                                            <input type="number" name="montant" class="form-control" placeholder="Veuillez saisir le nouveau montant" require>
                                                         </div>
 
                                                         <button type="submit" class="btn btn-success mt-3">

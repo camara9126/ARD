@@ -56,7 +56,7 @@
                                                         </ul>
                                                     </div>
                                                 @endif
-                                                
+
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
@@ -71,7 +71,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Reference</th>
-                                                                <th>Client</th>
+                                                                <th>Ref/Vente</th>
                                                                 <th>Montant</th>
                                                                 <th>Date de paiement</th>
                                                                 <!--<th>Mode de paiement</th>-->
@@ -82,7 +82,7 @@
                                                             @forelse($paiements as $p)
                                                             <tr>
                                                                 <td>{{$p->reference}}</td>
-                                                                <td>{{optional($p->vente->client)->nom ?? '-'}}</td>
+                                                                <td>{{$p->vente->reference ?? '-'}}</td>
                                                                 <td>{{max(0, number_format($p->montant, 0, ',',' '))}} XOF</td>
                                                                 <td>{{$p->date_paiement}}</td>
                                                                 <!--<td>{{$p->mode_paiement}}</td>-->

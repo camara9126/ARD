@@ -343,12 +343,23 @@ class VenteController extends Controller
             ]);
 
             // Mise à jour du statut de la vente
-            $paiements = $vente->paiements()->where('statut', 'valide')->get();
+            $paiements = $vente->paiements()->with('recette')->where('statut', 'valide')->get();
 
-            if ($paiements) {
-                $vente->paiements()->where('statut', 'valide')->delete();
+                if ($paiements->isNotEmpty()) {
 
-                $newPaiement= Paiement::create([
+                    // Récupérer les IDs des recettes à supprimer
+                    $recetteIds = $paiements->pluck('recette.id')->filter()->toArray();
+              
+                    // Supprimer les recettes
+                    if (!empty($recetteIds)) {
+                        Recette::whereIn('id', $recetteIds)->delete();
+                    }
+                    
+                    // Supprimer les paiements
+                    $paiements->each->delete();
+
+
+                    $newPaiement= Paiement::create([
                         'vente_id' => $vente->id,
                         'unite_id' => request()->user()->unite_id,
                         'user_id' => request()->user()->id,
@@ -358,14 +369,27 @@ class VenteController extends Controller
                         'statut' => 'valide',
                         'reference' => 'PAY-' . time()
                     ]);
-            }
+                }
 
-            $vente = $newPaiement->vente;
 
             $totalPaye = $vente->paiements()->where('statut', 'valide')->sum('montant');
 
             $vente->statut = $totalPaye == 0 ? 'impayee' : ($totalPaye < $vente->total_ttc ? 'partielle' : 'payee');
             $vente->save();
+
+            if($vente->statut == 'payee') {
+                $newRecette= Recette::create([
+                    'user_id' => $request->user()->id,
+                    'unite_id' => request()->user()->unite_id,
+                    'paiement_id' => $newPaiement->id,
+                    'reference' => 'REC-' . now()->timestamp,
+                    'libelle' => 'Recette vente ' . $vente->reference,
+                    'montant' => $vente->total_ttc,
+                    'date_recette' => now(),
+                    'mode_paiement' => 'cash',
+                    'statut' => 'recu',
+                ]);
+            }
 
             DB::commit();
             return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
