@@ -110,23 +110,13 @@
                                                                             </a>
                                                                         </div>
                                                                         <div class="col-4">
-                                                                            @if($p->statut)
-                                                                                <form action="{{route('produit.destroy', $p->id)}}" type="button" method="post" onsubmit="return confirm('Desactiver ?')">
-                                                                                    @csrf
-                                                                                    @method('DELETE')
-                                                                                    <button type="submit" class="badge bg-danger" title="desactiver">
-                                                                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                                                                    </button>
-                                                                                </form>
-                                                                            @else
-                                                                                <form action="{{route('produit.destroy', $p->id)}}" type="button" method="post" onsubmit="return confirm('Activer ?')">
-                                                                                    @csrf
-                                                                                    @method('DELETE')
-                                                                                    <button type="submit" class="badge bg-success" title="activer">
-                                                                                        <i class="fa-solid fa-check" aria-hidden="true"></i>
-                                                                                    </button>
-                                                                                </form>
-                                                                                @endif 
+                                                                            <form action="{{route('produit.destroy', $p->id)}}" type="button" method="post" onsubmit="return confirm('Supprimer ?')">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" class="badge bg-danger" title="desactiver">
+                                                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                                                </button>
+                                                                            </form>
                                                                         </div>
                                                                     </div>       
                                                                 </td>                                                       

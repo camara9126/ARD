@@ -187,15 +187,16 @@ class ProduitController extends Controller
     public function destroy(string $id)
     {
         $produit= Produit::findorFail($id);
+        $produit->delete();
 
-        if($produit->statut == true) {
-             $produit->update(['statut' => false]);
+        // if($produit->statut == true) {
+        //      $produit->update(['statut' => false]);
 
-             return redirect()->route('produit.index')->with('success', 'Produit désactivé');
-        } else
-            $produit->update(['statut' => true]);
+        //      return redirect()->route('produit.index')->with('success', 'Produit désactivé');
+        // } else
+        //     $produit->update(['statut' => true]);
 
-        return redirect()->route('produit.index')->with('success', 'Produit activé');
+        return redirect()->route('produit.index')->with('success', 'Produit suprimé');
     }
 
 

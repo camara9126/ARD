@@ -200,7 +200,7 @@ class VenteController extends Controller
                         'unite_id' => request()->user()->unite_id,
                         'paiement_id' => $paiements->id,
                         'reference' => 'REC-' . now()->timestamp,
-                        'libelle' => 'Paiement vente ' . $vente->reference,
+                        'libelle' => 'Recette vente ' . $vente->reference,
                         'montant' => $vente->total_ttc,
                         'date_recette' => now(),
                         'mode_paiement' => 'cash',
