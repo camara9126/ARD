@@ -78,7 +78,7 @@ class PaiementController extends Controller
             'unite_id' => request()->user()->unite_id,
             'paiement_id' => $paiement->id,
             'reference' => 'REC-' . now()->timestamp,
-            'libelle' => 'Paiement vente ' . $paiement->vente->reference,
+            'libelle' => 'Recette vente ' . $paiement->vente->reference,
             'montant' => $paiement->montant,
             'date_recette' => now(),
             'mode_paiement' => 'cash',

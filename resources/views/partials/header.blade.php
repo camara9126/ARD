@@ -186,6 +186,13 @@
                                                 </a>
                                             </li>
                                             <li class="">
+                                                <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Point de vente</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class="">
                                                 <a href="{{ route('client.index') }}" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                                     <span class="pcoded-mtext">Clients</span>

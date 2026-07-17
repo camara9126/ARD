@@ -194,7 +194,19 @@ class VenteController extends Controller
 
 
                 // 2. Création automatique de la recette
-                if($vente->statut == 'payee') {
+                if($request->montant > 0) {
+                    Recette::create([
+                        'user_id' => $request->user()->id,
+                        'unite_id' => request()->user()->unite_id,
+                        'paiement_id' => $paiements->id,
+                        'reference' => 'REC-' . now()->timestamp,
+                        'libelle' => 'Recette vente ' . $vente->reference,
+                        'montant' => $request->montant,
+                        'date_recette' => now(),
+                        'mode_paiement' => 'cash',
+                        'statut' => 'recu',
+                    ]);
+                } else {
                     Recette::create([
                         'user_id' => $request->user()->id,
                         'unite_id' => request()->user()->unite_id,
@@ -207,7 +219,7 @@ class VenteController extends Controller
                         'statut' => 'recu',
                     ]);
                 }
-           
+
             DB::commit();
             return redirect()->route('vente.index')->with('success', 'Vente effectuée avec succès');
 
@@ -345,31 +357,31 @@ class VenteController extends Controller
             // Mise à jour du statut de la vente
             $paiements = $vente->paiements()->with('recette')->where('statut', 'valide')->get();
 
-                if ($paiements->isNotEmpty()) {
+            if ($paiements->isNotEmpty()) {
 
-                    // Récupérer les IDs des recettes à supprimer
-                    $recetteIds = $paiements->pluck('recette.id')->filter()->toArray();
-              
-                    // Supprimer les recettes
-                    if (!empty($recetteIds)) {
-                        Recette::whereIn('id', $recetteIds)->delete();
-                    }
-                    
-                    // Supprimer les paiements
-                    $paiements->each->delete();
-
-
-                    $newPaiement= Paiement::create([
-                        'vente_id' => $vente->id,
-                        'unite_id' => request()->user()->unite_id,
-                        'user_id' => request()->user()->id,
-                        'montant' => $request->montant,
-                        'mode_paiement' => 'cash',
-                        'date_paiement' => now(),
-                        'statut' => 'valide',
-                        'reference' => 'PAY-' . time()
-                    ]);
+                // Récupérer les IDs des recettes à supprimer
+                $recetteIds = $paiements->pluck('recette.id')->filter()->toArray();
+            
+                // Supprimer les recettes
+                if (!empty($recetteIds)) {
+                    Recette::whereIn('id', $recetteIds)->delete();
                 }
+                
+                // Supprimer les paiements
+                $paiements->each->delete();
+
+
+                $newPaiement= Paiement::create([
+                    'vente_id' => $vente->id,
+                    'unite_id' => request()->user()->unite_id,
+                    'user_id' => request()->user()->id,
+                    'montant' => $request->montant,
+                    'mode_paiement' => 'cash',
+                    'date_paiement' => now(),
+                    'statut' => 'valide',
+                    'reference' => 'PAY-' . time()
+                ]);
+            }
 
 
             $totalPaye = $vente->paiements()->where('statut', 'valide')->sum('montant');
@@ -377,19 +389,18 @@ class VenteController extends Controller
             $vente->statut = $totalPaye == 0 ? 'impayee' : ($totalPaye < $vente->total_ttc ? 'partielle' : 'payee');
             $vente->save();
 
-            if($vente->statut == 'payee') {
-                $newRecette= Recette::create([
-                    'user_id' => $request->user()->id,
-                    'unite_id' => request()->user()->unite_id,
-                    'paiement_id' => $newPaiement->id,
-                    'reference' => 'REC-' . now()->timestamp,
-                    'libelle' => 'Recette vente ' . $vente->reference,
-                    'montant' => $vente->total_ttc,
-                    'date_recette' => now(),
-                    'mode_paiement' => 'cash',
-                    'statut' => 'recu',
-                ]);
-            }
+            // Creation recette
+            $newRecette= Recette::create([
+                'user_id' => $request->user()->id,
+                'unite_id' => request()->user()->unite_id,
+                'paiement_id' => $newPaiement->id,
+                'reference' => 'REC-' . now()->timestamp,
+                'libelle' => 'Recette vente ' . $vente->reference,
+                'montant' => $request->montant,
+                'date_recette' => now(),
+                'mode_paiement' => 'cash',
+                'statut' => 'recu',
+            ]);
 
             DB::commit();
             return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
@@ -405,7 +416,10 @@ class VenteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $vente = Vente::with('client', 'items')->findOrFail($id);
+        $vente->delete();
+
+        return redirect()->route('vente.index')->with('success', 'Vente supprimée avec succès');
     }
 
     // Liste de factures
