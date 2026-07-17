@@ -322,18 +322,6 @@
                                     </li>
                                 </ul> 
 
-                                <hr>
-
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('assistance') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-cog"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext">Supports & Assistance</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul> 
-
                             @elseif(Auth::user()->role == 'admin')
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="">
@@ -374,6 +362,16 @@
                                         </a>
                                     </li>
                                 </ul> -->
+
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="">
+                                        <a href="{{ route('assistance') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-cog"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext">Supports & Assistance</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul> 
                             @endif
 
                         </div>

@@ -12,7 +12,7 @@ class ChargeFixeController extends Controller
      */
     public function index()
     {
-        $charges = ChargeFixe::where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(50);
+        $charges = ChargeFixe::where('unite_id', request()->user()->unite_id)->latest()->paginate(10);
 
         return view('dashboard.chargeFixe.index', compact('charges'));
     }

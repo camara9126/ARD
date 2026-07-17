@@ -67,97 +67,96 @@
                                                                 <th>Statut</th>
                                                             </tr>
                                                         </thead>
-                                                            <tbody>
-                                                                @forelse($recettes as $d)
-                                                                <tr>
-                                                                    <td>{{$d->reference}}</td>
-                                                                    <td>{{$d->date_recette}}</td>
-                                                                    <td>{{$d->libelle}}</td>
-                                                                    <td>{{number_format($d->montant, 0, ',',' ')}} XOF</td>
-                                                                    <td>
-                                                                        <span class="badge bg-{{ $d->statut == 'recu' ? 'success' : 'danger' }}">
-                                                                            {{ ucfirst($d->statut) }}
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                @empty
+                                                        <tbody>
+                                                            @forelse($recettes as $d)
+                                                            <tr>
+                                                                <td>{{$d->reference}}</td>
+                                                                <td>{{$d->date_recette}}</td>
+                                                                <td>{{$d->libelle}}</td>
+                                                                <td>{{number_format($d->montant, 0, ',',' ')}} XOF</td>
+                                                                <td>
+                                                                    <span class="badge bg-{{ $d->statut == 'recu' ? 'success' : 'danger' }}">
+                                                                        {{ ucfirst($d->statut) }}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            @empty
                                                                 <tr>
                                                                     <td colspan="7" align="center">Donnee vide !</td>
                                                                 </tr>
-                                                                @endforelse
-                                                            </tbody>
-                                                        </table>    
-                                                    </div>
+                                                            @endforelse
+                                                        </tbody>
+                                                    </table>    
                                                     <div class="d-flex justify-content-center mt-4">
                                                         {{$recettes->links()}}
                                                     </div>
+
                                                     <!-- Modal paiement -->
                                                     <div class="modal fade" id="recetteModal" tabindex="-1">
                                                         <div class="modal-dialog">
-                                                        <form action="{{ route('recette.store') }}" method="POST" class="contact-form">
-                                                            @csrf
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">recette</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-
-                                                                        <!-- Libellé -->
-                                                                        <div class="col-12 mb-3">
-                                                                            <label class="form-label">Libellé de la recette</label>
-                                                                            <input type="text" name="libelle" class="form-control" placeholder="Ex : Achat marchandises" required>
-                                                                        </div>
-
-                                                                        <!-- Montant -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <label class="form-label">Montant (FCFA)</label>
-                                                                            <input type="number" name="montant" class="form-control" step="0.01" required>
-                                                                        </div>
-
-                                                                        <!-- Date -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <label class="form-label">Date de la recette</label>
-                                                                            <input type="date" name="date_recette" class="form-control" value="{{ date('Y-m-d') }}" required>
-                                                                        </div>
-
-                                                                        <!-- Mode de paiement -->
-                                                                        <div class="col-12 mb-3">
-                                                                            <label class="form-label">Mode de paiement</label>
-                                                                            <select name="mode_paiement" class="form-control" required>
-                                                                                <option value="">-- Choisir --</option>
-                                                                                <option value="cash">Cash</option>
-                                                                                <option value="orange_money">Orange Money</option>
-                                                                                <option value="wave">Wave</option>
-                                                                                <option value="cheque">Cheque</option>
-                                                                                <option value="autre">Autre</option>
-                                                                            </select>
-                                                                        </div>
-
-                                                                        <!-- Description -->
-                                                                        <div class="col-md-12 mb-3">
-                                                                            <label class="form-label">Description (optionnelle)</label>
-                                                                            <textarea name="description" class="form-control" rows="3" placeholder="Détails supplémentaires..."></textarea>
-                                                                        </div>
-
+                                                            <form action="{{ route('recette.store') }}" method="POST" class="contact-form">
+                                                                @csrf
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">recette</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                                     </div>
-                                                                    <!-- Bouton -->
-                                                                    <div class="text-end">
-                                                                        <button type="submit" class="btn btn-primary">
-                                                                            💾 Enregistrer la recette
-                                                                        </button>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+
+                                                                            <!-- Libellé -->
+                                                                            <div class="col-12 mb-3">
+                                                                                <label class="form-label">Libellé de la recette</label>
+                                                                                <input type="text" name="libelle" class="form-control" placeholder="Ex : Achat marchandises" required>
+                                                                            </div>
+
+                                                                            <!-- Montant -->
+                                                                            <div class="col-6 mb-3">
+                                                                                <label class="form-label">Montant (FCFA)</label>
+                                                                                <input type="number" name="montant" class="form-control" step="0.01" required>
+                                                                            </div>
+
+                                                                            <!-- Date -->
+                                                                            <div class="col-6 mb-3">
+                                                                                <label class="form-label">Date de la recette</label>
+                                                                                <input type="date" name="date_recette" class="form-control" value="{{ date('Y-m-d') }}" required>
+                                                                            </div>
+
+                                                                            <!-- Mode de paiement -->
+                                                                            <div class="col-12 mb-3">
+                                                                                <label class="form-label">Mode de paiement</label>
+                                                                                <select name="mode_paiement" class="form-control" required>
+                                                                                    <option value="">-- Choisir --</option>
+                                                                                    <option value="cash">Cash</option>
+                                                                                    <option value="orange_money">Orange Money</option>
+                                                                                    <option value="wave">Wave</option>
+                                                                                    <option value="cheque">Cheque</option>
+                                                                                    <option value="autre">Autre</option>
+                                                                                </select>
+                                                                            </div>
+
+                                                                            <!-- Description -->
+                                                                            <div class="col-md-12 mb-3">
+                                                                                <label class="form-label">Description (optionnelle)</label>
+                                                                                <textarea name="description" class="form-control" rows="3" placeholder="Détails supplémentaires..."></textarea>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <!-- Bouton -->
+                                                                        <div class="text-end">
+                                                                            <button type="submit" class="btn btn-primary">
+                                                                                💾 Enregistrer la recette
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </form>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>                                                                    
                                         </div>
-                                    </div>
-                                       
+                                    </div>    
                                 </div>
                             </div>
                         </div>

@@ -425,7 +425,7 @@ class VenteController extends Controller
     // Liste de factures
     public function facture()
     {
-        $factures = Vente::where('unite_id', request()->user()->unite_id)->with('client')->latest()->simplePaginate(10); 
+        $factures = Vente::where('unite_id', request()->user()->unite_id)->with('client')->latest()->paginate(10); 
 
         return view('dashboard.ventes.factures', compact('factures'));
     }

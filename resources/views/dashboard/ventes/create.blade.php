@@ -294,20 +294,22 @@
                                                         @endforeach
                                                     </div>
                                                 @endif
+
+                                                @if(Session::has('success'))
+                                                    <div class="alert alert-success text-center" role="alert">
+                                                        {{ Session::get('success') }}
+                                                    </div>
+                                                @elseif(Session::has('danger'))
+                                                    <div class="alert alert-danger" role="alert">
+                                                        {{ Session::get('danger') }}
+                                                    </div>
+                                                @endif
                                                 
                                                 <h2 class="text-center mb-3">Nouvelle vente</h2>
                                                 <br>
                                                 <form action="{{ route('vente.store') }}" method="POST">
                                                     @csrf
-                                                    @if(Session::has('success'))
-                                                        <div class="alert alert-success text-center" role="alert">
-                                                            {{ Session::get('success') }}
-                                                        </div>
-                                                    @elseif(Session::has('danger'))
-                                                        <div class="alert alert-danger" role="alert">
-                                                            {{ Session::get('danger') }}
-                                                        </div>
-                                                    @endif
+                                                    
                                                     <div class="pos-two-columns">
 
                                                         <!-- COLONNE GAUCHE : Produits + Panier -->

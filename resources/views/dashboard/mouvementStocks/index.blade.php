@@ -56,7 +56,7 @@
                                                         </ul>
                                                     </div>
                                                 @endif
-                                                
+
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success text-center" role="alert">
                                                         {{ Session::get('success') }}
@@ -99,6 +99,9 @@
                                                             @endforelse
                                                         </tbody>
                                                     </table>
+                                                    <div class="d-flex justify-content-center mt-4">
+                                                        {{$mouvements->links()}}
+                                                    </div>
 
                                                     <!-- Modal Nouveau mouvement stck-->
                                                     <div class="modal fade" id="exampleModal" tabindex="-1">

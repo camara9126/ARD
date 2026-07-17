@@ -13,7 +13,7 @@ class RecetteController extends Controller
      */
     public function index()
     {
-        $recettes = Recette::where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(50);
+        $recettes = Recette::where('unite_id', request()->user()->unite_id)->latest()->paginate(10);
 
         $paiements = Paiement::where('unite_id', request()->user()->unite_id)->where('statut', 'valide')->with('vente.client')->orderBy('created_at', 'desc')->get();
 

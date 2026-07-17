@@ -13,7 +13,7 @@ class MouvementStockController extends Controller
      */
     public function index()
     {
-        $mouvements= MouvementStock::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->get();
+        $mouvements= MouvementStock::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->paginate(30);
 
         $produits= Produit::where('unite_id', request()->user()->unite_id)->latest()->get();
 

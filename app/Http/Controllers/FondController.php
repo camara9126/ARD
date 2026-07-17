@@ -12,7 +12,7 @@ class FondController extends Controller
      */
     public function index()
     {
-        $fonds = Fonds::where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(50);
+        $fonds = Fonds::where('unite_id', request()->user()->unite_id)->latest()->paginate(10);
 
         return view('admin.fonds.index', compact('fonds'));
     }

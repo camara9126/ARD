@@ -20,7 +20,7 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        $produits= Produit::with('fournisseur')->where('unite_id', request()->user()->unite_id)->latest()->simplePaginate(10);
+        $produits= Produit::with('fournisseur')->where('unite_id', request()->user()->unite_id)->latest()->paginate(10);
         $categorie= Categorie::where('unite_id', request()->user()->unite_id)->latest()->get();
         $fournisseur = Fournisseur::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->paginate(10);
         return view('dashboard.produits.index', compact('produits', 'categorie','fournisseur'));
