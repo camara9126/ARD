@@ -188,7 +188,7 @@
                                             <li class="">
                                                 <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Point de vente</span>
+                                                    <span class="pcoded-mtext">Nouvelle vente</span>
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>

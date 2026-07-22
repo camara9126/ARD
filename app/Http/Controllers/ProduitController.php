@@ -92,7 +92,7 @@ class ProduitController extends Controller
                     $intrant = ProduitIntrant::where('id', $item['id'])->lockForUpdate()->first(); // verrou stock
 // dd($intrant);
                     if ($intrant->quantite < $item['quantite']) {
-                        dd('Quantite insuffisant dans ce dépôt');
+                        throw new \Exception('Quantite insuffisant dans ce dépôt');
                     }
 
                     // Mise a jour quantite Intrant
