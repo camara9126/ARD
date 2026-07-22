@@ -10,8 +10,10 @@ use App\Models\Fournisseur;
 use App\Models\MouvementStock;
 use Illuminate\Support\Str;
 use App\Models\Produit;
+use App\Models\ProduitIntrant;
 use App\Models\Unite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProduitController extends Controller
 {
@@ -22,8 +24,9 @@ class ProduitController extends Controller
     {
         $produits= Produit::with('fournisseur')->where('unite_id', request()->user()->unite_id)->latest()->paginate(10);
         $categorie= Categorie::where('unite_id', request()->user()->unite_id)->latest()->get();
-        $fournisseur = Fournisseur::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->paginate(10);
-        return view('dashboard.produits.index', compact('produits', 'categorie','fournisseur'));
+        $fournisseur = Fournisseur::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->get();
+        $intrants= ProduitIntrant::where('unite_id', request()->user()->unite_id)->latest()->get();
+        return view('dashboard.produits.index', compact('produits', 'categorie','fournisseur', 'intrants'));
     }
 
     /**
@@ -49,94 +52,82 @@ class ProduitController extends Controller
             'stock' => 'integer|min:1',
             'categorie',
             'fournisseur',
+            'intrants' => 'array|min:1',
+            'intrants.*.id',
+            'intrants.*.quantite',
         ]);
+// dd($request);
 
-        // Creation de categorie et ou fournisseur
-        if($request->categorie) {
-            
-            $categorie= Categorie::create([
-                'nom' => $request->categorie
-            ]);
+        DB::beginTransaction();
+    
+        try {
 
-        }
+            //Creation de fournisseur
+            if($request->fournisseur) {
+                
+                $fournisseur= Fournisseur::create([
+                    'nom' => $request->fournisseur,
+                    'unite_id' => $request->user()->unite_id,
+                ]);
+            }
 
-        //Creation de fournisseur
-        if($request->fournisseur) {
-            
-            $fournisseur= Fournisseur::create([
-                'nom' => $request->fournisseur
-            ]);
-        }
 
-        $produit= Produit::create([
-            'unite_id' => $request->user()->unite_id,
-            'fournisseur_id' => $request->fournisseur_id ?? $fournisseur->id ?? null,
-            'categorie_id' => $request->categorie_id ?? $categorie->id ?? null,
-            'nom' => $request->nom,
-            'code' => $this->generateCode($request->user()->unite_id),
-            'prix_achat' => $request->prix_achat ?? 0,
-            'prix_vente' => $request->prix_vente,
-            'stock_min' => $request->stock_min ?? 0,
-            'stock' => $request->stock ?? 0,
-        ]);
-
-        IF($request->prix_achat) {
-            // Création du bon de commande
-            $achat = Achat::create([
-                'unite_id' => request()->user()->unite_id,
-                'reference' => 'FAC-ACT-' . strtoupper(Str::random(6)),
-                'fournisseur_id' => $request->fournisseur_id,
-                'total' => 0,
-                'note' => $request->note ?? 'null',
-                'statut' => 'recu'
-            ]);
-
-            $total = 0;       
-
-            // Récupération de l'unite
             $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
-            $ligneTotal = $produit->stock * $produit->prix_achat;
+            if($unite->categorie_id == 1) {
 
-            AchatDetail::create([
-                'unite_id' => $unite->id,
-                'achat_id' => $achat->id,
-                'produit_id' => $produit->id,
-                'quantite' => $produit->stock,
-                'prix_unitaire' => $produit->prix_achat,
-                'total' => $ligneTotal,
-            ]);
+                $produit= Produit::create([
+                    'unite_id' => $request->user()->unite_id,
+                    'fournisseur_id' => $request->fournisseur_id ?? $fournisseur->id ?? null,
+                    'categorie_id' => $request->categorie_id ?? $categorie->id ?? null,
+                    'nom' => $request->nom,
+                    'code' => $this->generateCode($request->user()->unite_id),
+                    'prix_vente' => $request->prix_vente,
+                    'stock_min' => $request->stock_min ?? 0,
+                    'stock' => $request->stock ?? 0,
+                ]);
 
-            $total += $ligneTotal;
-    
-            // Mise à jour du total
-            $achat->update([
-                'total' => $total
-            ]);
+                foreach ($request->intrants as $item) {
+
+                    $intrant = ProduitIntrant::where('id', $item['id'])->lockForUpdate()->first(); // verrou stock
+// dd($intrant);
+                    if ($intrant->quantite < $item['quantite']) {
+                        dd('Quantite insuffisant dans ce dépôt');
+                    }
+
+                    // Mise a jour quantite Intrant
+                    $intrant->decrement('quantite', $item['quantite']);
+
+                    // Enregistrememt historique stock
+                    MouvementStock::create([
+                        'unite_id' => $request->user()->unite_id,
+                        'designation' => $intrant->designation,
+                        'type' => 'sortie',
+                        'quantite' => $item['quantite'],
+                        'reference' => 'MVT/SRT-' . now()->timestamp,
+                        'user_id' => $request->user()->id,
+                    ]);
+
+                }
+
+                // Enregistrement d'un historique de mouvement
+                MouvementStock::create([
+                    'unite_id' => $request->user()->unite_id,
+                    'produit_id' => $produit->id,
+                    'type' => 'entree',
+                    'quantite' => $request->stock ?? 100,
+                    'reference' => 'MVT-PRD-' . now()->timestamp,
+                    'user_id' => $request->user()->id,
+                ]);
+            } 
+
+            DB::commit();
+            return redirect()->route('produit.index')->with('success', 'Produit ajouté avec succès');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('danger', 'Erreur lors de la conversion: ' . $e->getMessage());
         }
-
-        // Enregistrement d'un historique de mouvement
-        MouvementStock::create([
-            'unite_id' => $request->user()->unite_id,
-            'produit_id' => $produit->id,
-            'type' => 'entree',
-            'quantite' => $request->stock ?? 100,
-            'reference' => 'MVT-PRD-' . now()->timestamp,
-            'user_id' => $request->user()->id,
-        ]);
-
-         Depense::create([
-                'unite_id' => $unite->id,
-                'user_id' => request()->user()->id,
-                'reference' => 'DEP-' . now()->timestamp,
-                'libelle' => 'Achat - '. $achat->reference,
-                'description' => 'Achat produit',
-                'montant' => $achat->total,
-                'date_depense' => now(),
-                'mode_paiement' => 'cash',
-            ]);
-
-        return redirect()->route('produit.index')->with('success', 'Produit ajouté avec succès');
     }
 
     /**

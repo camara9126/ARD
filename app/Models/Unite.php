@@ -40,5 +40,10 @@ class Unite extends Model
     {
         return $this->hasMany(Equipement::class);
     }
+
+    public function categorie() 
+    {
+        return $this->belongsTo(CategorieUnite::class);
+    }
     
 }

@@ -8,6 +8,7 @@ use App\Models\Depense;
 use App\Models\Fournisseur;
 use App\Models\MouvementStock;
 use App\Models\Produit;
+use App\Models\ProduitIntrant;
 use App\Models\Unite;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -94,6 +95,12 @@ class AchatController extends Controller
                     ]);
 
                     $total += $ligneTotal;
+                
+                    ProduitIntrant::create([
+                        'unite_id' => $unite->id,
+                        'designation' => $item['nom'],
+                        'quantite' => $item['quantite'],
+                    ]);
 
                     // Mise a jour du stock
                     MouvementStock::create([
