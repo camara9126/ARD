@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -11,7 +12,9 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //
+        $categories= Categorie::latest()->get();
+
+        return view('admin.categorieUnite.index', compact('categories'));
     }
 
     /**
@@ -27,7 +30,18 @@ class CategorieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        Categorie::create([
+            'nom' => $request->nom,
+            'description' => $request->adresse,
+            'unite_id' => request()->user()->unite_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Categorie ajouté');
     }
 
     /**
@@ -51,7 +65,19 @@ class CategorieController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $categories= Categorie::findOrFail($id);
+
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $categories->update($request->only(
+            'nom',
+            'description'
+        ));
+
+        return redirect()->back()->with('success', 'Categorie modifié');
     }
 
     /**
@@ -59,6 +85,9 @@ class CategorieController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $categories= Categorie::findOrFail($id);
+        $categories->delete();
+
+        return redirect()->back()->with('success', 'Categorie supprimé');
     }
 }

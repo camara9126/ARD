@@ -218,13 +218,23 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
-                                            <li class=" ">
+                                            @if(Auth::user()->unite->categorie->nom == 'service')
+                                                <li class=" ">
                                                 <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Produits</span>
+                                                    <span class="pcoded-mtext">Services</span>
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
+                                            @else
+                                                <li class=" ">
+                                                    <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Produits</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
                                             <li class=" ">
                                                 <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -343,17 +353,17 @@
                                     </li>
                                 </ul>
 
-                                <!-- <ul class="pcoded-item pcoded-left-item">
+                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="">
-                                        <a href="{{ route('fond.index') }}" class="waves-effect waves-dark">
+                                        <a href="{{ route('categorie.index') }}" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>M</b></span>
-                                            <span class="pcoded-mtext">Fonds</span>
+                                            <span class="pcoded-mtext">Categorie Unite</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                 </ul>
 
-                                <ul class="pcoded-item pcoded-left-item">
+                                <!--<ul class="pcoded-item pcoded-left-item">
                                     <li class="">
                                         <a href="{{ route('depense.index') }}" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="fas fa-arrow-right-from-bracket"></i><b>M</b></span>

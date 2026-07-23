@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use App\Models\Depense;
 use App\Models\Unite;
 use App\Models\User;
@@ -57,7 +58,7 @@ class AdminController extends Controller
             $labels = $unites->pluck('nom')->toArray();
             $data = $unites->pluck('productivite')->toArray();
 
-            return view('dashboard', compact('repUnites','unites', 'labels', 'data', 'mois', 'annee', 'moisListe'));
+            return view('admin.dashboard', compact('repUnites','unites', 'labels', 'data', 'mois', 'annee', 'moisListe'));
     }
 
 
@@ -82,7 +83,9 @@ class AdminController extends Controller
     // Ajout Nouvelle Unite
     public function addUnite()
     {
-        return view('admin.unites.addUnite');
+        $categories= Categorie::latest()->get();
+
+        return view('admin.unites.addUnite', compact('categories'));
     }
 
     /**
@@ -104,6 +107,7 @@ class AdminController extends Controller
             'contact' => 'numeric|min:9',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'taux_tva' => 'nullable|numeric',
+            'categorie_id' => 'nullable',
             // Info User
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -125,7 +129,8 @@ class AdminController extends Controller
             'contact' => $request->contact,
             'logo' =>  $path ?? null,
             'statut' => 0,
-            'taux_tva' => $request->taux_tva ?? 0
+            'taux_tva' => $request->taux_tva ?? 0,
+            'categorie_id' => $request->categorie_id
          ]);
 
         //  Info User
@@ -138,7 +143,7 @@ class AdminController extends Controller
             'unite_id' => $unites->id
         ]);
 
-        return view('admin.unites.listeUnites', compact('unites'))->with('success', 'Unite cree avec success');
+        return redirect()->back()->with('success', 'Unite cree avec success');
 
     }
 

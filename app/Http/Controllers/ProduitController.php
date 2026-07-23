@@ -22,11 +22,13 @@ class ProduitController extends Controller
      */
     public function index()
     {
+        $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
+
         $produits= Produit::with('fournisseur')->where('unite_id', request()->user()->unite_id)->latest()->paginate(10);
         $categorie= Categorie::where('unite_id', request()->user()->unite_id)->latest()->get();
         $fournisseur = Fournisseur::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->get();
         $intrants= ProduitIntrant::where('unite_id', request()->user()->unite_id)->latest()->get();
-        return view('dashboard.produits.index', compact('produits', 'categorie','fournisseur', 'intrants'));
+        return view('dashboard.produits.index', compact('unite','produits', 'categorie','fournisseur', 'intrants'));
     }
 
     /**
@@ -62,19 +64,9 @@ class ProduitController extends Controller
     
         try {
 
-            //Creation de fournisseur
-            if($request->fournisseur) {
-                
-                $fournisseur= Fournisseur::create([
-                    'nom' => $request->fournisseur,
-                    'unite_id' => $request->user()->unite_id,
-                ]);
-            }
-
-
             $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
-            if($unite->categorie_id == 1) {
+            if($unite->categorie->id == 1) {
 
                 $produit= Produit::create([
                     'unite_id' => $request->user()->unite_id,
@@ -83,16 +75,17 @@ class ProduitController extends Controller
                     'nom' => $request->nom,
                     'code' => $this->generateCode($request->user()->unite_id),
                     'prix_vente' => $request->prix_vente,
-                    'stock_min' => $request->stock_min ?? 0,
+                    'stock_min' => $request->stock_min ?? 5,
                     'stock' => $request->stock ?? 0,
                 ]);
 
                 foreach ($request->intrants as $item) {
 
                     $intrant = ProduitIntrant::where('id', $item['id'])->lockForUpdate()->first(); // verrou stock
-// dd($intrant);
+                    // dd($intrant);
+
                     if ($intrant->quantite < $item['quantite']) {
-                        throw new \Exception('Quantite insuffisant dans ce dépôt');
+                        throw new \Exception('Quantite insuffisant dans cet intrant');
                     }
 
                     // Mise a jour quantite Intrant
@@ -104,29 +97,53 @@ class ProduitController extends Controller
                         'designation' => $intrant->designation,
                         'type' => 'sortie',
                         'quantite' => $item['quantite'],
-                        'reference' => 'MVT/SRT-' . now()->timestamp,
+                        'reference' => 'MVT/INT-' . now()->timestamp,
                         'user_id' => $request->user()->id,
                     ]);
 
                 }
 
-                // Enregistrement d'un historique de mouvement
-                MouvementStock::create([
+            } else {
+                //Creation de fournisseur
+                if($request->fournisseur) {
+                    
+                    $fournisseur= Fournisseur::create([
+                        'nom' => $request->fournisseur,
+                        'unite_id' => $request->user()->unite_id,
+
+                    ]);
+                }
+
+                $produit= Produit::create([
                     'unite_id' => $request->user()->unite_id,
-                    'produit_id' => $produit->id,
-                    'type' => 'entree',
-                    'quantite' => $request->stock ?? 100,
-                    'reference' => 'MVT-PRD-' . now()->timestamp,
-                    'user_id' => $request->user()->id,
+                    'fournisseur_id' => $request->fournisseur_id ?? $fournisseur->id ?? null,
+                    'categorie_id' => null,
+                    'nom' => $request->nom,
+                    'code' => $this->generateCode($request->user()->unite_id),
+                    'prix_achat' => $request->prix_achat,
+                    'prix_vente' => $request->prix_vente,
+                    'stock_min' => $request->stock_min ?? 5,
+                    'stock' => $request->stock ?? 0,
                 ]);
-            } 
+            }
+
+            // Enregistrement d'un historique de mouvement
+            MouvementStock::create([
+                'unite_id' => $request->user()->unite_id,
+                'produit_id' => $produit->id,
+                'type' => 'entree',
+                'quantite' => $request->stock,
+                'reference' => 'MVT/PRD-' . now()->timestamp,
+                'user_id' => $request->user()->id,
+            ]);
+
 
             DB::commit();
             return redirect()->route('produit.index')->with('success', 'Produit ajouté avec succès');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('danger', 'Erreur lors de la conversion: ' . $e->getMessage());
+            return redirect()->back()->with('danger', 'Erreur: ' . $e->getMessage());
         }
     }
 

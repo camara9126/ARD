@@ -80,7 +80,7 @@ use Illuminate\Support\Carbon;
                                             <li class="breadcrumb-item">
                                                 <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->categorie->nom }}</a>
                                             </li>
                                         </ul>
                                     </div>

@@ -16,7 +16,7 @@
                                             <li class="breadcrumb-item">
                                                 <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->nom }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -68,12 +68,26 @@
                                                 @endif
                                                 <form method="post" action="{{route('admin.store')}}" class="contact-form">
                                                     @csrf
-                                                    <h2 class="text-center mb-4">Formulaire de creation Unite</h2>
+                                                    <h1 class="text-center fw-bold mb-3">Information Unite</h1>
+
                                                     <div class="row">
-                                                        <div class="mb-3">
-                                                            <label for="role" class="form-label">Nom Unite</label>
-                                                            <input type="text" class="form-control" name="nom" required>
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3">
+                                                                <label for="role" class="form-label">Nom Unite</label>
+                                                                <input type="text" class="form-control" name="nom" required>
+                                                            </div>
                                                         </div>
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3">
+                                                                <label>Categorie Unite</label>
+                                                                <select name="categorie_id" class="form-control">
+                                                                        <option value="">-- Selectionner --</option>
+                                                                    @foreach($categories as $c)
+                                                                        <option value="{{ $c->id }}">{{ $c->nom }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div> 
                                                     </div>
 
                                                     <div class="row">
@@ -86,7 +100,7 @@
                                                         <div class="col-6">
                                                             <div class="mb-3">
                                                                 <label for="email" class="form-label">Adresse</label>
-                                                                <input type="text" class="form-control" name="adresse">
+                                                                <input type="text" class="form-control" name="adresse" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -126,7 +140,7 @@
                                                         <div class="col-6">
                                                             <div class="mb-3">
                                                                 <label for="email" class="form-label">Email</label>
-                                                                <input type="email" class="form-control" name="email">
+                                                                <input type="email" class="form-control" name="email" required>
                                                             </div>
                                                         </div>
                                                     </div>

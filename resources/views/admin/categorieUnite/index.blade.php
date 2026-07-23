@@ -16,7 +16,7 @@
                                             <li class="breadcrumb-item">
                                                 <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->categorie->nom }}</a>
+                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->nom }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -33,10 +33,10 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Clients</h5>
+                                                <h5>categories</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#clientModal">Nouveau client →</a>
+                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#categorieModal">Nouveau categorie →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -71,28 +71,26 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Nom</th>
-                                                                <th>Telephone</th>
-                                                                <th>Email</th>
-                                                                <th>Adresse</th>
+                                                                <th>Nombre inscrit</th>
+                                                                <th>Description</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @forelse($clients as $c)
+                                                            @forelse($categories as $c)
                                                             <tr>
                                                                 <td>{{$c->nom}}</td>
-                                                                <td>{{$c->telephone ?? 'Vide'}}</td>
-                                                                <td>{{$c->email ?? 'Vide'}}</td>
-                                                                <td>{{$c->adresse ?? 'Vide'}}</td>
+                                                                <td>{{$c->unite->count()}}</td>
+                                                                <td>{{$c->description ?? 'Vide'}}</td>
                                                                 <td>
                                                                     <div class="row">
                                                                         <div class="col-4">
-                                                                            <a href="" class="action-btn text-warning" data-bs-toggle="modal" data-id="{{ $c->id }}" data-name="{{ $c->nom }}" data-phone="{{ $c->telephone }}" data-email="{{ $c->email }}" data-adress="{{$c->adresse }}" data-bs-target="#clientEditModal" title="Modifier">
+                                                                            <a href="" class="action-btn text-warning" data-bs-toggle="modal" data-id="{{ $c->id }}" data-name="{{ $c->nom }}" data-description="{{ $c->description }}" data-bs-target="#categorieEditModal" title="Modifier">
                                                                                 <i class="fas fa-edit"></i>
                                                                             </a>
                                                                         </div>
                                                                         <div class="col-4">
-                                                                            <form action="{{route('client.destroy', $c->id)}}" type="button" method="post" onsubmit="return confirm('Supprimer ?')">
+                                                                            <form action="{{route('categorie.destroy', $c->id)}}" type="button" method="post" onsubmit="return confirm('Supprimer ?')">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                                 <button type="submit" class="text-danger" title="Supprimer">
@@ -122,36 +120,26 @@
                                                     </div>
                                                 @endif 
 
-                                                <!-- Nouveau client -->
-                                                <div class="modal fade" id="clientModal" tabindex="-1">
+                                                <!-- Nouveau categorie -->
+                                                <div class="modal fade" id="categorieModal" tabindex="-1">
                                                     <div class="modal-dialog">
-                                                        <form method="post" action="{{route('client.store')}}">
+                                                        <form method="post" action="{{route('categorie.store')}}">
                                                             @csrf
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Nouveau client</h5>
+                                                                    <h5 class="modal-title">Nouveau categorie</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                                 </div>
 
                                                                 <div class="modal-body">
                                                                     <div class="mb-3">
-                                                                        <label>Nom du client</label>
+                                                                        <label>Nom du categorie</label>
                                                                         <input type="text" name="nom" class="form-control" required>
                                                                     </div>
 
                                                                     <div class="mb-3">
-                                                                        <label>Téléphone</label>
-                                                                        <input type="text" name="telephone" class="form-control">
-                                                                    </div>
-
-                                                                    <div class="mb-3">
-                                                                        <label>Email</label>
-                                                                        <input type="email" name="email" class="form-control">
-                                                                    </div>
-
-                                                                    <div class="mb-3">
-                                                                        <label>Adresse</label>
-                                                                        <textarea name="adresse" id="" class="form-control"></textarea>
+                                                                        <label>Description</label>
+                                                                        <textarea name="description" class="form-control"></textarea>
                                                                     </div>
                                                                 </div>
 
@@ -163,40 +151,30 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- Edit client -->
-                                                <div class="modal fade" id="clientEditModal" tabindex="-1">
+                                                <!-- Edit categorie -->
+                                                <div class="modal fade" id="categorieEditModal" tabindex="-1">
                                                     <div class="modal-dialog">
 
-                                                        <form method="post" id="editClientForm" action="">
+                                                        <form method="post" id="editcategorieForm" action="">
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Modification client</h5>
+                                                                    <h5 class="modal-title">Modification categorie</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                                 </div>
 
                                                                 <div class="modal-body">
-                                                                    <input type="hidden" name="id" id="client_id">
+                                                                    <input type="hidden" name="id" id="categorie_id">
 
                                                                     <div class="mb-3">
-                                                                        <label>Nom du client</label>
+                                                                        <label>Nom du categorie</label>
                                                                         <input type="text" name="nom" id="name" class="form-control" required>
                                                                     </div>
 
                                                                     <div class="mb-3">
-                                                                        <label>Téléphone</label>
-                                                                        <input type="text" name="telephone" id="phone" class="form-control">
-                                                                    </div>
-
-                                                                    <div class="mb-3">
-                                                                        <label>Email</label>
-                                                                        <input type="email" name="email" id="email" class="form-control">
-                                                                    </div>
-
-                                                                    <div class="mb-3">
-                                                                        <label>Adresse</label>
-                                                                        <textarea name="adresse" id="adress" class="form-control" rows="3"></textarea>
+                                                                        <label>Description</label>
+                                                                        <textarea name="description" id="description" class="form-control" rows="3"></textarea>
                                                                     </div>
                                                                 </div>
 
@@ -216,11 +194,11 @@
                         </div>
                     </div>
 
-    <!--Recuperation des donnees client pour l'Edit -->
+    <!--Recuperation des donnees categorie pour l'Edit -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const modal = document.getElementById('clientEditModal');
-            const form = document.getElementById('editClientForm');
+            const modal = document.getElementById('categorieEditModal');
+            const form = document.getElementById('editcategorieForm');
 
             modal.addEventListener('show.bs.modal', function (event) {
                 const button = event.relatedTarget;
@@ -228,19 +206,15 @@
                 // Récupération des données
                 const id = button.getAttribute('data-id');
                 const name = button.getAttribute('data-name');
-                const email = button.getAttribute('data-email');
-                const phone = button.getAttribute('data-phone');
-                const adress = button.getAttribute('data-adress');
+                const description = button.getAttribute('data-description');
                 
                 // Remplir le formulaire
-                modal.querySelector('#client_id').value = id;
+                modal.querySelector('#categorie_id').value = id;
                 modal.querySelector('#name').value = name;
-                modal.querySelector('#phone').value = phone;
-                modal.querySelector('#email').value = email;
-                modal.querySelector('#adress').value = adress;
+                modal.querySelector('#description').value = description;
                 
                 // Mettre à jour l'action du formulaire avec l'ID récupéré
-                const updateUrl = `/client/${id}`;
+                const updateUrl = `/categorie/${id}`;
                 form.action = updateUrl;
             });
         });

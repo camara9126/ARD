@@ -256,7 +256,7 @@
                                             <li class="breadcrumb-item">
                                                 <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->categorie->nom }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -365,7 +365,8 @@
                                                                                     <img src="{{ asset('storage/'.$produit->image) }}" width="20">
                                                                                 </div>-->
                                                                                 <div class="product-name">{{ $produit->nom }}</div>
-                                                                                <div class="product-price">{{ number_format($produit->prix_vente, 0, ',', ' ') }} CFA</div>
+                                                                                <!-- <div class="product-price">{{ number_format($produit->prix_vente, 0, ',', ' ') }} CFA</div> -->
+                                                                                <div class="product-price"><b>{{ $produit->stock }}</b> en Stock</div>
                                                                             </div>
                                                                         @endforeach
                                                                     </div>

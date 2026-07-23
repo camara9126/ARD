@@ -43,7 +43,7 @@ class Unite extends Model
 
     public function categorie() 
     {
-        return $this->belongsTo(CategorieUnite::class);
+        return $this->belongsTo(Categorie::class);
     }
     
 }

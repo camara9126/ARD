@@ -46,19 +46,19 @@ class AchatController extends Controller
     {
         $request->validate([
             'fournisseur_id' => 'exists:fournisseurs,id',
-            'produits' ,
             'designation' ,
             'designation.*.nom',
             'designation.*.prix',
             'designation.*.quantite',
-            'produits.*.produit_id' ,
-            'produits.*.quantite' => 'nullable|numeric|min:1',
-            'produits.*.prix_vente' => 'nullable|numeric|min:0',
+            'produits' => 'array',
+            'produits.*.nom' ,
+            'produits.*.quantite' => 'numeric|min:1',
+            'produits.*.prix_achat' => 'numeric|min:0',
             'note' => 'nullable',
         ]);
 
          DB::beginTransaction();
-    //dd($request);
+        // dd($request);
         try {
 
             // Création du bon de commande
@@ -75,7 +75,7 @@ class AchatController extends Controller
 
 
             // Enregistrement du nouveau produit (designation) dans le AchatDetails
-            if($request->designation) {
+            if(!empty($request->designation)) {
 
                 foreach ($request->designation as $item) {
 
@@ -115,52 +115,93 @@ class AchatController extends Controller
 
                 }
                 
-            }
-
-            if($request->produits) {
+            } elseif(!empty($request->produits)) {
+                
                 foreach ($request->produits as $item) {
-
-                    // Récupération de l'produit original 
-                    $produit = produit::where('id', $item['produit_id'])->lockForUpdate()->first();
 
                     // Récupération de l'unite
                     $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
-                    $ligneTotal = $item['quantite'] * $item['prix_vente'];
-
-                    AchatDetail::create([
-                        'unite_id' => $unite->id,
-                        'achat_id' => $achat->id,
-                        'produit_id' => $item['produit_id'],
-                        'quantite' => $item['quantite'],
-                        'prix_unitaire' => $item['prix_vente'],
-                        'total' => $ligneTotal,
-                    ]);
+                    $ligneTotal = $item['quantite'] * $item['prix_achat'];
 
                     $total += $ligneTotal;
 
-                    // Ajouter la quantité au stock existant
-                    $ancienStock = $produit->stock;
-                    $nouvelleQuantite = $ancienStock + $item['quantite'];
-            
-                    $produit->update([
-                        'stock' => $nouvelleQuantite,
-                        'prix_achat' => $detail->prix_achat ?? $produit->prix_achat,
-                        'prix_vente' => $detail->prix_vente ?? $produit->prix_vente, 
-                        'fournisseur_id' => $achat->fournisseur_id, 
-                    ]);
 
+                    // Récupération du produit original rechercher
+                    $produit = produit::where('id', $item['nom'])->lockForUpdate()->first();
+                    // dd($produit);
 
-                    // Mise a jour du stock
-                    MouvementStock::create([
-                        'unite_id' => $unite->id,
-                        'user_id' => request()->user()->id,
-                        'produit_id' => $item['produit_id'],
-                        'type' => 'entree',
-                        'quantite' => $item['quantite'],
-                        'reference' => 'MVT-ACT-' . now()->timestamp,
-                    ]);
-                    
+                    // Verification si le produit existe
+                    if(!empty($produit)) {
+
+                        // Creation achat detail
+                        AchatDetail::create([
+                            'unite_id' => $unite->id,
+                            'achat_id' => $achat->id,
+                            'produit_id' => $item['nom'],
+                            'quantite' => $item['quantite'],
+                            'prix_unitaire' => $item['prix_achat'],
+                            'total' => $ligneTotal,
+                        ]);
+
+                        // Ajouter la quantité au stock existant
+                        $ancienStock = $produit->stock;
+                        $nouvelleQuantite = $ancienStock + $item['quantite'];
+
+                        $produit->update([
+                            'stock' => $nouvelleQuantite,
+                            'prix_achat' => $detail->prix_achat ?? $produit->prix_achat,
+                            'prix_vente' => $produit->prix_vente, 
+                            'fournisseur_id' => $request->fournisseur_id ?? $achat->fournisseur_id, 
+                        ]);
+
+                        // Enregistrement d'un historique de mouvement
+                        MouvementStock::create([
+                            'unite_id' => $request->user()->unite_id,
+                            'produit_id' => $produit->id,
+                            'type' => 'entree',
+                            'quantite' => $item['quantite'],
+                            'reference' => 'MVT/PRD-' . now()->timestamp,
+                            'user_id' => $request->user()->id,
+                        ]);
+
+                    } else {
+
+                        // Creation achat detail
+                        AchatDetail::create([
+                            'unite_id' => $unite->id,
+                            'achat_id' => $achat->id,
+                            'designation' => $item['nom'],
+                            'quantite' => $item['quantite'],
+                            'prix_unitaire' => $item['prix_achat'],
+                            'total' => $ligneTotal,
+                        ]);
+
+                        // Creation nouveau produit
+                        $produit= Produit::create([
+                            'unite_id' => $request->user()->unite_id,
+                            'fournisseur_id' => $request->fournisseur_id ?? null,
+                            'categorie_id' => null,
+                            'nom' => $item['nom'],
+                            'code' => $this->generateCode($request->user()->unite_id),
+                            'prix_achat' => $item['prix_achat'],
+                            'prix_vente' => 0,
+                            'stock_min' => 5,
+                            'stock' => $item['quantite'],
+                        ]);
+
+                            
+                        // Enregistrement d'un historique de mouvement
+                        MouvementStock::create([
+                            'unite_id' => $request->user()->unite_id,
+                            'designation' => $item['nom'],
+                            'type' => 'entree',
+                            'quantite' => $item['quantite'],
+                            'reference' => 'MVT/PRD-' . now()->timestamp,
+                            'user_id' => $request->user()->id,
+                        ]);
+                    }
+      
                 }
             }
 
@@ -186,7 +227,7 @@ class AchatController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('danger', 'Erreur lors de la conversion: ' . $e->getMessage());
+            return redirect()->back()->with('danger', 'Erreur : ' . $e->getMessage());
         }
     }
 

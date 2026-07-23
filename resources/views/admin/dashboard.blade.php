@@ -56,7 +56,7 @@ use Illuminate\Support\Carbon;
                                             <li class="breadcrumb-item">
                                                 <a href="index.html"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->nom }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -219,20 +219,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6 p-b-20 p-t-20">
-                                                                <div class="row align-items-center text-center">
-                                                                    <div class="col-4 p-r-0">
-                                                                        <i class="fas fa-sitemap text-c-green f-24"></i>
-                                                                    </div>
-                                                                    <div class="col-8 p-l-0">
-                                                                        <h5>{{ number_format($fonds, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">Fonds/Partenaires</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row align-items-center">
-                                                            <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
+                                                            <!-- <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-arrow-down text-c-red f-24"></i>
@@ -242,7 +229,21 @@ use Illuminate\Support\Carbon;
                                                                         <p class="text-muted m-b-0">Depense (Direction)</p>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
+                                                            
+                                                        </div>
+                                                        <div class="row align-items-center">
+                                                            <!-- <div class="col-sm-6 p-b-20 p-t-20">
+                                                                <div class="row align-items-center text-center">
+                                                                    <div class="col-4 p-r-0">
+                                                                        <i class="fas fa-sitemap text-c-green f-24"></i>
+                                                                    </div>
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5>{{ number_format($fonds, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Fonds/Partenaires</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
                                                             <!--<div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">

@@ -16,7 +16,7 @@
                                             <li class="breadcrumb-item">
                                                 <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->categorie->nom }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -108,37 +108,62 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>produit</th>
-                                                                    <th>Prix</th>
+                                                                    <th>Prix achat</th>
                                                                     <th>Quantité</th>
                                                                     <th>Total</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
+                                                            @if(Auth::user()->unite->categorie->id == 1)
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="designation[0][nom]" class="form-control" placeholder="nouveau produit" produit-select>
+                                                                            
+                                                                        </td>
 
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="text" name="designation[0][nom]" class="form-control" placeholder="nouveau produit" produit-select>
-                                                                        
-                                                                    </td>
+                                                                        <td>
+                                                                            <input type="number" name="designation[0][prix]" class="form-control prix_achat">
+                                                                        </td>
 
-                                                                    <td>
-                                                                        <input type="number" name="designation[0][prix]" class="form-control prix_vente">
-                                                                    </td>
+                                                                        <td>
+                                                                            <input type="number" name="designation[0][quantite]" class="form-control quantite" value="1">
+                                                                        </td>
 
-                                                                    <td>
-                                                                        <input type="number" name="designation[0][quantite]" class="form-control quantite" value="1">
-                                                                    </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control total-ligne" readonly>
+                                                                        </td>
 
-                                                                    <td>
-                                                                        <input type="number" class="form-control total-ligne" readonly>
-                                                                    </td>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-danger remove">X</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            @else
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="produits[0][nom]" class="form-control" placeholder="nouveau produit" produit-select>
+                                                                        </td>
 
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-danger remove">X</button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
+                                                                        <td>
+                                                                            <input type="number" name="produits[0][prix_achat]" class="form-control prix_achat">
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <input type="number" name="produits[0][quantite]" class="form-control quantite" value="1">
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <input type="number" class="form-control total-ligne" readonly>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-danger remove">X</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            @endif
                                                         </table>
 
                                                         <button type="button" id="addRow" class="btn btn-primary">+ Ajouter produit</button>
@@ -224,28 +249,53 @@
         document.getElementById('addRow').addEventListener('click', function () {
 
             let row = `
-            <tr>
-                <td>
-                    <input type="text" name="designation[${index}][nom]" class="form-control" placeholder="nouveau produit" produit-select>
-                    
-                </td>
+            @if(Auth::user()->unite->categorie->id == 1)
+                <tr>
+                    <td>
+                        <input type="text" name="designation[${index}][nom]" class="form-control" placeholder="nouveau produit" produit-select>
+                        
+                    </td>
 
-                <td>
-                    <input type="number" name="designation[${index}][prix]" class="form-control prix_vente">
-                </td>
+                    <td>
+                        <input type="number" name="designation[${index}][prix]" class="form-control prix_achat">
+                    </td>
 
-                <td>
-                    <input type="number" name="designation[${index}][quantite]" class="form-control quantite" value="1">
-                </td>
+                    <td>
+                        <input type="number" name="designation[${index}][quantite]" class="form-control quantite" value="1">
+                    </td>
 
-                <td>
-                    <input type="number" class="form-control total-ligne" readonly>
-                </td>
+                    <td>
+                        <input type="number" class="form-control total-ligne" readonly>
+                    </td>
 
-                <td>
-                    <button type="button" class="btn btn-danger remove">X</button>
-                </td>
-            </tr>
+                    <td>
+                        <button type="button" class="btn btn-danger remove">X</button>
+                    </td>
+                </tr>
+                
+            @else
+                <tr>
+                    <td>
+                        <input type="text" name="produits[${index}][nom]" class="form-control" placeholder="nouveau produit" produit-select>
+                    </td>
+
+                    <td>
+                        <input type="number" name="produits[${index}][prix_achat]" class="form-control prix_achat">
+                    </td>
+
+                    <td>
+                        <input type="number" name="produits[${index}][quantite]" class="form-control quantite" value="1">
+                    </td>
+
+                    <td>
+                        <input type="number" class="form-control total-ligne" readonly>
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-danger remove">X</button>
+                    </td>
+                </tr>
+            @endif
             `;
 
             document.querySelector('#table-produits tbody').insertAdjacentHTML('beforeend', row);
@@ -260,30 +310,30 @@
             }
         });
 
-        // Auto prix_vente
+        // Auto prix_achat
         document.addEventListener('change', function(e){
             if(e.target.classList.contains('produit-select')){
-                let prix_vente = e.target.selectedOptions[0].dataset.prix_vente || 0;
+                let prix_achat = e.target.selectedOptions[0].dataset.prix_achat || 0;
                 let row = e.target.closest('tr');
 
-                row.querySelector('.prix_vente').value = prix_vente;
+                row.querySelector('.prix_achat').value = prix_achat;
                 calculLigne(row);
             }
         });
 
         // Calcul ligne
         document.addEventListener('input', function(e){
-            if(e.target.classList.contains('quantite') || e.target.classList.contains('prix_vente')){
+            if(e.target.classList.contains('quantite') || e.target.classList.contains('prix_achat')){
                 let row = e.target.closest('tr');
                 calculLigne(row);
             }
         });
 
         function calculLigne(row){
-            let prix_vente = row.querySelector('.prix_vente').value || 0;
+            let prix_achat = row.querySelector('.prix_achat').value || 0;
             let quantite = row.querySelector('.quantite').value || 0;
 
-            let total = prix_vente * quantite;
+            let total = prix_achat * quantite;
 
             row.querySelector('.total-ligne').value = total;
 
@@ -320,8 +370,8 @@
 
                     data.forEach(produit => {
                         results.innerHTML += `
-                            <a href="#" class="list-group-item" onclick="selectproduit(${produit.id}, '${produit.nom}', ${produit.prix_vente})">
-                                ${produit.nom} - ${produit.prix_vente} FCFA
+                            <a href="#" class="list-group-item" onclick="selectproduit(${produit.id}, '${produit.nom}', ${produit.prix_achat})">
+                                ${produit.nom} - ${produit.prix_achat} FCFA
                             </a>
                         `;
                     });
@@ -332,7 +382,7 @@
 
     <!-- Bouton ajouter produit rechercher -->
     <script>
-        function selectproduit(id, nom, prix_vente) {
+        function selectproduit(id, nom, prix_achat) {
             console.log("Produit sélectionné :", nom);
             
             // Chercher une ligne vide
@@ -342,7 +392,7 @@
                 // Remplir la première ligne vide
                 let row = selectElement.closest('tr');
                 selectElement.value = id;
-                row.querySelector('.prix_vente').value = prix_vente;
+                row.querySelector('.prix_achat').value = prix_achat;
                 row.querySelector('.quantite').value = 1;
                 calculLigne(row);
             } else {
@@ -365,17 +415,17 @@
                     let row = `
                         <tr>
                             <td>
-                                <select name="produits[${index}][produit_id]" class="form-control produit-select">
+                                <select name="produits[${index}][nom]" class="form-control produit-select">
                                     <option value="">Choisir</option>
                                     @foreach($produits as $produit)
-                                        <option value="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}">
+                                        <option value="{{ $produit->id }}" data-prix_achat="{{ $produit->prix_achat }}">
                                             {{ $produit->nom }}
                                         </option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
-                                <input type="number" name="produits[${index}][prix_vente]" class="form-control prix_vente" value="${prix_vente}">
+                                <input type="number" name="produits[${index}][prix_achat]" class="form-control prix_achat" value="${prix_achat}">
                             </td>
                             <td>
                                 <input type="number" name="produits[${index}][quantite]" class="form-control quantite" value="1">

@@ -16,7 +16,7 @@
                                             <li class="breadcrumb-item">
                                                 <a href="#"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->categorie->nom }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -33,10 +33,16 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Produits</h5>
+                                                <h5>
+                                                    @if(Auth::user()->unite->categorie->nom == 'service')
+                                                        Service
+                                                    @else
+                                                        Produits
+                                                    @endif
+                                                </h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#produitModal">Nouveau produit →</a>
+                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#produitModal">Nouveau →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -128,117 +134,152 @@
                                                 <div class="modal-dialog">
                                                     <form method="post" action="{{route('produit.store')}}">
                                                         @csrf
+                                                        
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Nouveau produit</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                             </div>
 
-                                                            <div class="modal-body">
+                                                            <!-- Categorie Unite Transformation -->
+                                                            @if($unite->categorie->nom == 'Transformation')
 
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Nom produit</label>
-                                                                            <input type="text" name="nom" class="form-control" required>
+                                                                <div class="modal-body">
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Nom produit</label>
+                                                                                <input type="text" name="nom" class="form-control" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Prix vente</label>
+                                                                                <input type="text" name="prix_vente" class="form-control">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Prix vente</label>
-                                                                            <input type="text" name="prix_vente" class="form-control">
+                                                                    
+                                                                    <hr>
+
+                                                                    <div class="row mb-3">
+                                                                        <!-- TABLE produits -->
+                                                                        <table class="table" id="table-intrants">
+                                                                        <h1 class="text-center fw-bold h4">Intrant</h1>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Type intrant</th>
+                                                                                    <th>Quantité utilisé</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <select name="intrants[0][id]" class="form-control">
+                                                                                            <option value="">Choisir</option>
+                                                                                            @foreach($intrants as $i)
+                                                                                                <option value="{{ $i->id }}">
+                                                                                                    {{ $i->designation }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </td>
+
+                                                                                    <td>
+                                                                                        <input type="number" name="intrants[0][quantite]" class="form-control"  style="width: 100px;">
+                                                                                    </td>
+
+                                                                                    <td>
+                                                                                        <button type="button" class="btn btn-danger remove">X</button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+
+                                                                        <button type="button" id="addRow" class="btn btn-primary">+ Ajout intrant</button>
+                                                                    </div>
+                                                                    
+                                                                    <hr>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Nombre produit</label>
+                                                                                <input type="number" name="stock" class="form-control" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Stock Minimum</label>
+                                                                                <select name="stock_min" id="" class="form-control">
+                                                                                    <option value="5">5</option>
+                                                                                    <option value="10">10</option>
+                                                                                    <option value="15">15</option>
+                                                                                </select>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    
                                                                 </div>
-                                                                
-                                                                <hr>
+                                                            <!-- Categorie Unite Vente Direct -->
+                                                            @else
+                                                            
+                                                                <div class="modal-body">
 
-                                                                <div class="row mb-3">
-                                                                    <!-- TABLE produits -->
-                                                                    <table class="table" id="table-intrants">
-                                                                    <h1 class="text-center">Intrant</h1>
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>Designation</th>
-                                                                                <th>Quantite</th>
-                                                                                <th></th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <select name="intrants[0][id]" class="form-control">
-                                                                                        <option value="">Choisir</option>
-                                                                                        @foreach($intrants as $i)
-                                                                                            <option value="{{ $i->id }}">
-                                                                                                {{ $i->designation }}
-                                                                                            </option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </td>
+                                                                    <div class="mb-3">
+                                                                        <label>Nom produit</label>
+                                                                        <input type="text" name="nom" class="form-control" required>
+                                                                    </div>
 
-                                                                                <td>
-                                                                                    <input type="number" name="intrants[0][quantite]" class="form-control">
-                                                                                </td>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Prix achat</label>
+                                                                                <input type="text" name="prix_achat" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Prix vente</label>
+                                                                                <input type="text" name="prix_vente" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
-                                                                                <td>
-                                                                                    <button type="button" class="btn btn-danger remove">X</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Nombre produit</label>
+                                                                                <input type="number" name="stock" class="form-control" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Stock Minimum</label>
+                                                                                <select name="stock_min" class="form-control">
+                                                                                    <option value="5">5</option>
+                                                                                    <option value="10">10</option>
+                                                                                    <option value="15">15</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
-                                                                    <button type="button" id="addRow" class="btn btn-primary">+ Ajouter intrant</button>
+                                                                    <div class="mb-3">
+                                                                        <label>Fournisseur</label>
+                                                                        <input type="text" name="fournisseur" class="form-control" placeholder="Nouveau fournisseur">
+                                                                        <select name="fournisseur_id" class="form-control">
+                                                                                <option value="">-- Selectionner --</option>
+                                                                            @foreach($fournisseur as $f)
+                                                                                <option value="{{ $f->id }}">{{ $f->nom }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>  
+
                                                                 </div>
-                                                                
-                                                                <hr>
-
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Quantité produit</label>
-                                                                            <input type="number" name="stock" class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Quantité Minimum</label>
-                                                                            <select name="stock_min" id="" class="form-control">
-                                                                                <option value="5">5</option>
-                                                                                <option value="10">10</option>
-                                                                                <option value="15">15</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Prix d'achat</label>
-                                                                            <input type="text" name="prix_achat" class="form-control">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Prix vente</label>
-                                                                            <input type="text" name="prix_vente" class="form-control">
-                                                                        </div>
-                                                                    </div>
-                                                                </div> -->
-
-                                                                <!-- <div class="mb-3">
-                                                                    <label>Fournisseur</label>
-                                                                    <select name="fournisseur_id" class="form-control">
-                                                                        <option value="">-- Selectionner un fournisseur --</option>
-                                                                        @foreach($fournisseur as $f)
-                                                                            <option value="{{ $f->id }}">{{ $f->nom }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>  -->
-                                                                  
-                                                            </div>
-
+                                                            @endif
                                                             <div class="modal-footer">
                                                                 <button type="submit" class="btn btn-primary">Enregistrer</button>
                                                             </div>
@@ -271,7 +312,7 @@
                                                                     <input type="text" name="nom" id="name" class="form-control" required>
                                                                 </div>
 
-                                                                <div class="row">
+                                                                <!-- <div class="row">
                                                                     <div class="col-6">
                                                                         <div class="mb-3">
                                                                             <label>Categorie</label>
@@ -294,10 +335,10 @@
                                                                             </select>
                                                                         </div> 
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                                 
                                                                 <div class="mb-3">
-                                                                    <label>Prix</label>
+                                                                    <label>Prix vente</label>
                                                                     <input type="text" name="prix_vente" id="price" class="form-control">
                                                                 </div>
                                                             

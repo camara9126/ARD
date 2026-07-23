@@ -11,11 +11,16 @@ class Categorie extends Model
     protected $fillable = [
         'nom',
         'slug',
-        'unite_id'
+        'unite_id',
+        'description'
     ];
 
     public function produit() {
         return $this->hasMany(Produit::class);
+    }
+
+     public function unite() {
+        return $this->hasMany(Unite::class);
     }
 
 
