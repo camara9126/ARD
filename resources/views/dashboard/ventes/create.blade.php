@@ -377,6 +377,43 @@
 
                                                                     <!-- Tableau des produits du panier -->
                                                                     <table class="produits-table" id="produitsTable">
+                                                                        @if($unite->categorie->nom == 'Service')
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Service</th>
+                                                                                <th>prix unit.</th>
+                                                                                <th>unite de mesure</th>
+                                                                                <!-- <th>Categorie</th> -->
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                            <tbody id="panierRows">
+                                                                                <tr id="row-0">
+                                                                                    <td>
+                                                                                        <select name="s_id" class="form-control produit-select">
+                                                                                            <option value="">Choisir un produit</option>
+                                                                                            @foreach($services as $service)
+                                                                                                <option value="{{ $service->id }}" data-prix_vente="{{ $service->prix }}" data-nom="{{ $service->nom }}">
+                                                                                                    {{ $service->nom }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="number" name="s_prix" class="form-control prix_vente" step="any">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="text" name="s_unite_de_mesure" class="form-control unite_de_mesure">
+                                                                                    </td>
+                                                                                    <!-- <td>
+                                                                                        <input type="number" name="services[0][categorie]" class="form-control-sm categorie" readonly>
+                                                                                    </td> -->
+                                                                                    <td>
+                                                                                        <button type="button" class="btn-icon remove-row">🗑️</button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        @else
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>Produit</th>
@@ -386,37 +423,40 @@
                                                                                 <th></th>
                                                                             </tr>
                                                                         </thead>
-                                                                        <tbody id="panierRows">
-                                                                            <tr id="row-0">
-                                                                                <td>
-                                                                                    <select name="produits[0][produit_id]" class="form-control produit-select">
-                                                                                        <option value="">Choisir un produit</option>
-                                                                                        @foreach($produits as $produit)
-                                                                                            <option value="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}" data-nom="{{ $produit->nom }}">
-                                                                                                {{ $produit->nom }}
-                                                                                            </option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="number" name="produits[0][prix_vente]" class="form-control-sm prix_vente" step="any">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="number" name="produits[0][quantite]" class="form-control-sm quantite" value="1">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="number" class="form-control-sm total-ligne" readonly style="background:#f8f9fa;">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <button type="button" class="btn-icon remove-row">🗑️</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
+                                                                            <tbody id="panierRows">
+                                                                                <tr id="row-0">
+                                                                                    <td>
+                                                                                        <select name="produits[0][produit_id]" class="form-control produit-select">
+                                                                                            <option value="">Choisir un produit</option>
+                                                                                            @foreach($produits as $produit)
+                                                                                                <option value="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}" data-nom="{{ $produit->nom }}">
+                                                                                                    {{ $produit->nom }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="number" name="produits[0][prix_vente]" class="form-control-sm prix_vente" step="any">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="number" name="produits[0][quantite]" class="form-control-sm quantite" value="1">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="number" class="form-control-sm total-ligne" readonly style="background:#f8f9fa;">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button" class="btn-icon remove-row">🗑️</button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        @endif
                                                                     </table>
 
-                                                                    <button type="button" id="addRowBtn" class="btn btn-primary" style="margin-top: 15px; width: 100%;">
-                                                                        + Ajouter un produit
-                                                                    </button>
+                                                                    @if(!$unite->categorie->nom == 'Service')
+                                                                        <button type="button" id="addRowBtn" class="btn btn-primary" style="margin-top: 15px; width: 100%;">
+                                                                            + Ajouter un produit
+                                                                        </button>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -564,26 +604,49 @@
         let options = `{!! $produits->map(function($p) { return '<option value="'.$p->id.'" data-prix_vente="'.$p->prix_vente.'" data-nom="'.$p->nom.'">'.$p->nom.'</option>'; })->implode('') !!}`;
         
         let rowHtml = `
-            <tr id="row-${rowIndex}">
-                <td>
-                    <select name="produits[${rowIndex}][produit_id]" class="form-control-sm produit-select">
-                        <option value="">Choisir un produit</option>
-                        ${options}
-                    </select>
-                </td>
-                <td>
-                    <input type="number" name="produits[${rowIndex}][prix_vente]" class="form-control-sm prix_vente" step="any">
-                </td>
-                <td>
-                    <input type="number" name="produits[${rowIndex}][quantite]" class="form-control-sm quantite" value="1">
-                </td>
-                <td>
-                    <input type="number" class="form-control-sm total-ligne" readonly style="background:#f8f9fa;">
-                </td>
-                <td>
-                    <button type="button" class="btn-icon remove-row">🗑️</button>
-                </td>
-            </tr>
+            @if($unite->categorie->nom == 'Service')
+                <tr id="row-${rowIndex}">
+                    <td>
+                        <select name="produits[${rowIndex}][service_id]" class="form-control produit-select">
+                            <option value="">Choisir un produit</option>
+                            ${options}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" name="services[${rowIndex}][prix]" class="form-control-sm prix_vente" step="any">
+                    </td>
+                    <td>
+                        <input type="text" name="services[${rowIndex}][unite_de_mesure]" class="form-control-sm quantite">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control-sm total-ligne" readonly style="background:#f8f9fa;">
+                    </td>
+                    <td>
+                        <button type="button" class="btn-icon remove-row">🗑️</button>
+                    </td>
+                </tr>
+            @else
+                <tr id="row-${rowIndex}">
+                    <td>
+                        <select name="produits[${rowIndex}][produit_id]" class="form-control-sm produit-select">
+                            <option value="">Choisir un produit</option>
+                            ${options}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" name="produits[${rowIndex}][prix_vente]" class="form-control-sm prix_vente" step="any">
+                    </td>
+                    <td>
+                        <input type="number" name="produits[${rowIndex}][quantite]" class="form-control-sm quantite" value="1">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control-sm total-ligne" readonly style="background:#f8f9fa;">
+                    </td>
+                    <td>
+                        <button type="button" class="btn-icon remove-row">🗑️</button>
+                    </td>
+                </tr>
+            @endif
         `;
         document.querySelector('#panierRows').insertAdjacentHTML('beforeend', rowHtml);
         

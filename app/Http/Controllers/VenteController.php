@@ -7,6 +7,7 @@ use App\Models\MouvementStock;
 use App\Models\Paiement;
 use App\Models\Produit;
 use App\Models\Recette;
+use App\Models\Service;
 use App\Models\Unite;
 use App\Models\Vente;
 use App\Models\VenteItem;
@@ -35,8 +36,8 @@ class VenteController extends Controller
         $clients = Client::where('unite_id', request()->user()->unite_id)->latest()->get();
         $unite= request()->user()->unite;
         $produits = Produit::where( 'unite_id', request()->user()->unite_id)->where('statut', true)->latest()->get();
-
-        return view('dashboard.ventes.create', compact('clients', 'produits', 'unite'));
+        $services= Service::where( 'unite_id', request()->user()->unite_id)->latest()->get();
+        return view('dashboard.ventes.create', compact('clients', 'produits', 'unite','services'));
     }
 
     // Recherche caisse
@@ -56,10 +57,13 @@ class VenteController extends Controller
     {
         $request->validate([
             'client_id' => 'nullable|exists:clients,id',
-            'produits' => 'required|array|min:1',
-            'produits.*.produit_id' => 'required',
-            'produits.*.quantite' => 'required|numeric|min:1',
-            'produits.*.prix_vente' => 'required|numeric|min:0',
+            'produits' => 'array|min:1',
+            'produits.*.produit_id' ,
+            'produits.*.quantite' => 'numeric|min:1',
+            'produits.*.prix_vente' => 'numeric|min:0',
+
+            's_id',
+            's_prix' ,
             'montant'
         ]);
 
@@ -87,61 +91,38 @@ class VenteController extends Controller
                 $total_tva = 0;
                 $total_ttc = 0;
             //dd($request->all());
-            foreach ($request->produits as $item) {
-            
-                if (empty($item['produit_id'])) {
-                    continue;
-                }
 
-                $produit = Produit::where('id', $item['produit_id'])->lockForUpdate()->first(); // verrou stock
+            if(!empty($request->s_id)){
 
-                // Verification stock mouvement
-                if ($produit->stock == 0) {
-
-                   throw new \Exception('Vous devez enregister un mouvement d"abord');
-                }
-
-                // Alert stock minimum depasse
-                if ($produit->stock <= $produit->stock_min) {
-                    throw new \Exception('Votre stock minimum est depasse');
-                }
-
-
-                // Verification quantite de stock
-                if ($produit->stock < $item['quantite']) {
-                    
-                    throw new \Exception('Stock insuffisant pour cette produit ');
-                }
-        
+                $service = Service::where('id', $request->s_id)->lockForUpdate()->first(); // verrou stock
+            // dd($request->s_id);
                 VenteItem::create([
                     'unite_id' => $request->user()->unite_id,
                     'vente_id' => $vente->id,
-                    'produit_id' => $item['produit_id'],
-                    'quantite' => $item['quantite'],
-                    'prix_unitaire' => $item['prix_vente'],
+                    'designation' => $service->nom,
+                    'quantite' => 1,
+                    'prix_unitaire' => $service->prix,
                     'taux_tva' => $unite->taux_tva,
-                    'montant_tva' => ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ),
-                    'total_ttc' => ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 )),
-                    'total' => $item['quantite'] * $item['prix_vente'],
+                    'montant_tva' => ($service->prix) * ($unite->taux_tva /100 ),
+                    'total_ttc' => ($service->prix + $service->prix) * ($unite->taux_tva /100 ),
+                    'total' => 1 * $service->prix,
                 ]);
 
-                // Mise a jour stock
-                $produit->decrement('stock', $item['quantite']);
 
                 // Enregistrememt historique stock
                     MouvementStock::create([
-                        'produit_id' => $produit->id,
+                        'designation' => $service->nom,
                         'type' => 'sortie',
-                        'quantite' => $item['quantite'],
+                        'quantite' => 1,
                         'reference' => 'MVT-VNT-' . now()->timestamp,
                         'unite_id' => request()->user()->unite_id,
                         'user_id' => request()->user()->id,
                     ]);
 
                 // Calcule total + total_tva + total_ttc
-                $total += $item['quantite'] *  $item['prix_vente'];
-                $total_tva += ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 );
-                $total_ttc += ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ));
+                $total += $service->prix * 1 ;
+                $total_tva += ($service->prix *  $unite->taux_tva / 100);
+                $total_ttc += (1 * $service->prix);
                 
                 // Mise a jour total + total_tva + total_ttc
                 $vente->update([
@@ -149,7 +130,73 @@ class VenteController extends Controller
                     'total_tva' => $total_tva,
                     'total_ttc' => $total_ttc,
                 ]);
+            
+            } else {
+                foreach ($request->produits as $item) {
                 
+                    if (empty($item['produit_id'])) {
+                        continue;
+                    }
+
+                    $produit = Produit::where('id', $item['produit_id'])->lockForUpdate()->first(); // verrou stock
+
+                    // Verification stock mouvement
+                    if ($produit->stock == 0) {
+
+                    throw new \Exception('Vous devez enregister un mouvement d"abord');
+                    }
+
+                    // Alert stock minimum depasse
+                    if ($produit->stock <= $produit->stock_min) {
+                        throw new \Exception('Votre stock minimum est depasse');
+                    }
+
+
+                    // Verification quantite de stock
+                    if ($produit->stock < $item['quantite']) {
+                        
+                        throw new \Exception('Stock insuffisant pour cette produit ');
+                    }
+            
+                    VenteItem::create([
+                        'unite_id' => $request->user()->unite_id,
+                        'vente_id' => $vente->id,
+                        'produit_id' => $item['produit_id'],
+                        'quantite' => $item['quantite'],
+                        'prix_unitaire' => $item['prix_vente'],
+                        'taux_tva' => $unite->taux_tva,
+                        'montant_tva' => ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ),
+                        'total_ttc' => ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 )),
+                        'total' => $item['quantite'] * $item['prix_vente'],
+                    ]);
+
+                    // Mise a jour stock
+                    $produit->decrement('stock', $item['quantite']);
+
+                    // Enregistrememt historique stock
+                        MouvementStock::create([
+                            'produit_id' => $produit->id,
+                            'type' => 'sortie',
+                            'quantite' => $item['quantite'],
+                            'reference' => 'MVT-VNT-' . now()->timestamp,
+                            'unite_id' => request()->user()->unite_id,
+                            'user_id' => request()->user()->id,
+                        ]);
+
+                    // Calcule total + total_tva + total_ttc
+                    $total += $item['quantite'] *  $item['prix_vente'];
+                    $total_tva += ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 );
+                    $total_ttc += ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva /100 ));
+                    
+                    // Mise a jour total + total_tva + total_ttc
+                    $vente->update([
+                        'total' => $total,
+                        'total_tva' => $total_tva,
+                        'total_ttc' => $total_ttc,
+                    ]);
+                    
+                }
+            
             }
             
                 // creation paiement

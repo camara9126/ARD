@@ -33,13 +33,7 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>
-                                                    @if(Auth::user()->unite->categorie->nom == 'service')
-                                                        Service
-                                                    @else
-                                                        Produits
-                                                    @endif
-                                                </h5>
+                                                <h5>Produits</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
                                                     <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#produitModal">Nouveau →</a>
@@ -53,6 +47,16 @@
                                                 </div>
                                             </div>
                                             <div class="card-block table-border-style">
+
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger text-center">
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
 
                                                 @if(Session::has('success'))
                                                     <div class="alert alert-success text-center" role="alert">
@@ -136,14 +140,13 @@
                                                         @csrf
                                                         
                                                         <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Nouveau produit</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                            </div>
 
                                                             <!-- Categorie Unite Transformation -->
                                                             @if($unite->categorie->nom == 'Transformation')
-
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Nouvelle transformation</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                </div>
                                                                 <div class="modal-body">
 
                                                                     <div class="row">
@@ -163,43 +166,41 @@
                                                                     
                                                                     <hr>
 
-                                                                    <div class="row mb-3">
-                                                                        <!-- TABLE produits -->
-                                                                        <table class="table" id="table-intrants">
-                                                                        <h1 class="text-center fw-bold h4">Intrant</h1>
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>Type intrant</th>
-                                                                                    <th>Quantité utilisé</th>
-                                                                                    <th></th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <select name="intrants[0][id]" class="form-control">
-                                                                                            <option value="">Choisir</option>
-                                                                                            @foreach($intrants as $i)
-                                                                                                <option value="{{ $i->id }}">
-                                                                                                    {{ $i->designation }}
-                                                                                                </option>
-                                                                                            @endforeach
-                                                                                        </select>
-                                                                                    </td>
+                                                                    <!-- TABLE produits -->
+                                                                    <table class="table mb-3" id="table-intrants">
+                                                                        <h1 class="text-center fw-bold h4">Les intrant</h1>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Type intrant</th>
+                                                                                <th>Quantité utilisé</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <select name="intrants[0][id]" class="form-control">
+                                                                                        <option value="">Choisir</option>
+                                                                                        @foreach($intrants as $i)
+                                                                                            <option value="{{ $i->id }}">
+                                                                                                {{ $i->designation }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </td>
 
-                                                                                    <td>
-                                                                                        <input type="number" name="intrants[0][quantite]" class="form-control"  style="width: 100px;">
-                                                                                    </td>
+                                                                                <td>
+                                                                                    <input type="number" name="intrants[0][quantite]" class="form-control"  style="width: 100px;">
+                                                                                </td>
 
-                                                                                    <td>
-                                                                                        <button type="button" class="btn btn-danger remove">X</button>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-danger remove">X</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
 
-                                                                        <button type="button" id="addRow" class="btn btn-primary">+ Ajout intrant</button>
-                                                                    </div>
+                                                                    <button type="button" id="addRow" class="btn btn-primary text-center">+ Ajout intrant</button>
                                                                     
                                                                     <hr>
 
@@ -223,9 +224,87 @@
                                                                     </div>
                                                                     
                                                                 </div>
+
+                                                            <!-- Categorie Unite Service -->
+                                                            @elseif($unite->categorie->nom == 'Service')
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Nouveau service</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Nom service</label>
+                                                                                <input type="text" name="nom" class="form-control" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label>Prix</label>
+                                                                                <input type="text" name="prix_vente" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <hr>
+
+                                                                    <!-- TABLE produits -->
+                                                                    <table class="table mb-3" id="table-intrants">
+                                                                        <h1 class="text-center fw-bold h4">Les consommables</h1>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>designation</th>
+                                                                                <th>Quantité utilisé</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <select name="intrants[0][id]" class="form-control">
+                                                                                        <option value="">Choisir</option>
+                                                                                        @foreach($intrants as $c)
+                                                                                            <option value="{{ $c->id }}">
+                                                                                                {{ $c->designation }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    <input type="number" name="intrants[0][quantite]" class="form-control"  style="width: 100px;">
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-danger remove">X</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <button type="button" id="addRow" class="btn btn-primary text-center">+ Ajout intrant</button>
+                                                                    
+                                                                    <hr>
+
+                                                                    <div class="mb-3">
+                                                                        <label>Unite de mesure</label>
+                                                                        <input type="text" name="unite_de_mesure" class="form-control" placeholder="Ex: heure/jour">
+                                                                    </div>
+                                                                
+                                                                    <div class="mb-3">
+                                                                        <label>Description</label>
+                                                                        <textarea name="description" class="form-control" rows="3"></textarea>
+                                                                    </div>
+                                                                    
+                                                                </div>
                                                             <!-- Categorie Unite Vente Direct -->
                                                             @else
-                                                            
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Nouveau produit</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                </div>
                                                                 <div class="modal-body">
 
                                                                     <div class="mb-3">
@@ -414,7 +493,7 @@
                     </td>
 
                     <td>
-                        <input type="number" name="intrants[${index}][quantite]" class="form-control">
+                        <input type="number" name="intrants[${index}][quantite]" class="form-control" style="width: 100px;">
                     </td>
 
                     <td>

@@ -27,6 +27,7 @@ class ProduitController extends Controller
         $produits= Produit::with('fournisseur')->where('unite_id', request()->user()->unite_id)->latest()->paginate(10);
         $categorie= Categorie::where('unite_id', request()->user()->unite_id)->latest()->get();
         $fournisseur = Fournisseur::where('unite_id', request()->user()->unite_id)->with('produit')->latest()->get();
+        // Produit instrant/consommable
         $intrants= ProduitIntrant::where('unite_id', request()->user()->unite_id)->latest()->get();
         return view('dashboard.produits.index', compact('unite','produits', 'categorie','fournisseur', 'intrants'));
     }
@@ -57,6 +58,8 @@ class ProduitController extends Controller
             'intrants' => 'array|min:1',
             'intrants.*.id',
             'intrants.*.quantite',
+            'description',
+            'unite_de_mesure'
         ]);
 // dd($request);
 
@@ -66,6 +69,7 @@ class ProduitController extends Controller
 
             $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
+            // Categorie Transformation
             if($unite->categorie->id == 1) {
 
                 $produit= Produit::create([
@@ -103,7 +107,8 @@ class ProduitController extends Controller
 
                 }
 
-            } else {
+            }  else { // Categorie Vente direct B2C
+
                 //Creation de fournisseur
                 if($request->fournisseur) {
                     
@@ -132,7 +137,7 @@ class ProduitController extends Controller
                 'unite_id' => $request->user()->unite_id,
                 'produit_id' => $produit->id,
                 'type' => 'entree',
-                'quantite' => $request->stock,
+                'quantite' => 1,
                 'reference' => 'MVT/PRD-' . now()->timestamp,
                 'user_id' => $request->user()->id,
             ]);

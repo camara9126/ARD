@@ -120,8 +120,8 @@
                                                                 <tr id="row-{{ $index }}">
                                                                     <td>
                                                                         <select name="produits[{{ $index }}][produit_id]" class="form-control produit-select" required>
-                                                                            <option value="{{ $detail->produit->id }}" data-prix_vente="{{ $detail->produit->prix_vente }}" selected>
-                                                                                {{ $detail->produit->nom }}
+                                                                            <option value="{{ $detail->produit->id ?? $detail->designation }}" data-prix_vente="{{ $detail->produit->prix_vente ?? '-' }}" selected>
+                                                                                {{ $detail->produit->nom ?? $detail->designation }}
                                                                             </option>
                                                                             @foreach($produits as $produit)
                                                                                 <option value="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}">

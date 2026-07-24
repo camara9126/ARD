@@ -15,6 +15,7 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\RecetteController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UniteController;
 use App\Http\Controllers\VenteController;
 use App\Models\MouvementStock;
@@ -84,6 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/produit', ProduitController::class);
     Route::resource('stock', MouvementStockController::class);
     Route::resource('/achat', AchatController::class);
+    Route::resource('/service', ServiceController::class);
 });
 
 
