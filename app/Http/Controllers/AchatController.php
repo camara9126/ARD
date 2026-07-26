@@ -8,6 +8,7 @@ use App\Models\Depense;
 use App\Models\Fournisseur;
 use App\Models\MouvementStock;
 use App\Models\Produit;
+use App\Models\Service;
 use App\Models\ProduitIntrant;
 use App\Models\Unite;
 use Barryvdh\DomPDF\Facade\Pdf;
