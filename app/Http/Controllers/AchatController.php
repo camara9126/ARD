@@ -96,11 +96,28 @@ class AchatController extends Controller
 
                     $total += $ligneTotal;
                 
-                    ProduitIntrant::create([
-                        'unite_id' => $unite->id,
-                        'designation' => $item['nom'],
-                        'quantite' => $item['quantite'],
-                    ]);
+                    if($unite->categorie->nom == 'Transformation') {
+
+                        // Création du produit intrant si l'unité est de type transformation
+                        ProduitIntrant::create([
+                            'unite_id' => $unite->id,
+                            'designation' => $item['nom'],
+                            'quantite' => $item['quantite'],
+                        ]);
+                    } elseif($unite->categorie->nom == 'Service') {
+
+                        // Création du service intrant si l'unité est de type service
+                        $service= service::where('id', $item['nom'])->lockForUpdate()->first();
+dd($service);
+                        ServiceIntrant::create([
+                            'unite_id' => $unite->id,
+                            'service_id' => $service->id,
+                            'prix_unitaire' => $item['prix'],
+                            'total' => $ligneTotal,
+                            'designation' => $item['nom'],
+                            'quantite' => $item['quantite'],
+                        ]);
+                    }
 
                     // Mise a jour du stock
                     MouvementStock::create([
