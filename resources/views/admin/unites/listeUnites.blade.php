@@ -62,6 +62,7 @@
                                                             <tr>
                                                                 <th><b>Logo</b></th>
                                                                 <th><b>Nom</b></th>
+                                                                <th><b>Categorie</b></th>
                                                                 <th><b>Contact</b></th>
                                                                 <th><b>Adresse</b></th>
                                                                 <th><b>Date de creation</b></th>
@@ -76,6 +77,7 @@
                                                                     <img class="img-50 img-radius" src="{{asset('storage/'.$u->logo)}}" alt="{{ $u->nom }}">
                                                                 </td>
                                                                 <td>{{$u->nom}}</td>
+                                                                <td>{{$u->categorie->nom ?? 'vide'}}</td>
                                                                 <td>{{$u->contact}}</td>
                                                                 <td>{{$u->adresse ?? 'vide'}}</td>
                                                                 <td>{{$u->created_at->format('d-m-y')}}</td>
