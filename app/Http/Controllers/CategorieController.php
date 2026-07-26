@@ -37,7 +37,7 @@ class CategorieController extends Controller
 
         Categorie::create([
             'nom' => $request->nom,
-            'description' => $request->adresse,
+            'description' => $request->description,
             'unite_id' => request()->user()->unite_id,
         ]);
 
