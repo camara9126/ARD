@@ -152,11 +152,28 @@
                                                             @endif
                                                             <form class="form-material" method="post" action="{{ route('unite.store') }}" enctype="multipart/form-data">
                                                                 @csrf
-                                                                <div class="form-group form-default">
-                                                                    <input type="text" name="nom" class="form-control">
-                                                                    <span class="form-bar"></span>
-                                                                    <label class="float-label">Nom Unite</label>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="form-group form-default">
+                                                                            <input type="text" name="nom" class="form-control">
+                                                                            <span class="form-bar"></span>
+                                                                            <label class="float-label">Nom Unite</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="form-group form-default">
+                                                                            <select name="categorie_id" class="form-control">
+                                                                                    <option value="">-- Selectionner --</option>
+                                                                                @foreach($categories as $c)
+                                                                                    <option value="{{ $c->id }}">{{ $c->nom }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <span class="form-bar"></span>
+                                                                            <label>Categorie Unite</label>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+                                                                
                                                                 <div class="form-group form-primary">
                                                                     <input type="text" name="adresse" class="form-control">
                                                                     <span class="form-bar"></span>

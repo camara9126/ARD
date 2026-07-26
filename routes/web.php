@@ -33,29 +33,25 @@ Route::get('/test', function () {
 
 Route::get('/dashboard', function () {
 
-    $user= request()->user();
+    $user = request()->user();
 
     $mouvements = MouvementStock::Where('unite_id', $user->unite_id)->latest()->get();
 
     $factures = Vente::Where('unite_id', $user->unite_id)->with('client')->latest()->get();
 
-    if($user->role == 'commercial' && !$user->unite_id) {
+    if ($user->role == 'commercial' && !$user->unite_id) {
 
-            return redirect()->route('unite.create');
-
-    } elseif($user->role == 'admin') {
+        return redirect()->route('unite.create');
+    } elseif ($user->role == 'admin') {
 
         return redirect()->route('admin.index');
-
-    } elseif($user->unite->statut == 0) {
+    } elseif ($user->unite->statut == 0) {
 
         return view('unite.attenteValidation');
-
     } else {
 
         return view('dashboard.index', compact('mouvements', 'factures'));
     }
-    
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -114,7 +110,7 @@ Route::get('/analyse', [RapportController::class, 'rapport'])->middleware(['auth
 
 
 // Route Support & Assistance
-Route::get('/support', function() {
+Route::get('/support', function () {
 
     return view('assistance');
 })->middleware(['auth', 'verified'])->name('assistance');
@@ -123,4 +119,4 @@ Route::get('/support', function() {
 // Route Equipements
 Route::resource('/equipements', EquipementController::class)->middleware(['auth', 'verified']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

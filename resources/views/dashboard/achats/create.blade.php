@@ -114,7 +114,7 @@
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
-                                                            @if(Auth::user()->unite->categorie->id == 1 || Auth::user()->unite->categorie->id == 3)
+                                                            @if(Auth::user()->unite->categorie->nom == 'Transformation' || Auth::user()->unite->categorie->nom == 'Service')
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
@@ -249,7 +249,7 @@
         document.getElementById('addRow').addEventListener('click', function () {
 
             let row = `
-            @if(Auth::user()->unite->categorie->id == 1 || Auth::user()->unite->categorie->id == 3)
+            @if(Auth::user()->unite->categorie->nom == 'Transformation' || Auth::user()->unite->categorie->nom == 'Service')
                 <tr>
                     <td>
                         <input type="text" name="designation[${index}][nom]" class="form-control" placeholder="nouveau produit" produit-select>

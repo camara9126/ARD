@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Depense;
 use App\Models\Unite;
 use App\Models\Vente;
+use App\Models\Categorie;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -25,7 +26,8 @@ class UniteController extends Controller
      */
     public function create()
     {
-         return view('unite.form');
+        $categories = Categorie::all();
+        return view('unite.form', compact('categories'));
     }
 
     /**
@@ -39,6 +41,7 @@ class UniteController extends Controller
             'nom' => 'string|max:255',
             'adresse' => 'string',
             'contact' => 'numeric|min:9',
+            'categorie_id' => 'nullable|exists:categories,id',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -55,6 +58,7 @@ class UniteController extends Controller
             'nom' => $request->nom,
             'adresse' => $request->adresse,
             'contact' => $request->contact,
+            'categorie_id' => $request->categorie_id,
             'logo' =>  $path ?? null,
             'statut' => 0,
          ]);
