@@ -105,14 +105,13 @@ class AchatController extends Controller
                             'designation' => $item['nom'],
                             'quantite' => $item['quantite'],
                         ]);
+                        
                     } elseif($unite->categorie->nom == 'Service') {
 
                         // Création du service intrant si l'unité est de type service
-                        $service= service::where('id', $item['nom'])->lockForUpdate()->first();
-dd($service);
                         ServiceIntrant::create([
                             'unite_id' => $unite->id,
-                            'service_id' => $service->id,
+                            'service_id' => null,
                             'prix_unitaire' => $item['prix'],
                             'total' => $ligneTotal,
                             'designation' => $item['nom'],
