@@ -10,6 +10,7 @@ use App\Models\MouvementStock;
 use App\Models\Produit;
 use App\Models\Service;
 use App\Models\ProduitIntrant;
+use App\Models\ServiceIntrant;
 use App\Models\Unite;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -105,7 +106,7 @@ class AchatController extends Controller
                             'designation' => $item['nom'],
                             'quantite' => $item['quantite'],
                         ]);
-                        
+
                     } elseif($unite->categorie->nom == 'Service') {
 
                         // Création du service intrant si l'unité est de type service
