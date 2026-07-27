@@ -74,6 +74,16 @@ class ServiceController extends Controller
 
                     // Mise a jour quantite Intrant
                     // $intrant->decrement('quantite', $item['quantite']);
+                    
+                    // Enregistrememt historique stock
+                    MouvementStock::create([
+                        'unite_id' => $request->user()->unite_id,
+                        'designation' => $intrant->designation,
+                        'type' => 'sortie',
+                        'quantite' => $item['quantite'] ?? 0,
+                        'reference' => 'MVT/CSM-' . now()->timestamp,
+                        'user_id' => $request->user()->id,
+                    ]);
                 }
 
                 // Enregistrement d'un historique de mouvement

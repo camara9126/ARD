@@ -141,15 +141,9 @@ class UniteController extends Controller
     public function destroy(string $id)
     {
         $unite= Unite::findorFail($id);
-
-        if($unite->statut) {
-            $unite->update(['statut' => false]);
-            return redirect()->back()->with('success', 'Unite désactivé');
-        }
-        else {
-            $unite->update(['statut' => true]);
-            return redirect()->back()->with('success', 'Unite activé');
-        }
+        $unite->delete();
+        return redirect()->back()->with('success', 'Unite supprimé avec success');
+        
     }
 
 

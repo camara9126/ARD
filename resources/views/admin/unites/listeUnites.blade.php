@@ -89,26 +89,33 @@
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                        <a href="{{route('unite.show', $u->id)}}" class="label bg-info mr-2" title="afficher l'unite">
+                                                                        <!-- <a href="{{route('unite.show', $u->id)}}" class="label bg-info mr-2" title="afficher l'unite">
                                                                             <i class="fas fa-eye"></i>&nbsp;Afficher
-                                                                        </a>
+                                                                        </a> -->
                                                                     @if($u->statut)
-                                                                        <form action="{{route('unite.destroy', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous desactiver cette unite ?')">
+                                                                        <form action="{{route('admin.update', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous desactiver cette unite ?')">
                                                                             @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit" class="label bg-danger" title="desactiver">
+                                                                            @method('PUT')
+                                                                            <button type="submit" class="label bg-warning" title="desactiver">
                                                                                 <i class="fas fa-toggle-off"></i>&nbsp; desactiver
                                                                             </button>
                                                                         </form>
                                                                     @else
-                                                                        <form action="{{route('unite.destroy', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous activer cette unite ?')">
+                                                                        <form action="{{route('admin.update', $u->id)}}" type="button" method="post" onsubmit="return confirm('Voulez-Vous activer cette unite ?')">
                                                                             @csrf
-                                                                            @method('DELETE')
+                                                                            @method('PUT')
                                                                             <button type="submit" class="label bg-success" title="activer">
-                                                                                <i class="fas fa-toggle-on""></i>&nbsp; activer
+                                                                                <i class="fas fa-toggle-on"></i>&nbsp; activer
                                                                             </button>
                                                                         </form>
                                                                     @endif
+                                                                    <form action="{{route('unite.destroy', $u->id)}}" type="button" method="post" onsubmit="return confirm('Etes-Vous sure de vouloir supprimer cette unite ?')">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="label bg-danger" title="supprimer">
+                                                                            <i class="fas fa-trash"></i>&nbsp; supprimer
+                                                                        </button>
+                                                                    </form>
                                                                 </td>
                                                             </tr>
                                                             @endforeach

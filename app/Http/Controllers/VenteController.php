@@ -302,10 +302,11 @@ class VenteController extends Controller
         $clients = Client::where('unite_id', request()->user()->unite_id)->latest()->get();
 
         $unite= request()->user()->unite;
-        
-        $produits = Produit::where( 'unite_id', request()->user()->unite_id)->where('statut', true)->latest()->get();
 
-        return view('dashboard.ventes.edit', compact('clients', 'produits', 'unite', 'vente'));
+            $services = Service::where('unite_id', request()->user()->unite_id)->latest()->get();
+            $produits = Produit::where('unite_id', request()->user()->unite_id)->where('statut', true)->latest()->get();
+
+        return view('dashboard.ventes.edit', compact('clients', 'services', 'produits', 'unite', 'vente'));
     }
 
     /**
@@ -339,58 +340,89 @@ class VenteController extends Controller
             $total_ttc = 0;
 
             foreach ($request->produits as $item) {
-                $produit = Produit::where('id', $item['produit_id'])->lockForUpdate()->first();
-
-                if (!$produit) {
-                    throw new \Exception('Produit non trouvé: ' . $item['produit_id']);
+                if (empty($item['produit_id'])) {
+                    continue;
                 }
 
-                // Calculer la différence de quantité par rapport à l'ancienne vente
-                $ancienneQuantite = isset($anciensItems[$item['produit_id']]) ? $anciensItems[$item['produit_id']]->quantite : 0;
-                $differenceQuantite = $item['quantite'] - $ancienneQuantite;
+                if ($unite->categorie->nom == 'Service') {
+                    $service = Service::where('id', $item['produit_id'])->lockForUpdate()->first(); // verrou stock
 
-                // Si on ajoute des produits, vérifier le stock disponible
-                if ($differenceQuantite > 0 && $produit->stock < $differenceQuantite) {
-                    throw new \Exception('Stock insuffisant pour le produit: ' . $produit->nom . '. Disponible: ' . $produit->stock . ', Demandé: ' . $differenceQuantite);
-                }
+                    VenteItem::create([
+                        'unite_id' => $request->user()->unite_id,
+                        'vente_id' => $vente->id,
+                        'designation' => $service->nom,
+                        'quantite' => 1,
+                        'prix_unitaire' => $service->prix,
+                        'taux_tva' => $unite->taux_tva,
+                        'montant_tva' => ($service->prix) * ($unite->taux_tva / 100),
+                        'total_ttc' => ($service->prix + $service->prix) * ($unite->taux_tva / 100),
+                        'total' => 1 * $service->prix,
+                    ]);
 
-                $ligneTotal = $item['quantite'] * $item['prix_vente'];
-
-                VenteItem::create([
-                    'unite_id' => $request->user()->unite_id,
-                    'vente_id' => $vente->id,
-                    'produit_id' => $item['produit_id'],
-                    'quantite' => $item['quantite'],
-                    'prix_unitaire' => $item['prix_vente'],
-                    'taux_tva' => $unite->taux_tva,
-                    'montant_tva' => ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100),
-                    'total_ttc' => ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100)),
-                    'total' => $item['quantite'] * $item['prix_vente'],
-                ]);
-
-                // Ajuster le stock en fonction de la différence
-                if ($differenceQuantite != 0) {
-                    // Si différence > 0 : on retire plus de stock (sortie supplémentaire)
-                    // Si différence < 0 : on remet en stock (annulation partielle)
-                    $produit->stock -= $differenceQuantite;
-                    $produit->save();
-
-                    // Enregistrer le mouvement de stock
+                    // Enregistrememt historique stock
                     MouvementStock::create([
-                        'produit_id' => $item['produit_id'],
-                        'type' => $differenceQuantite > 0 ? 'sortie' : 'entree',
-                        'quantite' => abs($differenceQuantite),
-                        'reference' => 'MVT-PRD-' . now()->timestamp . '-MODIF',
+                        'designation' => $service->nom,
+                        'type' => 'sortie',
+                        'quantite' => 1,
+                        'reference' => 'MVT-VNT-' . now()->timestamp,
                         'unite_id' => request()->user()->unite_id,
                         'user_id' => request()->user()->id,
-                        'commentaire' => 'Ajustement lors de la modification de la vente #' . $vente->id
                     ]);
-                }
 
-                $total += $ligneTotal;
-                $total_tva += ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100);
-                $total_ttc += ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100));
-            }
+                    // Calcule total + total_tva + total_ttc
+                    $total += $service->prix * 1;
+                    $total_tva += ($service->prix *  $unite->taux_tva / 100);
+                    $total_ttc += (1 * $service->prix);
+
+                } else {
+                    $produit = Produit::where('id', $item['produit_id'])->lockForUpdate()->first();
+
+                    // Calculer la différence de quantité par rapport à l'ancienne vente
+                    $ancienneQuantite = isset($anciensItems[$item['produit_id']]) ? $anciensItems[$item['produit_id']]->quantite : 0;
+                    $differenceQuantite = $item['quantite'] - $ancienneQuantite;
+
+                    // Si on ajoute des produits, vérifier le stock disponible
+                    if ($differenceQuantite > 0 && $produit->stock < $differenceQuantite) {
+                        throw new \Exception('Stock insuffisant pour le produit: ' . $produit->nom . '. Disponible: ' . $produit->stock . ', Demandé: ' . $differenceQuantite);
+                    }
+
+                    $ligneTotal = $item['quantite'] * $item['prix_vente'];
+
+                    VenteItem::create([
+                        'unite_id' => $request->user()->unite_id,
+                        'vente_id' => $vente->id,
+                        'produit_id' => $item['produit_id'],
+                        'quantite' => $item['quantite'],
+                        'prix_unitaire' => $item['prix_vente'],
+                        'taux_tva' => $unite->taux_tva,
+                        'montant_tva' => ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100),
+                        'total_ttc' => ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100)),
+                        'total' => $item['quantite'] * $item['prix_vente'],
+                    ]);
+
+                    // Ajuster le stock en fonction de la différence
+                    if ($differenceQuantite != 0) {
+                        // Si différence > 0 : on retire plus de stock (sortie supplémentaire)
+                        // Si différence < 0 : on remet en stock (annulation partielle)
+                        $produit->stock -= $differenceQuantite;
+                        $produit->save();
+
+                        // Enregistrer le mouvement de stock
+                        MouvementStock::create([
+                            'produit_id' => $item['produit_id'],
+                            'type' => $differenceQuantite > 0 ? 'sortie' : 'entree',
+                            'quantite' => abs($differenceQuantite),
+                            'reference' => 'MVT-VNT-' . now()->timestamp . '-MODIF',
+                            'unite_id' => request()->user()->unite_id,
+                            'user_id' => request()->user()->id,
+                            'commentaire' => 'Ajustement lors de la modification de la vente #' . $vente->id
+                        ]);
+                    }
+
+                    $total += $ligneTotal;
+                    $total_tva += ($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100);
+                    $total_ttc += ($item['quantite'] * $item['prix_vente']) + (($item['quantite'] * $item['prix_vente']) * ($unite->taux_tva / 100));
+                }
 
             // Mise à jour du total
             $vente->update([
@@ -450,8 +482,13 @@ class VenteController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
+            if ($unite->categorie->nom == 'Service') {
+                return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
+            } else {
+                return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
+            }
 
+        }
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('danger', 'Erreur lors de la modification: ' . $e->getMessage());

@@ -143,10 +143,11 @@
                                             </div>                                                                    
                                         </div>
                                     </div>
+                                    
                                     <!-- Modal paiement -->
                                     <div class="modal fade" id="paiementModal" tabindex="-1">
                                         <div class="modal-dialog">
-                                            <form action="{{ route('paiement.store') }}" method="POST">
+                                            <form action="{{ route('paiement.abonne') }}" method="POST">
                                                 @csrf
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -154,7 +155,7 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="hidden" name="vente_id" id="vente_id">
+                                                        <input type="hidden" name="abonne_id" id="abonne_id">
 
                                                         <div class="mb-3">
                                                             <label>Montant à payer</label>

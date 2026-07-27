@@ -13,6 +13,7 @@ class Unite extends Model
     'logo',
     'statut',
     'taux_tva',
+    'categorie_id'
     ];
 
     public function produit() {

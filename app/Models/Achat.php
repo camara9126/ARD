@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Achat extends Model
 {
-     protected $fillable = [
+    protected $fillable = [
         'fournisseur_id',
         'unite_id',
         'reference',

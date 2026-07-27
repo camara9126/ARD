@@ -88,6 +88,15 @@ class AdminController extends Controller
         return view('admin.unites.addUnite', compact('categories'));
     }
 
+
+    // Supprimer un utilisateur
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->back()->with('success', 'Utilisateur supprimé avec success');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -107,7 +116,7 @@ class AdminController extends Controller
             'contact' => 'numeric|min:9',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'taux_tva' => 'nullable|numeric',
-            'categorie_id' => 'nullable',
+            'categorie_id' => 'nullable|exists:categories,id',
             // Info User
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -143,7 +152,7 @@ class AdminController extends Controller
             'unite_id' => $unites->id
         ]);
 
-        return redirect()->back()->with('success', 'Unite cree avec success');
+        return redirect()->route('admin.unites')->with('success', 'Unite cree avec success');
 
     }
 
@@ -210,7 +219,16 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $unite= Unite::findorFail($id);
+
+        if($unite->statut) {
+            $unite->update(['statut' => false]);
+            return redirect()->back()->with('success', 'Unite désactivé');
+        }
+        else {
+            $unite->update(['statut' => true]);
+            return redirect()->back()->with('success', 'Unite activé');
+        }
     }
 
     /**

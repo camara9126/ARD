@@ -355,20 +355,33 @@
                                                                     </div>
 
                                                                     <!-- Produits par catégorie (exemple statique, adaptez selon vos données) -->
-                                                                    <div class="category-header">
+                                                                    <!-- <div class="category-header">
                                                                         <i class="fas fa-box"></i> produits
-                                                                    </div>
+                                                                    </div> -->
                                                                     <div class="product-grid" id="productGridShoes">
-                                                                        @foreach($produits->take(15) as $produit)
-                                                                            <div class="product-card" data-id="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}" data-nom="{{ $produit->nom }}">
-                                                                                <!--<div class="product-image">
-                                                                                    <img src="{{ asset('storage/'.$produit->image) }}" width="20">
-                                                                                </div>-->
-                                                                                <div class="product-name">{{ $produit->nom }}</div>
-                                                                                <!-- <div class="product-price">{{ number_format($produit->prix_vente, 0, ',', ' ') }} CFA</div> -->
-                                                                                <div class="product-price"><b>{{ $produit->stock }}</b> en Stock</div>
-                                                                            </div>
-                                                                        @endforeach
+                                                                        @if($unite->categorie->nom == 'Service')
+                                                                            @foreach($services->take(15) as $service)
+                                                                                <div class="product-card" data-id="{{ $service->id }}" data-prix_vente="{{ $service->prix_vente }}" data-nom="{{ $service->nom }}">
+                                                                                    <!--<div class="product-image">
+                                                                                        <img src="{{ asset('storage/'.$service->image) }}" width="20">
+                                                                                    </div>-->
+                                                                                    <div class="product-name">{{ $service->nom }}</div>
+                                                                                    <div class="product-price">{{ number_format($service->prix, 0, ',', ' ') }} CFA</div>
+                                                                                    <!-- <div class="product-price"><b>{{ $service->stock }}</b> en Stock</div> -->
+                                                                                </div>
+                                                                            @endforeach
+                                                                        @else
+                                                                            @foreach($produits->take(15) as $produit)
+                                                                                <div class="product-card" data-id="{{ $produit->id }}" data-prix_vente="{{ $produit->prix_vente }}" data-nom="{{ $produit->nom }}">
+                                                                                    <!--<div class="product-image">
+                                                                                        <img src="{{ asset('storage/'.$produit->image) }}" width="20">
+                                                                                    </div>-->
+                                                                                    <div class="product-name">{{ $produit->nom }}</div>
+                                                                                    <!-- <div class="product-price">{{ number_format($produit->prix_vente, 0, ',', ' ') }} CFA</div> -->
+                                                                                    <div class="product-price"><b>{{ $produit->stock }}</b> en Stock</div>
+                                                                                </div>
+                                                                            @endforeach
+                                                                        @endif
                                                                     </div>
 
                                                                     <div class="category-header">

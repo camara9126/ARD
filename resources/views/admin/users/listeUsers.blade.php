@@ -65,6 +65,7 @@
                                                                 <th><b>Unite</b></th>
                                                                 <th><b>Role</b></th>
                                                                 <th><b>Date de creation</b></th>
+                                                                <th><b>Action</b></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -75,6 +76,12 @@
                                                                 <td><b>{{$u->unite->nom ?? '-'}}</b></td>
                                                                 <td>{{$u->role}}</td>
                                                                 <td>{{$u->created_at}}</td>
+                                                                <td>
+                                                                    <form action="{{ route('admin.deleteUser', $u->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')" style="display: inline-block;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                                                    </form>
                                                             </tr>
                                                             @endforeach
                                                         </tbody>

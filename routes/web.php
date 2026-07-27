@@ -18,6 +18,7 @@ use App\Http\Controllers\RecetteController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UniteController;
 use App\Http\Controllers\VenteController;
+use App\Http\Controllers\AbonneController;
 use App\Models\MouvementStock;
 use App\Models\Vente;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/unites', [AdminController::class, 'unites'])->name('admin.unites');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/addUnite', [AdminController::class, 'addUnite'])->name('admin.addUnite');
+    Route::delete('/deleteUser/{id}', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
 
     Route::resource('/fond', FondController::class);
 });
@@ -89,6 +91,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('/client', ClientController::class);
     Route::resource('/vente', VenteController::class);
+    Route::resource('/abonne', AbonneController::class);
+    // Route pour recherche abonne 
+    Route::get('/abonneSearch', [AbonneController::class, 'abonneSearch'])->name('abonne.search');
     // Facture
     Route::get('/facture', [VenteController::class, 'facture'])->name('vente.facture');
     // Route pour recherche article dans caisse
@@ -99,6 +104,8 @@ Route::middleware('auth')->group(function () {
 //Route Finance
 Route::middleware('auth')->group(function () {
     Route::resource('paiement', PaiementController::class);
+    // paiement abonne
+    Route::post('/paiementAbonne', [PaiementController::class, 'paiementAbonne'])->name('paiement.abonne');
     Route::resource('/recette', RecetteController::class);
     Route::resource('/depense', DepenseController::class);
     Route::resource('/chargefixe', ChargeFixeController::class);

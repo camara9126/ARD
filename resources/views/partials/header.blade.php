@@ -193,6 +193,14 @@
                                                         <span class="pcoded-mcaret"></span>
                                                     </a>
                                                 </li>
+                                            @elseif($unite->categorie->nom == 'GOS')
+                                                <li class="">
+                                                    <a href="{{ route('abonne.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Abonnees</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
                                             @else
                                                 <li class="">
                                                     <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
@@ -228,7 +236,15 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                         <ul class="pcoded-submenu">
-                                            
+                                               
+                                            <li class="">
+                                                <a href="{{ route('achat.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Achats</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+
                                             @if($unite->categorie->nom == 'Service')
                                                 <li class=" ">
                                                     <a href="{{ route('service.index') }}" class="waves-effect waves-dark">
@@ -238,13 +254,7 @@
                                                     </a>
                                                 </li>
                                             @else
-                                            <li class="">
-                                                <a href="{{ route('achat.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Achats</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
+                                            
                                                 <li class=" ">
                                                     <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
                                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -253,6 +263,7 @@
                                                     </a>
                                                 </li>
                                             @endif
+
                                             <li class=" ">
                                                 <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -279,13 +290,16 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                         <ul class="pcoded-submenu">
-                                            <li class=" ">
-                                                <a href="{{ route('paiement.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Paiements</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
+                                            @if($unite->categorie->nom !== 'GOS')
+                                                <li class="">
+                                                    <a href="{{ route('paiement.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Paiements</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            
                                             <li class=" ">
                                                 <a href="{{ route('recette.index') }}" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

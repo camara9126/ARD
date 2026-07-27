@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ventes', function (Blueprint $table) {
-            $table->foreignId('unite_id')->constrained()->cascadeOnDelete();
-        });
+        Schema::dropIfExists('abonnes');
     }
 
     /**
@@ -21,8 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ventes', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

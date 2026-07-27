@@ -196,13 +196,13 @@
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
                                                                             <label>Unite de mesure</label>
-                                                                            <input type="text" name="unite_de_mesure" class="form-control" placeholder="Ex: heure/jour">
+                                                                            <input type="text" name="unite_de_mesure" class="form-control" placeholder="Ex: heure/minute">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
                                                                             <label>Categorie</label>
-                                                                            <input type="text" name="categorie" class="form-control" placeholder="Ex: heure/jour">
+                                                                            <input type="text" name="categorie" class="form-control" placeholder="Ex: homme/femme">
                                                                         </div>
                                                                     </div>
                                                                 </div>
