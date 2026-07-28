@@ -66,6 +66,53 @@
                                                         {{ Session::get('danger') }}
                                                     </div>
                                                 @endif
+
+                                                <!-- Statistiques -->
+                                                <div class="row mb-3">
+                                                    <h2 class="card-title" h2 fw-bold mb-2>Statistiques {{ \Carbon\Carbon::create()->month($mois)->translatedFormat('F') }} / {{ $annee }}</h2>
+                                                    <div class="col-md-2">
+                                                        <div class="card text-white bg-primary">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Total Abonnés</h5>
+                                                                <p class="card-text">{{ $totalAbonnes }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="card text-white bg-success">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Abonnés Payés</h5>
+                                                                <p class="card-text">{{ $abonnesPayes }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="card text-white bg-danger">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Abonnés Non Payés</h5>
+                                                                <p class="card-text">{{ $abonnesNonPayes }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="card text-white bg-info">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Montant encaissé</h5>
+                                                                <p class="card-text">{{ number_format($montantEncaisse, 0, ',', ' ') }} FCFA</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="card text-white bg-secondary">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Taux de recouvrement</h5>
+                                                                <p class="card-text">{{ $tauxRecouvrement }}%</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Formulaire filtre -->
                                                 <div class="row">
                                                     <form method="GET" action="{{ route('abonne.index') }}" class="row g-2 mb-3">
 

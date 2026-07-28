@@ -22,7 +22,22 @@ class AbonneController extends Controller
             }
         ])->latest()->get();
         
-        return view('dashboard.abonnes.index', compact('abonnes', 'mois', 'annee'));
+        // Statistiques
+        $totalAbonnes = $abonnes->count();
+
+        $abonnesPayes = $abonnes->filter(function ($abonne) {
+            return $abonne->paiements->where('statut', 'payé')->isNotEmpty();
+        })->count();
+
+        $abonnesNonPayes = $totalAbonnes - $abonnesPayes;
+
+        $montantEncaisse = $abonnes->sum(function ($abonne) {
+            return $abonne->paiements->where('statut', 'payé')->sum('montant');
+        });
+
+        $tauxRecouvrement = $totalAbonnes > 0 ? round(($abonnesPayes / $totalAbonnes) * 100, 2) : 0;
+        
+        return view('dashboard.abonnes.index', compact('abonnes', 'mois', 'annee', 'totalAbonnes', 'abonnesPayes', 'abonnesNonPayes', 'montantEncaisse', 'tauxRecouvrement'));
     }
 
 
@@ -42,7 +57,22 @@ class AbonneController extends Controller
                 $query->where('nom_complet', 'like', '%' . $search . '%')->orWhere('telephone', 'like', '%' . $search . '%');
                 })->latest()->paginate(50)->withQueryString();
 
-        return view('dashboard.abonnes.index', compact('abonnes', 'mois', 'annee'));
+        // Statistiques
+        $totalAbonnes = $abonnes->count();
+
+        $abonnesPayes = $abonnes->filter(function ($abonne) {
+            return $abonne->paiements->where('statut', 'payé')->isNotEmpty();
+        })->count();
+
+        $abonnesNonPayes = $totalAbonnes - $abonnesPayes;
+
+        $montantEncaisse = $abonnes->sum(function ($abonne) {
+            return $abonne->paiements->where('statut', 'payé')->sum('montant');
+        });
+
+        $tauxRecouvrement = $totalAbonnes > 0 ? round(($abonnesPayes / $totalAbonnes) * 100, 2) : 0;
+
+        return view('dashboard.abonnes.index', compact('abonnes', 'mois', 'annee', 'totalAbonnes', 'abonnesPayes', 'abonnesNonPayes', 'montantEncaisse', 'tauxRecouvrement'));
     }
 
     /**
