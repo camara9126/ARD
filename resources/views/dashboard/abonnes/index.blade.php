@@ -33,7 +33,7 @@
                                         <!-- Basic table card start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>abonnes</h5>
+                                                <h5>abonnes ({{ $abonnes->count() }})</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
                                                     <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#abonneModal">Nouveau abonne →</a>
@@ -66,14 +66,59 @@
                                                         {{ Session::get('danger') }}
                                                     </div>
                                                 @endif
+                                                <div class="row">
+                                                    <form method="GET" action="{{ route('abonne.index') }}" class="row g-2 mb-3">
+
+                                                        <div class="col-md-4">
+                                                            <select name="mois" class="form-select">
+                                                                @foreach(range(1, 12) as $m)
+                                                                    <option value="{{ $m }}" {{ $mois == $m ? 'selected' : '' }}>
+                                                                        {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <select name="annee" class="form-select">
+                                                                @foreach(range(now()->year - 2, now()->year + 1) as $a)
+                                                                    <option value="{{ $a }}" {{ $annee == $a ? 'selected' : '' }}>
+                                                                        {{ $a }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-2">
+                                                            <button type="submit" class="btn btn-primary">
+                                                                Filtrer
+                                                            </button>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+
                                                 <div class="table-responsive">
+                                                    <nav class="navbar navbar-light bg-light mb-3">
+                                                        <form method="get" action="{{route('abonne.search')}}" class="form-inline">
+                                                        
+                                                            <input class="form-control mr-2" type="search" name="search" placeholder="Rechercher par nom/ telephone.." aria-label="Search">                                                            
+                                                        
+                                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>                                                    
+                                                            
+                                                        </form>
+                                                    </nav>
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
                                                                 <th>Reference</th>
                                                                 <th>Nom</th>
                                                                 <th>Telephone</th>
+                                                                <th>Montant</th>
                                                                 <th>Mois</th>
+                                                                <th>Annee</th>
+                                                                <th>Date paiement</th>
+                                                                <th>Mode paiement</th>
                                                                 <th>Statut</th>
                                                                 <th>Action</th>
                                                             </tr>
@@ -84,9 +129,13 @@
                                                                 <td>{{$a->reference}}</td>
                                                                 <td>{{$a->nom_complet}}</td>
                                                                 <td>{{$a->telephone ?? 'Vide'}}</td>
+                                                                <td>{{$a->paiements->first()->montant ?? 'Vide'}} FCFA</td>
                                                                 <td>{{$a->paiements->first()->mois ?? 'Vide'}}</td>
+                                                                <td>{{$a->paiements->first()->annee ?? 'Vide'}}</td>
+                                                                <td>{{$a->paiements->first()->date_paiement ?? 'Vide'}}</td>
+                                                                <td>{{$a->paiements->first()->mode_paiement ?? 'Vide'}}</td>
                                                                 <td>
-                                                                    @if($a->paiements->first()->statut == 'payé')
+                                                                    @if($a->paiements->where('statut', 'payé')->isNotEmpty())
                                                                         <span class="badge bg-success">Payé</span>
                                                                     @else
                                                                         <span class="badge bg-danger">
@@ -125,7 +174,7 @@
                                                 <!-- Modal paiement -->
                                                 <div class="modal fade" id="paiementModal" tabindex="-1">
                                                     <div class="modal-dialog">
-                                                        <form action="{{ route('paiement.abonne') }}" method="POST">
+                                                        <form action="{{ route('paiementAbonne.store') }}" method="POST">
                                                             @csrf
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -134,6 +183,11 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <input type="hidden" name="abonne_id" id="abonne_id">
+
+                                                                    <!-- Mois et année sélectionnés -->
+                                                                    <input type="hidden" name="mois" value="{{ $mois }}">
+
+                                                                    <input type="hidden" name="annee" value="{{ $annee }}">
 
                                                                     <div class="mb-3">
                                                                         <label>Montant à payer</label>

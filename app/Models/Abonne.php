@@ -22,6 +22,6 @@ class Abonne extends Model
 
     public function paiements()
     {
-        return $this->hasMany(Paiement_abonne::class);
+        return $this->hasMany(Paiement_abonne::class, 'abonne_id');
     }
 }

@@ -170,63 +170,67 @@
                             </ul>
                             @if(Auth::user()->role == 'commercial')
 
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="pcoded-hasmenu ">
-                                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i><b>A</b></span>
-                                            <span class="pcoded-mtext">Commercial</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                        <ul class="pcoded-submenu">
-                                            @if($unite->categorie->slug == 'service')
-                                                <li class="">
-                                                    <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Prestation</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                                <li class="">
-                                                    <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Nouvelle prestation</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                            @elseif($unite->categorie->slug == 'gos')
-                                                <li class="">
-                                                    <a href="{{ route('abonne.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Abonnees</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                            @else
-                                                <li class="">
-                                                    <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Ventes</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                                <li class="">
-                                                    <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Nouvelle vente</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                                <li class="">
-                                                    <a href="{{ route('client.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Clients</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                            @endif
-                                        </ul>
-                                    </li>
-                                </ul>
+                                @if($unite->categorie->slug == 'gos')
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('abonne.index') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-users"></i></span>
+                                                <span class="pcoded-mtext">Abonnees</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @else
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="pcoded-hasmenu ">
+                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i><b>A</b></span>
+                                                <span class="pcoded-mtext">Commercial</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                @if($unite->categorie->slug == 'service')
+                                                    <li class="">
+                                                        <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Prestation</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Nouvelle prestation</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                    <li class="">
+                                                        <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Ventes</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Nouvelle vente</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="{{ route('client.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Clients</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                @endif
 
                                 @if($unite->categorie->slug !== 'gos')
                                     <ul class="pcoded-item pcoded-left-item">
@@ -346,15 +350,17 @@
                                     </li>
                                 </ul> 
                                
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('analyse') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-chart-bar"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext">Rapport & Analyse</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul> 
+                                @if($unite->categorie->slug !== 'gos')
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('analyse') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-chart-bar"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext">Rapport & Analyse</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @endif 
 
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="">

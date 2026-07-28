@@ -19,6 +19,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UniteController;
 use App\Http\Controllers\VenteController;
 use App\Http\Controllers\AbonneController;
+use App\Http\Controllers\PaiementAbonneController;
 use App\Models\MouvementStock;
 use App\Models\Vente;
 use Illuminate\Support\Facades\Route;
@@ -104,11 +105,10 @@ Route::middleware('auth')->group(function () {
 //Route Finance
 Route::middleware('auth')->group(function () {
     Route::resource('paiement', PaiementController::class);
-    // paiement abonne
-    Route::post('/paiementAbonne', [PaiementController::class, 'paiementAbonne'])->name('paiement.abonne');
     Route::resource('/recette', RecetteController::class);
     Route::resource('/depense', DepenseController::class);
     Route::resource('/chargefixe', ChargeFixeController::class);
+    Route::resource('/paiementAbonne', PaiementAbonneController::class);
 });
 
 

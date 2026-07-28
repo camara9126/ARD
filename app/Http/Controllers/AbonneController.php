@@ -10,11 +10,19 @@ class AbonneController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $abonnes = Abonne::where('unite_id', request()->user()->unite_id)->latest()->paginate(50);
+        $mois = $request->filled('mois')? (int) $request->mois: now()->month;
 
-        return view('dashboard.abonnes.index', compact('abonnes'));
+        $annee = $request->filled('annee')? (int) $request->annee: now()->year;
+
+        $abonnes = Abonne::with(['unite','paiements' => function ($query) use ($mois, $annee) {
+                $query->where('mois', $mois)
+                    ->where('annee', $annee);
+            }
+        ])->latest()->get();
+        
+        return view('dashboard.abonnes.index', compact('abonnes', 'mois', 'annee'));
     }
 
 
@@ -23,11 +31,18 @@ class AbonneController extends Controller
     {
         $search = $request->input('search');
 
-        $abonnes = Abonne::where('unite_id', request()->user()->unite_id)->where(function ($query) use ($search) {
+        $mois = $request->filled('mois')? (int) $request->mois: now()->month;
+        $annee = $request->filled('annee')? (int) $request->annee: now()->year;
+
+        $abonnes = Abonne::with(['unite','paiements' => function ($query) use ($mois, $annee) {
+                $query->where('mois', $mois)
+                    ->where('annee', $annee);
+            }
+        ])->where('unite_id', request()->user()->unite_id)->where(function ($query) use ($search) {
                 $query->where('nom_complet', 'like', '%' . $search . '%')->orWhere('telephone', 'like', '%' . $search . '%');
                 })->latest()->paginate(50)->withQueryString();
 
-        return view('dashboard.abonnes.index', compact('abonnes'));
+        return view('dashboard.abonnes.index', compact('abonnes', 'mois', 'annee'));
     }
 
     /**
@@ -59,20 +74,6 @@ class AbonneController extends Controller
             'adresse' => $request->adresse,
             'date_abonnement' => now(),
         ]);
-
-        // creation du paiement de l'abonne avec le statut non payé
-        $abonne->paiements()->create([
-            'mois' => now()->format('m'),
-            'annee' => now()->format('Y'),
-            'date_paiement' => now(),
-            'abonne_id' => $abonne->id,
-            'montant' => 0,
-            'statut' => 'non payé',
-            'valide_par' => request()->user()->name,
-            'reference_paiement' => 'PAY-' . strtoupper(uniqid()),
-            'mode_paiement' => 'cash',
-        ]);
-
 
 
         return redirect()->back()->with('success', 'Abonné ajouté avec succès.');
@@ -125,7 +126,7 @@ class AbonneController extends Controller
 
         // Supprimer les paiements associés à l'abonné
         $abonne->paiements()->delete();
-
+        
         // Supprimer l'abonné
         $abonne->delete();
 

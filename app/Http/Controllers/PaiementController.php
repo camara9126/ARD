@@ -22,46 +22,6 @@ class PaiementController extends Controller
     }
 
 
-    // paiement abonne
-    public function paiementAbonne(Request $request)
-    {
-        $request->validate([
-            'abonne_id' => 'required|exists:abonnes,id',
-            'montant' => 'required|numeric|min:1',
-            'mode_paiement' => 'required',
-        ]);
-
-        $abonne = Abonne::findOrFail($request->abonne_id);
-
-        $abonne->paiements()->update([
-            'abonne_id' => $abonne->id,
-            'statut' => 'payé',
-            'montant' => $request->montant,
-            'mode_paiement' => $request->mode_paiement,
-            'date_paiement' => now(),
-            'valide_par' => request()->user()->id,
-            'reference_paiement' => 'PAY-' . time()
-        ]);
-        
-
-         // 2. Création automatique de la recette
-        Recette::create([
-            'user_id' => $request->user()->id,
-            'unite_id' => request()->user()->unite_id,
-            'paiement_id' => null, // Pas de paiement lié pour les abonnés
-            'reference' => 'REC-' . now()->timestamp,
-            'libelle' => 'Recette abonnement ' . $abonne->nom_complet,
-            'montant' => $abonne->paiements()->latest()->first()->montant,
-            'date_recette' => now(),
-            'mode_paiement' => $abonne->paiements()->latest()->first()->mode_paiement,
-            'statut' => 'recu',
-        ]);
-
-        return back()->with('success', 'Paiement enregistré avec succès');
-    
-    }
-
-
     /**
      * Show the form for creating a new resource.
      */
