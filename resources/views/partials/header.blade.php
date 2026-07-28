@@ -228,59 +228,61 @@
                                     </li>
                                 </ul>
 
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="pcoded-hasmenu">
-                                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
-                                            <span class="pcoded-mtext">Inventaire</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                        <ul class="pcoded-submenu">
-                                               
-                                            <li class="">
-                                                <a href="{{ route('achat.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Achats</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-
-                                            @if($unite->categorie->nom == 'Service')
-                                                <li class=" ">
-                                                    <a href="{{ route('service.index') }}" class="waves-effect waves-dark">
+                                @if($unite->categorie->nom !== 'GOS')
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="pcoded-hasmenu">
+                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
+                                                <span class="pcoded-mtext">Inventaire</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                
+                                                <li class="">
+                                                    <a href="{{ route('achat.index') }}" class="waves-effect waves-dark">
                                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Services</span>
+                                                        <span class="pcoded-mtext">Achats</span>
                                                         <span class="pcoded-mcaret"></span>
                                                     </a>
                                                 </li>
-                                            @else
-                                            
+
+                                                @if($unite->categorie->nom == 'Service')
+                                                    <li class=" ">
+                                                        <a href="{{ route('service.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Services</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                
+                                                    <li class=" ">
+                                                        <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Produits</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                @endif
+
                                                 <li class=" ">
-                                                    <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
+                                                    <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
                                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Produits</span>
+                                                        <span class="pcoded-mtext">Fournisseurs</span>
                                                         <span class="pcoded-mcaret"></span>
                                                     </a>
                                                 </li>
-                                            @endif
-
-                                            <li class=" ">
-                                                <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Fournisseurs</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Mouvement Stock</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>     
+                                                <li class="">
+                                                    <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Mouvement Stock</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>  
+                                @endif   
 
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="pcoded-hasmenu">
