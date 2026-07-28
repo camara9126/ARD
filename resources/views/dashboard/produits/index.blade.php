@@ -142,7 +142,7 @@
                                                         <div class="modal-content">
 
                                                             <!-- Categorie Unite Transformation -->
-                                                            @if($unite->categorie->nom == 'Transformation')
+                                                            @if($unite->categorie->slug == 'transformation')
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Nouvelle transformation</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -226,7 +226,7 @@
                                                                 </div>
 
                                                             <!-- Categorie Unite Service -->
-                                                            @elseif($unite->categorie->nom == 'Service')
+                                                            @elseif($unite->categorie->slug == 'service')
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Nouveau service</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

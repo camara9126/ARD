@@ -59,8 +59,6 @@ class PaiementController extends Controller
 
         return back()->with('success', 'Paiement enregistré avec succès');
     
-    
-    
     }
 
 

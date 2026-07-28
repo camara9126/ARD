@@ -344,7 +344,7 @@ class VenteController extends Controller
                     continue;
                 }
 
-                if ($unite->categorie->nom == 'Service') {
+                if ($unite->categorie->slug == 'service') {
                     $service = Service::where('id', $item['produit_id'])->lockForUpdate()->first(); // verrou stock
 
                     VenteItem::create([
@@ -482,11 +482,8 @@ class VenteController extends Controller
             ]);
 
             DB::commit();
-            if ($unite->categorie->nom == 'Service') {
-                return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
-            } else {
-                return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
-            }
+           
+            return redirect()->route('vente.index')->with('success', 'Vente modifiée avec succès');
 
         }
         } catch (\Exception $e) {

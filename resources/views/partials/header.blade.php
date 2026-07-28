@@ -178,7 +178,7 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                         <ul class="pcoded-submenu">
-                                            @if($unite->categorie->nom == 'Service')
+                                            @if($unite->categorie->slug == 'service')
                                                 <li class="">
                                                     <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
                                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -193,7 +193,7 @@
                                                         <span class="pcoded-mcaret"></span>
                                                     </a>
                                                 </li>
-                                            @elseif($unite->categorie->nom == 'GOS')
+                                            @elseif($unite->categorie->slug == 'gos')
                                                 <li class="">
                                                     <a href="{{ route('abonne.index') }}" class="waves-effect waves-dark">
                                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -228,7 +228,7 @@
                                     </li>
                                 </ul>
 
-                                @if($unite->categorie->nom !== 'GOS')
+                                @if($unite->categorie->slug !== 'gos')
                                     <ul class="pcoded-item pcoded-left-item">
                                         <li class="pcoded-hasmenu">
                                             <a href="javascript:void(0)" class="waves-effect waves-dark">
@@ -246,7 +246,7 @@
                                                     </a>
                                                 </li>
 
-                                                @if($unite->categorie->nom == 'Service')
+                                                @if($unite->categorie->slug == 'service')
                                                     <li class=" ">
                                                         <a href="{{ route('service.index') }}" class="waves-effect waves-dark">
                                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -292,7 +292,7 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                         <ul class="pcoded-submenu">
-                                            @if($unite->categorie->nom !== 'GOS')
+                                            @if($unite->categorie->slug !== 'gos')
                                                 <li class="">
                                                     <a href="{{ route('paiement.index') }}" class="waves-effect waves-dark">
                                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

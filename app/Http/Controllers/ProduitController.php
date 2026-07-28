@@ -70,7 +70,7 @@ class ProduitController extends Controller
             $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
             // Categorie Transformation
-            if($unite->categorie->id == 1) {
+            if($unite->categorie->slug == 'transformation') {
 
                 $produit= Produit::create([
                     'unite_id' => $request->user()->unite_id,

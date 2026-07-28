@@ -359,7 +359,7 @@
                                                                         <i class="fas fa-box"></i> produits
                                                                     </div> -->
                                                                     <div class="product-grid" id="productGridShoes">
-                                                                        @if($unite->categorie->nom == 'Service')
+                                                                        @if($unite->categorie->slug == 'service')
                                                                             @foreach($services->take(15) as $service)
                                                                                 <div class="product-card" data-id="{{ $service->id }}" data-prix_vente="{{ $service->prix_vente }}" data-nom="{{ $service->nom }}">
                                                                                     <!--<div class="product-image">
@@ -390,7 +390,7 @@
 
                                                                     <!-- Tableau des produits du panier -->
                                                                     <table class="produits-table" id="produitsTable">
-                                                                        @if($unite->categorie->nom == 'Service')
+                                                                        @if($unite->categorie->slug == 'service')
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>Service</th>
@@ -465,7 +465,7 @@
                                                                         @endif
                                                                     </table>
 
-                                                                    @if(!$unite->categorie->nom == 'Service')
+                                                                    @if(!$unite->categorie->slug == 'service')
                                                                         <button type="button" id="addRowBtn" class="btn btn-primary" style="margin-top: 15px; width: 100%;">
                                                                             + Ajouter un produit
                                                                         </button>
@@ -617,7 +617,7 @@
         let options = `{!! $produits->map(function($p) { return '<option value="'.$p->id.'" data-prix_vente="'.$p->prix_vente.'" data-nom="'.$p->nom.'">'.$p->nom.'</option>'; })->implode('') !!}`;
         
         let rowHtml = `
-            @if($unite->categorie->nom == 'Service')
+            @if($unite->categorie->slug == 'service')
                 <tr id="row-${rowIndex}">
                     <td>
                         <select name="produits[${rowIndex}][service_id]" class="form-control produit-select">

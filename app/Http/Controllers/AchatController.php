@@ -98,7 +98,7 @@ class AchatController extends Controller
 
                     $total += $ligneTotal;
                 
-                    if($unite->categorie->nom == 'Transformation') {
+                    if($unite->categorie->slug == 'transformation') {
 
                         // Création du produit intrant si l'unité est de type transformation
                         ProduitIntrant::create([
@@ -107,7 +107,7 @@ class AchatController extends Controller
                             'quantite' => $item['quantite'],
                         ]);
 
-                    } elseif($unite->categorie->nom == 'Service') {
+                    } elseif($unite->categorie->slug == 'service') {
 
                         // Création du service intrant si l'unité est de type service
                         ServiceIntrant::create([
