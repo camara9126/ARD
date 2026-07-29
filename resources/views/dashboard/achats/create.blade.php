@@ -114,11 +114,11 @@
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
-                                                            @if(Auth::user()->unite->categorie->slug == 'Transformation' || Auth::user()->unite->categorie->slug == 'service')
+                                                            @if(Auth::user()->unite->categorie->slug == 'transformation' || Auth::user()->unite->categorie->slug == 'service')
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
-                                                                            <input type="text" name="designation[0][nom]" class="form-control" placeholder="nouveau produit" produit-select>
+                                                                            <input type="text" name="designation[0][nom]" class="form-control produit-select" placeholder="nouveau produit">
                                                                             
                                                                         </td>
 
@@ -252,7 +252,7 @@
             @if(Auth::user()->unite->categorie->slug == 'transformation' || Auth::user()->unite->categorie->slug == 'service')
                 <tr>
                     <td>
-                        <input type="text" name="designation[${index}][nom]" class="form-control" placeholder="nouveau produit" produit-select>
+                        <input type="text" name="designation[${index}][nom]" class="form-control produit-select" placeholder="nouveau produit" >
                         
                     </td>
 

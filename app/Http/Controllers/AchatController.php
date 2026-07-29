@@ -48,7 +48,7 @@ class AchatController extends Controller
     {
         $request->validate([
             'fournisseur_id' => 'exists:fournisseurs,id',
-            'designation' ,
+            'designation' => 'array|min:1',
             'designation.*.nom',
             'designation.*.prix',
             'designation.*.quantite',
@@ -80,7 +80,7 @@ class AchatController extends Controller
             if(!empty($request->designation)) {
 
                 foreach ($request->designation as $item) {
-
+                    
                     // Récupération de l'unite
                     $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
 
