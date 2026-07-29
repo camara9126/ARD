@@ -56,7 +56,7 @@
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <img src="images/logoard.jpg.webp" alt="Logo ARD Saint-Louis" class="h-12 w-auto object-contain">
+                <img src="{{ asset('assets/images/images/logoard.jpg.webp') }}" alt="Logo ARD Saint-Louis" class="h-12 w-auto object-contain">
                 <div>
                     <span class="text-lg font-bold text-slate-900 block leading-tight">ARD Saint-Louis</span>
                     <span class="text-xs font-medium text-ardGreen">Plateforme Régionale SPI & ERP</span>
@@ -71,7 +71,7 @@
                 <a href="#contact" class="hover:text-ardGreen transition">Contact</a>
             </nav>
             <div class="flex items-center space-x-4">
-                <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-ardGreen rounded-xl shadow-lg shadow-ardGreen/20 hover:bg-ardDark transition">
+                <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-ardGreen rounded-xl shadow-lg shadow-ardGreen/20 hover:bg-ardDark transition">
                     Accéder à la Plateforme
                 </a>
             </div>
@@ -81,9 +81,9 @@
     <!-- Hero Section with 3 Image Slideshow -->
     <section id="accueil" class="relative pt-32 pb-24 md:pt-40 md:pb-32 text-white overflow-hidden min-h-[600px] flex items-center">
         <!-- Background Slides -->
-        <div class="hero-slide active" style="background-image: url('images/Diougopmaman.jpg.webp');"></div>
-        <div class="hero-slide" style="background-image: url('images/diougop.jpg.jpeg');"></div>
-        <div class="hero-slide" style="background-image: url('images/Guetndar.jpg.webp');"></div>
+        <div class="hero-slide active" style="background-image: url('{{ asset('assets/images/images/Diougopmaman.jpg.webp') }}');"></div>
+        <div class="hero-slide" style="background-image: url('{{ asset('assets/images/images/diougop.jpg.jpeg') }}');"></div>
+        <div class="hero-slide" style="background-image: url('{{ asset('assets/images/images/Guetndar.jpg.webp') }}');"></div>
         <div class="hero-overlay"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -171,7 +171,7 @@
                 </div>
                 <div class="relative">
                     <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-                        <img src="images/pont-faidherbe.jpg.jpg" alt="Projet Diougop ARD" class="w-full h-auto object-cover">
+                        <img src="{{ asset('assets/images/images/pont-faidherbe.jpg.jpg') }}" alt="Projet Diougop ARD" class="w-full h-auto object-cover">
                     </div>
                     <div class="absolute -bottom-6 -left-6 bg-ardDark text-white p-6 rounded-2xl shadow-xl hidden sm:block max-w-xs border border-emerald-800">
                         <div class="text-amber-400 font-bold text-xl mb-1">Impact Régional</div>
@@ -199,7 +199,7 @@
                 <!-- Branche 1 -->
                 <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-xl transition flex flex-col">
                     <div class="h-48 overflow-hidden relative">
-                        <img src="images/Halieutique.png" alt="Négoce direct" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/Halieutique.png') }}" alt="Négoce direct" class="w-full h-full object-cover">
                         <span class="absolute top-3 left-3 bg-ardDark/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">Branche 01</span>
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
@@ -218,7 +218,7 @@
                 <!-- Branche 2 -->
                 <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-xl transition flex flex-col">
                     <div class="h-48 overflow-hidden relative">
-                        <img src="images/transformation.png" alt="Transformation" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/transformation.png') }}" alt="Transformation" class="w-full h-full object-cover">
                         <span class="absolute top-3 left-3 bg-ardDark/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">Branche 02</span>
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
@@ -237,7 +237,7 @@
                 <!-- Branche 3 -->
                 <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-xl transition flex flex-col">
                     <div class="h-48 overflow-hidden relative">
-                        <img src="images/dechets.jpg.png" alt="Gestion des Déchets" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/dechets.jpg.png') }}" alt="Gestion des Déchets" class="w-full h-full object-cover">
                         <span class="absolute top-3 left-3 bg-ardDark/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">Branche 03</span>
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
@@ -256,7 +256,7 @@
                 <!-- Branche 4 -->
                 <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-xl transition flex flex-col">
                     <div class="h-48 overflow-hidden relative">
-                        <img src="images/esthetique.png" alt="Prestations de Services" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/esthetique.png') }}" alt="Prestations de Services" class="w-full h-full object-cover">
                         <span class="absolute top-3 left-3 bg-ardDark/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">Branche 04</span>
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
@@ -293,7 +293,7 @@
                 <!-- Unité 1 -->
                 <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
                     <div class="h-40 rounded-xl overflow-hidden mb-4 relative">
-                        <img src="images/transf.jpg.png" alt="Unité de transformation" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/transf.jpg.png') }}" alt="Unité de transformation" class="w-full h-full object-cover">
                         <span class="absolute top-3 right-3 bg-ardGreen text-white text-xs font-bold px-2.5 py-1 rounded-md">Transformation</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Unité de Transformation</h3>
@@ -305,7 +305,7 @@
                 <!-- Unité 2 -->
                 <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
                     <div class="h-40 rounded-xl overflow-hidden mb-4 relative">
-                        <img src="images/dechets.jpg.png" alt="Pic collecte de déchet" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/dechets.jpg.png') }}" alt="Pic collecte de déchet" class="w-full h-full object-cover">
                         <span class="absolute top-3 right-3 bg-amber-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Environnement</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Pic Collecte de Déchets</h3>
@@ -317,7 +317,7 @@
                 <!-- Unité 3 -->
                 <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
                     <div class="h-40 rounded-xl overflow-hidden mb-4 relative">
-                        <img src="images/coif.jpg.png" alt="Salon de coiffure" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/coif.jpg.png') }}" alt="Salon de coiffure" class="w-full h-full object-cover">
                         <span class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Services</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Salon de Coiffure</h3>
@@ -329,7 +329,7 @@
                 <!-- Unité 4 -->
                 <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
                     <div class="h-40 rounded-xl overflow-hidden mb-4 relative">
-                        <img src="images/tail.jpg.png" alt="Atelier tailleur" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/tail.jpg.png') }}" alt="Atelier tailleur" class="w-full h-full object-cover">
                         <span class="absolute top-3 right-3 bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Artisanat</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Atelier Tailleur</h3>
@@ -341,7 +341,7 @@
                 <!-- Unité 5 -->
                 <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition md:col-span-2 lg:col-span-2">
                     <div class="h-40 rounded-xl overflow-hidden mb-4 relative">
-                        <img src="images/halieu.jpg.png" alt="Halieutique" class="w-full h-full object-cover">
+                        <img src="{{ asset('assets/images/images/halieu.jpg.png') }}" alt="Halieutique" class="w-full h-full object-cover">
                         <span class="absolute top-3 right-3 bg-teal-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Halieutique</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Pôle Halieutique & Pêche</h3>
@@ -382,7 +382,7 @@
                 </div>
                 <div class="relative">
                     <div class="rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900">
-                        <img src="images/interface.jpg.png" alt="Vue aérienne du site et de la zone" class="w-full h-auto object-cover opacity-90">
+                        <img src="{{ asset('assets/images/images/interface.jpg.png') }}" alt="Vue aérienne du site et de la zone" class="w-full h-auto object-cover opacity-90">
                     </div>
                 </div>
             </div>
@@ -395,7 +395,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <img src="images/logoard.jpg.webp" alt="Logo ARD" class="h-10 w-auto bg-white p-1 rounded">
+                        <img src="{{ asset('assets/images/images/logoard.jpg.webp') }}" alt="Logo ARD" class="h-10 w-auto bg-white p-1 rounded">
                         <span class="text-lg font-bold">ARD Saint-Louis</span>
                     </div>
                     <p class="text-slate-300 text-sm leading-relaxed mb-6">
