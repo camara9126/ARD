@@ -38,11 +38,13 @@
                 <x-input-error class="mt-2" :messages="$errors->get('adresse')" />
             </div>
 
-            <div>
-                <x-input-label for="categorie" :value="__('Categorie')" />
-                <x-text-input id="" name="categorie_id" type="text" readonly class="mt-1 block w-full" :value="old('categorie_id', $unite->categorie->nom)" autofocus autocomplete="categorie_id" />
-                <x-input-error class="mt-2" :messages="$errors->get('categorie')" />
-            </div>
+            @if($unite->categorie)
+                <div>
+                    <x-input-label for="categorie" :value="__('Categorie')" />
+                    <x-text-input id="" name="categorie_id" type="text" readonly class="mt-1 block w-full" :value="old('categorie_id', $unite->categorie->nom)" autofocus autocomplete="categorie_id" />
+                    <x-input-error class="mt-2" :messages="$errors->get('categorie')" />
+                </div>
+            @endif
 
             <div>
                 <x-input-label for="adresse" :value="__('TVA')" />

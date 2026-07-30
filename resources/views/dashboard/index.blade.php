@@ -4,24 +4,29 @@ use App\Models\Achat;
 use App\Models\ChargeFixe;
 use App\Models\Depense;
 use App\Models\Recette;
+use App\Models\Vente;
+use App\Models\MouvementStock;
+use App\Models\Produit;
 use App\Models\Unite;
 use Illuminate\Support\Carbon;
 
-    $unite= Unite::Where('id', request()->user()->unite_id)->first();
+    $mouvements = MouvementStock::Where('unite_id', $unite->id)->latest()->get();
+
+    $factures = Vente::Where('unite_id', $unite->id)->with('client')->latest()->get();
 
     $amortissements= $unite->equipements->sum('amortissement_mensuel');
 
-    $chargeFixes= ChargeFixe::Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+    $chargeFixes= ChargeFixe::Where('unite_id', $unite->id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
     
     // chiffre d'affaire mois actuel
-    $caMoisActuel = Recette::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+    $caMoisActuel = Recette::where('statut', 'recu')->Where('unite_id', $unite->id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
    
     // chiffre d'affaire global actuel ttc
-    $caGlobal= Recette::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereYear('created_at', now()->year)->sum('montant');
+    $caGlobal= Recette::where('statut', 'recu')->Where('unite_id', $unite->id)->whereYear('created_at', now()->year)->sum('montant');
 
-    $achatGlobal = Achat::where('statut', 'recu')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
+    $achatGlobal = Achat::where('statut', 'recu')->Where('unite_id', $unite->id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
 
-    $depenseGlobal = Depense::where('statut', 'payee')->Where('unite_id', request()->user()->unite_id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+    $depenseGlobal = Depense::where('statut', 'payee')->Where('unite_id', $unite->id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
 
     $resultatGlobal = $caMoisActuel - $depenseGlobal -  $chargeFixes - $amortissements;
 
@@ -78,10 +83,10 @@ use Illuminate\Support\Carbon;
                                     <div class="col-md-4">
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item">
-                                                <a href="#"> <i class="fa fa-home"></i> </a>
+                                                <!-- <a href="#"> <i class="fa fa-home"></i> </a> -->
+                                                 Categorie
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">{{  Auth::user()->unite->categorie->nom }}</a>
-                                            </li>
+                                            <li class="breadcrumb-item">{{ $unite->categorie->nom ?? 'Non spécifiée' }}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -240,6 +245,7 @@ use Illuminate\Support\Carbon;
                                                                 </thead>
                                                                 <tbody>
                                                                     @forelse($factures->take(3) as $v)
+                                                                    @if($v->montant_restant == 0)
                                                                     <tr>
                                                                         <td><strong>{{$v->reference}}</strong></td>
                                                                         <td>{{$v->client->nom ?? 'Vide'}}</td>
@@ -277,6 +283,7 @@ use Illuminate\Support\Carbon;
                                                                             </div>
                                                                         </td>
                                                                     </tr>
+                                                                    @endif
                                                                     @empty
                                                                         <tr>
                                                                             <td colspan="7" align="center">Donnee vide !</td>

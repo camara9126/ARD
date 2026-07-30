@@ -150,11 +150,11 @@ use Illuminate\Support\Carbon;
 
                                         <div class="row">
                                             <!-- Material statustic card start -->
-                                            <div class="col-xl-4 col-md-12">
+                                            <div class="col-xl-8 col-md-12 mt-3">
                                                 <div class="card mat-stat-card">
                                                     <div class="card-block">
                                                         <div class="row align-items-center b-b-default">
-                                                            <div class="col-sm-6 b-r-default p-b-20 p-t-20">
+                                                            <div class="col-sm-3 b-r-default p-b-20 p-t-20">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-money-bill-wave text-c-purple f-24"></i>
@@ -165,7 +165,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6 p-b-20 p-t-20">
+                                                            <div class="col-sm-3 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-bag-shopping text-c-green f-24"></i>
@@ -176,9 +176,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row align-items-center">
-                                                            <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
+                                                            <div class="col-sm-3 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-arrow-down text-c-red f-24"></i>
@@ -189,7 +187,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6 p-b-20 p-t-20">
+                                                            <div class="col-sm-3 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-chart-line text-c-blue f-24"></i>
@@ -204,7 +202,7 @@ use Illuminate\Support\Carbon;
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-4 col-md-12">
+                                            <!-- <div class="col-xl-4 col-md-12">
                                                 <div class="card mat-stat-card">
                                                     <div class="card-block">
                                                         <div class="row align-items-center b-b-default">
@@ -219,7 +217,7 @@ use Illuminate\Support\Carbon;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <!-- <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
+                                                            <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-arrow-down text-c-red f-24"></i>
@@ -229,11 +227,11 @@ use Illuminate\Support\Carbon;
                                                                         <p class="text-muted m-b-0">Depense (Direction)</p>
                                                                     </div>
                                                                 </div>
-                                                            </div> -->
+                                                            </div>
                                                             
                                                         </div>
                                                         <div class="row align-items-center">
-                                                            <!-- <div class="col-sm-6 p-b-20 p-t-20">
+                                                            <div class="col-sm-6 p-b-20 p-t-20">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-sitemap text-c-green f-24"></i>
@@ -243,8 +241,8 @@ use Illuminate\Support\Carbon;
                                                                         <p class="text-muted m-b-0">Fonds/Partenaires</p>
                                                                     </div>
                                                                 </div>
-                                                            </div> -->
-                                                            <!--<div class="col-sm-6 p-b-20 p-t-20 b-r-default">
+                                                            </div>
+                                                            <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                                                 <div class="row align-items-center text-center">
                                                                     <div class="col-4 p-r-0">
                                                                         <i class="fas fa-signal text-c-red f-24"></i>
@@ -265,11 +263,11 @@ use Illuminate\Support\Carbon;
                                                                         <p class="text-muted m-b-0">Connections</p>
                                                                     </div>
                                                                 </div>
-                                                            </div>-->
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col-xl-4 col-md-12">
                                                 <div class="card mat-clr-stat-card text-white green ">
                                                     <div class="card-block">
@@ -303,7 +301,7 @@ use Illuminate\Support\Carbon;
 
                                         <!-- Repartition Recette start -->
                                         <div class="row">
-                                            <div class="col-xl-6 col-md-12">
+                                            <div class="col-xl-12 col-md-12">
                                                 <div class="card table-card">
                                                     <div class="card-header">
                                                         <h5>Repartition des Recettes</h5>
@@ -328,10 +326,11 @@ use Illuminate\Support\Carbon;
                                                                         <th><b>Vente</b></th>
                                                                         <th><b>Recette</b></th>
                                                                         <th><b>Action</b></th>
+                                                                        <th><b>Dashboard</b></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @foreach($repUnites as $unite)
+                                                                    @foreach($repUnites->where('nom', '!=', 'ARD') as $unite)
 
                                                                         <tr>
                                                                             <td>{{ $unite->nom }}</td>
@@ -362,6 +361,12 @@ use Illuminate\Support\Carbon;
                                                                                 </a>
                                                                             </td>
 
+                                                                            <td>
+                                                                                <a href="{{ route('admin.dashboard', $unite->id) }}" class="action-btn text-primary mr-2" title="afficher le dashboard">
+                                                                                    <i class="fas fa-chart-line"></i> Dashboard
+                                                                                </a>
+                                                                            </td>
+
                                                                         </tr>
 
                                                                     @endforeach
@@ -371,7 +376,7 @@ use Illuminate\Support\Carbon;
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6 col-md-12">
+                                            <div class="col-xl-12 col-md-12">
                                                 <div class="card table-card">
                                                     <div class="card-header">
                                                         <h5>ANALYSE & CONTROLE DE PRODUCTIVITÉ</h5>

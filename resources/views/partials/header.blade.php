@@ -414,15 +414,15 @@
                                     </li>
                                 </ul>
 
-                                <!--<ul class="pcoded-item pcoded-left-item">
+                                <ul class="pcoded-item pcoded-left-item">
                                     <li class="">
-                                        <a href="{{ route('depense.index') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-arrow-right-from-bracket"></i><b>M</b></span>
-                                            <span class="pcoded-mtext">Depenses</span>
+                                        <a href="{{ route('admin.directions') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fas fa-user"></i><b>M</b></span>
+                                            <span class="pcoded-mtext">Superviseurs</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                </ul> -->
+                                </ul>
 
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="">

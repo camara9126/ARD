@@ -24,6 +24,7 @@ use App\Http\Controllers\IntrantController;
 use App\Models\Abonne;
 use App\Models\MouvementStock;
 use App\Models\Vente;
+use App\Models\Unite;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,22 +40,23 @@ Route::get('/dashboard', function () {
 
     $user = request()->user();
 
-    $mouvements = MouvementStock::Where('unite_id', $user->unite_id)->latest()->get();
-
-    $factures = Vente::Where('unite_id', $user->unite_id)->with('client')->latest()->get();
+    $unite = Unite::where('id', $user->unite_id)->first();
 
     if ($user->role == 'commercial' && !$user->unite_id) {
 
         return redirect()->route('unite.create');
-    } elseif ($user->role == 'admin') {
+
+    } elseif ($user->role == 'admin' || $user->role == 'superviseur') {
 
         return redirect()->route('admin.index');
+
     } elseif ($user->unite->statut == 0) {
 
         return view('unite.attenteValidation');
+
     } else {
 
-        return view('dashboard.index', compact('mouvements', 'factures'));
+        return view('dashboard.index');
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -70,9 +72,17 @@ Route::resource('/unite', UniteController::class)->middleware(['auth', 'verified
 // Route Admin
 Route::middleware('auth')->group(function () {
     Route::resource('/admin', AdminController::class);
+    // liste des unités
     Route::get('/unites', [AdminController::class, 'unites'])->name('admin.unites');
+    // Liste des utilisateurs
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    // Liste des agents ARD
+    Route::get('/directions', [AdminController::class, 'directions'])->name('admin.directions');
+    // Ajout unité par l'Admin
     Route::get('/addUnite', [AdminController::class, 'addUnite'])->name('admin.addUnite');
+    // Dashboard de l'unité specifié
+    Route::get('/dashboard/{unite}', [AdminController::class, 'dashboardUnite'])->name('admin.dashboard');
+    // Suppression utilisateur
     Route::delete('/deleteUser/{id}', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
 
     Route::resource('/fond', FondController::class);

@@ -25,16 +25,16 @@ class AdminController extends Controller
 
        $repUnites = Unite::select('unites.id','unites.nom')->where('id', '!=', $currentUserUniteId)->selectSub(function ($query) {
 
-                $query->from('ventes')->selectRaw('COALESCE(SUM(total))')->where('statut', 'payee')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
+                $query->from('ventes')->selectRaw('COALESCE(SUM(total), 0)')->where('statut', 'payee')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
 
 
             }, 'total_ventes')->selectSub(function ($query) {
 
-                $query->from('depenses')->selectRaw('COALESCE(SUM(montant))')->where('statut', 'payee')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
+                $query->from('depenses')->selectRaw('COALESCE(SUM(montant), 0)')->where('statut', 'payee')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
 
             }, 'total_depenses')->selectSub(function ($query) {  
 
-                $query->from('recettes')->selectRaw('COALESCE(SUM(montant))')->where('statut', 'recu')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
+                $query->from('recettes')->selectRaw('COALESCE(SUM(montant), 0)')->where('statut', 'recu')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', now()->month);
             }, 'total_recettes')->get();
 //dd($unites);
 
@@ -53,7 +53,7 @@ class AdminController extends Controller
 
                     $query->from('ventes')->selectRaw('COALESCE(SUM(total), 0)')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', $mois)->whereYear('created_at', $annee);
 
-                }, 'productivite')->having('productivite', '>', 0); // Ne montrer que les unités avec des ventes->get()
+                }, 'productivite')->where('productivite', '>', 0); // Ne montrer que les unités avec des ventes->get()
             
             $labels = $unites->pluck('nom')->toArray();
             $data = $unites->pluck('productivite')->toArray();
@@ -74,9 +74,18 @@ class AdminController extends Controller
     // Liste des Utilisateurs
     public function users()
     {
-        $users= User::where('role', '!=', 'admin')->latest()->get();
+        $users= User::where('role', 'commercial')->latest()->get();
 
         return view('admin.users.listeUsers', compact('users'));
+    }
+
+    // Liste des Users Superviseurs
+     // Liste des Utilisateurs
+    public function directions()
+    {
+        $utilisateurs= User::where('role', 'superviseur')->latest()->get();
+
+        return view('admin.directions.superviseurs', compact('utilisateurs'));
     }
 
 
@@ -92,9 +101,20 @@ class AdminController extends Controller
     // Supprimer un utilisateur
     public function deleteUser($id)
     {
+
         $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->back()->with('success', 'Utilisateur supprimé avec success');
+
+        $admin = request()->user();
+
+        if($admin->role != 'admin') {
+
+            session()->flash('error', 'Vous n\'avez pas les droits administrateur.');
+        } else{
+
+            $user->delete();
+            return redirect()->back()->with('success', 'Utilisateur supprimé avec success');
+        }
+    
     }
 
     /**
@@ -132,28 +152,49 @@ class AdminController extends Controller
         }
 
 
-         $unites= Unite::create([
-            'nom' => $request->nom,
-            'adresse' => $request->adresse,
-            'contact' => $request->contact,
-            'logo' =>  $path ?? null,
-            'statut' => 0,
-            'taux_tva' => $request->taux_tva ?? 0,
-            'categorie_id' => $request->categorie_id
-         ]);
+        // Verification si c'est un User commercial ou Admin
+        if(!empty($request->nom && $request->addresse)) {
 
-        //  Info User
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'telephone' => $request->telephone,
-            'password' => Hash::make($request->password),
-            'role' => 'commercial',
-            'unite_id' => $unites->id
-        ]);
+        $unite= Unite::where('id', request()->user()->unite_id)->first();
 
-        return redirect()->route('admin.unites')->with('success', 'Unite cree avec success');
+            $unites= Unite::create([
+                'nom' => $request->nom,
+                'adresse' => $request->adresse,
+                'contact' => $request->contact,
+                'logo' =>  $path ?? null,
+                'statut' => 0,
+                'taux_tva' => $request->taux_tva ?? 0,
+                'categorie_id' => $request->categorie_id
+            ]);
 
+            //  Info User
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'telephone' => $request->telephone,
+                'password' => Hash::make($request->password),
+                'role' => 'commercial',
+                'unite_id' => $unites->id
+            ]);
+
+            return redirect()->route('admin.unites')->with('success', 'Unite crée avec success');
+
+        } else{
+
+            //  Creation User Superviseur
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'superviseur',
+                'unite_id' => null
+            ]);
+
+
+            return redirect()->back()->with('success', 'Utilisateur crée avec success');
+
+        }
+        
     }
 
     /**
@@ -212,6 +253,22 @@ class AdminController extends Controller
     public function edit(string $id)
     {
         //
+    }
+
+
+    // Afficher le dashboard d'une unité spécifique
+    public function dashboardUnite(Unite $unite)
+    {
+        // Vérifier si l'utilisateur a le droit d'accéder à ce dashboard
+        $user = request()->user();
+        $unite = Unite::findOrFail($unite->id);
+       
+        if ($user->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+        // Toutes les statistiques de cette unité
+
+        return view('dashboard.index', compact('unite'));
     }
 
     /**
