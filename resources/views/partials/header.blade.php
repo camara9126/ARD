@@ -283,6 +283,15 @@
                                                         <span class="pcoded-mcaret"></span>
                                                     </a>
                                                 </li>
+                                                @if($unite->categorie->slug == 'service'  || $unite->categorie->slug == 'transformation')
+                                                    <li class="">
+                                                        <a href="{{ route('intrant.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Intrants</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </li>
                                     </ul>  

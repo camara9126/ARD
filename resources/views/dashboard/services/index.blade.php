@@ -73,7 +73,7 @@
                                                             <tr>
                                                                 <th>Nom</th>
                                                                 <th>Prix</th>
-                                                                <th>Quantité</th>
+                                                                <!-- <th>Unite de mesure</th> -->
                                                                 <!-- <th>Statut</th> -->
                                                                 <th>Actions</th>
                                                             </tr>
@@ -83,7 +83,7 @@
                                                             <tr>
                                                                 <td>{{$p->nom}}</td>
                                                                 <td>{{number_format($p->prix, 0,'',' ')}} XOF</td>
-                                                                <td>{{$p->unite_de_mesure}}</td>
+                                                                <!-- <td>{{$p->unite_de_mesure}}</td> -->
                                                                 <!-- <td>
                                                                     @if($p->statut)
                                                                         <span class="badge bg-success">Actif</span>
@@ -137,25 +137,18 @@
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Nom service</label>
-                                                                            <input type="text" name="nom" class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="mb-3">
-                                                                            <label>Prix</label>
-                                                                            <input type="text" name="prix" class="form-control">
-                                                                        </div>
-                                                                    </div>
+                                                                <div class="mb-3">
+                                                                    <label>Nom service</label>
+                                                                    <input type="text" name="nom" class="form-control" required>
                                                                 </div>
-                                                                
-                                                                <hr>
+                                                            
+                                                                <div class="mb-3">
+                                                                    <label>Prix</label>
+                                                                    <input type="text" name="prix" class="form-control">
+                                                                </div> 
 
                                                                 <!-- TABLE services -->
-                                                                <table class="table mb-3" id="table-intrants">
+                                                                <!-- <table class="table mb-3" id="table-intrants">
                                                                     <h1 class="text-center fw-bold h4">Les consommables</h1>
                                                                     <thead>
                                                                         <tr>
@@ -186,13 +179,11 @@
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
-                                                                </table>
+                                                                </table> -->
 
-                                                                <button type="button" id="addRow" class="btn btn-primary text-center">+ Ajout intrant</button>
-                                                                
-                                                                <hr>
+                                                                <!-- <button type="button" id="addRow" class="btn btn-primary text-center">+ Ajout intrant</button> -->
 
-                                                                <div class="row">
+                                                                <!-- <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
                                                                             <label>Unite de mesure</label>
@@ -205,12 +196,12 @@
                                                                             <input type="text" name="categorie" class="form-control" placeholder="Ex: homme/femme">
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                             
-                                                                <div class="mb-3">
+                                                                <!-- <div class="mb-3">
                                                                     <label>Description</label>
                                                                     <textarea name="description" class="form-control" rows="3"></textarea>
-                                                                </div>
+                                                                </div> -->
                                                                 
                                                             </div>
                                                             <div class="modal-footer">

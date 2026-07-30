@@ -20,6 +20,8 @@ use App\Http\Controllers\UniteController;
 use App\Http\Controllers\VenteController;
 use App\Http\Controllers\AbonneController;
 use App\Http\Controllers\PaiementAbonneController;
+use App\Http\Controllers\IntrantController;
+use App\Models\Abonne;
 use App\Models\MouvementStock;
 use App\Models\Vente;
 use Illuminate\Support\Facades\Route;
@@ -84,7 +86,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/produit', ProduitController::class);
     Route::resource('stock', MouvementStockController::class);
     Route::resource('/achat', AchatController::class);
+    // Route pour recherche produit dans achat
+    Route::get('/achatSearch', [AchatController::class, 'achatSearch'])->name('achat.search');
     Route::resource('/service', ServiceController::class);
+    Route::resource('/intrant', IntrantController::class);
 });
 
 

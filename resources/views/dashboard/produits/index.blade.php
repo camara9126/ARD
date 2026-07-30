@@ -73,8 +73,10 @@
                                                             <tr>
                                                                 <th>Code</th>
                                                                 <th>Nom</th>
-                                                                <th>Fournisseur</th>
-                                                                <th>Prix d'achat</th>
+                                                                @if(!$unite->categorie->slug == 'service' || !$unite->categorie->slug == 'transformation')
+                                                                    <th>Fournisseur</th>
+                                                                    <th>Prix d'achat</th>
+                                                                @endif
                                                                 <th>Prix de vente</th>
                                                                 <th>Quantité</th>
                                                                 <th>Statut</th>
@@ -86,8 +88,10 @@
                                                             <tr>
                                                                 <td><strong>{{$p->code}}</strong></td>
                                                                 <td>{{$p->nom}}</td>
-                                                                <td>{{$p->fournisseur->nom ?? 'vide'}}</td>
-                                                                <td>{{number_format($p->prix_achat, 0,'',' ')}} XOF</td>
+                                                                @if(!$unite->categorie->slug == 'service' || !$unite->categorie->slug == 'transformation')
+                                                                    <td>{{$p->fournisseur->nom ?? 'vide'}}</td>
+                                                                    <td>{{number_format($p->prix_achat, 0,'',' ')}} XOF</td>
+                                                                @endif
                                                                 <td>{{number_format($p->prix_vente, 0,'',' ')}} XOF</td>
                                                                 <td>
                                                                     @if($p->stock_min >= $p->stock)
@@ -225,8 +229,6 @@
                                                                     
                                                                 </div>
 
-                                                            <!-- Categorie Unite Service -->
-                                                            @elseif($unite->categorie->slug == 'service')
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Nouveau service</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -251,7 +253,7 @@
                                                                     <hr>
 
                                                                     <!-- TABLE produits -->
-                                                                    <table class="table mb-3" id="table-intrants">
+                                                                    <!-- <table class="table mb-3" id="table-intrants">
                                                                         <h1 class="text-center fw-bold h4">Les consommables</h1>
                                                                         <thead>
                                                                             <tr>
@@ -282,25 +284,25 @@
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
-                                                                    </table>
+                                                                    </table> -->
 
-                                                                    <button type="button" id="addRow" class="btn btn-primary text-center">+ Ajout intrant</button>
+                                                                    <!-- <button type="button" id="addRow" class="btn btn-primary text-center">+ Ajout intrant</button> -->
                                                                     
                                                                     <hr>
 
-                                                                    <div class="mb-3">
+                                                                    <!-- <div class="mb-3">
                                                                         <label>Unite de mesure</label>
                                                                         <input type="text" name="unite_de_mesure" class="form-control" placeholder="Ex: heure/jour">
-                                                                    </div>
+                                                                    </div> -->
                                                                 
-                                                                    <div class="mb-3">
+                                                                    <!-- <div class="mb-3">
                                                                         <label>Description</label>
                                                                         <textarea name="description" class="form-control" rows="3"></textarea>
-                                                                    </div>
+                                                                    </div> -->
                                                                     
                                                                 </div>
                                                             <!-- Categorie Unite Vente Direct -->
-                                                            @else
+                                                            @elseif($unite->categorie->slug == 'b2c')
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Nouveau produit</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

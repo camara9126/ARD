@@ -11,6 +11,7 @@ class ProduitIntrant extends Model
         'produit_id',
         'designation',
         'quantite',
+        'prix_unitaire',
     ];
 
     public function produit() {

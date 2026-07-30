@@ -327,6 +327,7 @@ class VenteController extends Controller
 
         try {
             $vente = Vente::with('client', 'items')->findOrFail($id);
+            
             $unite = Unite::where('id', request()->user()->unite_id)->first();
 
             // Récupérer les anciens items pour ajuster le stock

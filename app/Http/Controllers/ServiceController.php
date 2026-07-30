@@ -41,7 +41,7 @@ class ServiceController extends Controller
         $request->validate([
             'nom' => 'required|string|max:255',
             'prix' => 'required|numeric|min:0',
-            'intrants' => 'array|min:1',
+            'intrants' => 'array',
             'intrants.*.id',
             'intrants.*.quantite',
             'description',
@@ -63,27 +63,31 @@ class ServiceController extends Controller
                     'categorie' => $request->categorie ?? null
                 ]);
 
-                foreach ($request->intrants as $item) {
+                if(!empty($request->intrants) && is_array($request->intrants)) {
+                
+                    foreach ($request->intrants as $item) {
 
-                    $intrant = ServiceIntrant::where('id', $item['id'])->lockForUpdate()->first(); // verrou stock
-                    // dd($intrant);
 
-                    // if ($intrant->quantite < $item['quantite']) {
-                    //     throw new \Exception('Quantite insuffisant dans cet intrant');
-                    // }
+                        $intrant = ServiceIntrant::where('id', $item['id'])->lockForUpdate()->first(); // verrou stock
+                        // dd($intrant);
 
-                    // Mise a jour quantite Intrant
-                    // $intrant->decrement('quantite', $item['quantite']);
-                    
-                    // Enregistrememt historique stock
-                    MouvementStock::create([
-                        'unite_id' => $request->user()->unite_id,
-                        'designation' => $intrant->designation,
-                        'type' => 'sortie',
-                        'quantite' => $item['quantite'] ?? 0,
-                        'reference' => 'MVT/CSM-' . now()->timestamp,
-                        'user_id' => $request->user()->id,
-                    ]);
+                        // if ($intrant->quantite < $item['quantite']) {
+                        //     throw new \Exception('Quantite insuffisant dans cet intrant');
+                        // }
+
+                        // Mise a jour quantite Intrant
+                        // $intrant->decrement('quantite', $item['quantite']);
+                        
+                        // Enregistrememt historique stock
+                        MouvementStock::create([
+                            'unite_id' => $request->user()->unite_id,
+                            'designation' => $intrant->designation,
+                            'type' => 'sortie',
+                            'quantite' => $item['quantite'] ?? 0,
+                            'reference' => 'MVT/CSM-' . now()->timestamp,
+                            'user_id' => $request->user()->id,
+                        ]);
+                    }
                 }
 
                 // Enregistrement d'un historique de mouvement

@@ -30,13 +30,51 @@ class AchatController extends Controller
         return view('dashboard.achats.index', compact('achats'));
     }
 
+    // recupere les produits pour l'autocompletion dans le formulaire d'achat
+    public function achatSearch(Request $request)
+    {
+        $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
+
+        $query = $request->q;
+
+        if($unite->categorie->slug == 'b2c') {
+            $produits = Produit::where('unite_id', request()->user()->unite_id)->where('nom', 'like', "%$query%")->latest()->get();
+        }
+            
+
+        if($unite->categorie->slug == 'service') {
+
+            $produits = ServiceIntrant::where('unite_id', request()->user()->unite_id)->where('designation', 'like', "%$query%")->latest()->get();
+        
+        } elseif($unite->categorie->slug == 'transformation') {
+            
+            $produits = ProduitIntrant::where('unite_id', request()->user()->unite_id)->where('designation', 'like', "%$query%")->latest()->get();
+        
+        }
+
+        return response()->json($produits);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
+
         $fournisseurs = Fournisseur::where('unite_id', request()->user()->unite_id)->latest()->get();
-        $produits = Produit::where('unite_id', request()->user()->unite_id)->latest()->get();
+
+        if($unite->categorie->slug == 'transformation') {
+            $produits = ProduitIntrant::where('unite_id', request()->user()->unite_id)->latest()->get();
+
+        } elseif($unite->categorie->slug == 'service') {
+            $produits = ServiceIntrant::where('unite_id', request()->user()->unite_id)->latest()->get();
+
+        } else {
+            $produits = Produit::where('unite_id', request()->user()->unite_id)->latest()->get();
+
+        }
+
 
         return view('dashboard.achats.create', compact('fournisseurs', 'produits'));
     }
@@ -106,24 +144,59 @@ class AchatController extends Controller
                 
                     if($unite->categorie->slug == 'transformation') {
 
-                        // Création du produit intrant si l'unité est de type transformation
-                        ProduitIntrant::create([
-                            'unite_id' => $unite->id,
-                            'designation' => $item['nom'],
-                            'quantite' => $item['quantite'],
-                        ]);
+                        // Récupération du produit original rechercher
+                        $intrant = produitIntrant::where('id', $item['nom'])->lockForUpdate()->first();
+
+                        if(!empty($intrant)) {
+
+                            // Mise a jour Intrant s'il existe deja
+                            $ancienStock = $intrant->quantite;
+                            $nouvelleQuantite = $ancienStock + $item['quantite'];
+
+                            $intrant->update([
+                                'quantite' => $nouvelleQuantite,
+                                'prix_unitaire' => $intrant->prix_unitaire,
+                            ]);
+                        } else {
+
+                            // Création du produit intrant si l'unité est de type transformation
+                            ProduitIntrant::create([
+                                'unite_id' => $unite->id,
+                                'designation' => $item['nom'],
+                                'quantite' => $item['quantite'],
+                                'prix_unitaire' => $item['prix'],
+                            ]);
+                        }
 
                     } elseif($unite->categorie->slug == 'service') {
 
-                        // Création du service intrant si l'unité est de type service
-                        ServiceIntrant::create([
-                            'unite_id' => $unite->id,
-                            'service_id' => null,
-                            'prix_unitaire' => $item['prix'],
-                            'total' => $ligneTotal,
-                            'designation' => $item['nom'],
-                            'quantite' => $item['quantite'],
-                        ]);
+                        $ligneTotal = $item['quantite'] * $item['prix'];
+
+                        // Récupération du service original rechercher
+                        $intrant = ServiceIntrant::where('id', $item['nom'])->lockForUpdate()->first();
+
+                        if(!empty($intrant)) {
+
+                            // Mise a jour ServiceIntrant s'il existe deja
+                            $ancienStock = $intrant->quantite;
+                            $nouvelleQuantite = $ancienStock + $item['quantite'];
+
+                            $intrant->update([
+                                'quantite' => $nouvelleQuantite,
+                                'prix_unitaire' => $intrant->prix_unitaire,
+                                'total' => $ligneTotal,
+                            ]);
+                        } else { 
+                            // Création du service intrant si l'unité est de type service
+                            ServiceIntrant::create([
+                                'unite_id' => $unite->id,
+                                'service_id' => null,
+                                'prix_unitaire' => $item['prix'],
+                                'total' => $ligneTotal,
+                                'designation' => $item['nom'],
+                                'quantite' => $item['quantite'],
+                            ]);
+                        }
                     }
 
                     // Mise a jour du stock
@@ -174,7 +247,7 @@ class AchatController extends Controller
 
                         $produit->update([
                             'stock' => $nouvelleQuantite,
-                            'prix_achat' => $detail->prix_achat ?? $produit->prix_achat,
+                            'prix_achat' => $produit->prix_achat,
                             'prix_vente' => $produit->prix_vente, 
                             'fournisseur_id' => $request->fournisseur_id ?? $achat->fournisseur_id, 
                         ]);

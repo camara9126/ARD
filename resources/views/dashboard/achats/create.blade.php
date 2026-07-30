@@ -73,7 +73,11 @@
                                                             <!-- RECHERCHE -->
                                                             <div class="col-4 mb-3">
                                                                 <label>Recherche</label>
-                                                                <input type="text" id="search" class="form-control" placeholder="rechercher produit...">
+                                                                @if(Auth::user()->unite->categorie->slug == 'transformation' || Auth::user()->unite->categorie->slug == 'service')
+                                                                    <input type="text" id="achatSearch" class="form-control" placeholder="rechercher ...">
+                                                                @else
+                                                                    <input type="text" id="search" class="form-control" placeholder="rechercher un produit ...">
+                                                                @endif
                                                             </div>
                                                             <!-- FOURNISSEUR -->
                                                             <div class="col-4">
@@ -118,7 +122,15 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
-                                                                            <input type="text" name="designation[0][nom]" class="form-control produit-select" placeholder="nouveau produit">
+                                                                            <select name="designation[0][nom]" class="form-control produit-select">
+                                                                                <option value="">Choisir</option>
+                                                                                @foreach($produits as $produit)
+                                                                                    <option value="{{ $produit->id }}" data-prix_achat="{{ $produit->prix_unitaire }}">
+                                                                                        {{ $produit->designation }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <!-- <input type="text" name="designation[0][nom]" class="form-control produit-select" placeholder="nouveau produit"> -->
                                                                             
                                                                         </td>
 
@@ -143,6 +155,14 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
+                                                                            <select name="produits[0][nom]" class="form-control produit-select">
+                                                                                <option value="">Choisir</option>
+                                                                                @foreach($produits as $produit)
+                                                                                    <option value="{{ $produit->id }}" data-prix_achat="{{ $produit->prix_achat }}">
+                                                                                        {{ $produit->nom }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
                                                                             <input type="text" name="produits[0][nom]" class="form-control" placeholder="nouveau produit" produit-select>
                                                                         </td>
 
@@ -166,7 +186,7 @@
                                                             @endif
                                                         </table>
 
-                                                        <button type="button" id="addRow" class="btn btn-primary">+ Ajouter produit</button>
+                                                        <button type="button" id="addRow" class="btn btn-primary">+ nouveau produit</button>
 
                                                         <!-- TOTAL GLOBAL -->
                                                         <div class="mt-3 text-end">
@@ -396,6 +416,32 @@
         });
     </script>
 
+    <!-- Recherche pour categorie "Service" et "B2C" -->
+    <script>
+        document.getElementById('achatSearch').addEventListener('keyup', function() {
+
+            let query = this.value;
+
+            if (query.length < 2) return;
+
+            fetch(`/achatSearch?q=${query}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    let results = document.getElementById('results');
+                    results.innerHTML = '';
+
+                    data.forEach(produit => {
+                        results.innerHTML += `
+                            <a href="#" class="list-group-item" onclick="selectproduit(${produit.id}, '${produit.designation}', ${produit.prix_unitaire})">
+                                ${produit.designation} - ${produit.prix_unitaire} FCFA
+                            </a>
+                        `;
+                    });
+                });
+        });
+    </script>
+
 
     <!-- Bouton ajouter produit rechercher -->
     <script>
@@ -430,30 +476,57 @@
                 } else {
                     // Ajouter une nouvelle ligne manuellement
                     let row = `
-                        <tr>
-                            <td>
-                                <select name="produits[${index}][nom]" class="form-control produit-select">
-                                    <option value="">Choisir</option>
-                                    @foreach($produits as $produit)
-                                        <option value="{{ $produit->id }}" data-prix_achat="{{ $produit->prix_achat }}">
-                                            {{ $produit->nom }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <input type="number" name="produits[${index}][prix_achat]" class="form-control prix_achat" value="${prix_achat}">
-                            </td>
-                            <td>
-                                <input type="number" name="produits[${index}][quantite]" class="form-control quantite" value="1">
-                            </td>
-                            <td>
-                                <input type="number" class="form-control total-ligne" readonly>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger remove">X</button>
-                            </td>
-                        </tr>
+                        @if(Auth::user()->unite->categorie->slug == 'transformation' || Auth::user()->unite->categorie->slug == 'service')
+                            <tr>
+                                <td>
+                                    <select name="designation[${index}][nom]" class="form-control produit-select">
+                                        <option value="">Choisir</option>
+                                        @foreach($produits as $produit)
+                                            <option value="{{ $produit->id }}" data-prix_achat="{{ $produit->prix_unitaire }}">
+                                                {{ $produit->designation }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" name="designation[${index}][prix]" class="form-control prix_unitaire" value="${prix_unitaire}">
+                                </td>
+                                <td>
+                                    <input type="number" name="designation[${index}][quantite]" class="form-control quantite" value="1">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control total-ligne" readonly>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger remove">X</button>
+                                </td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td>
+                                    <select name="produits[${index}][nom]" class="form-control produit-select">
+                                        <option value="">Choisir</option>
+                                        @foreach($produits as $produit)
+                                            <option value="{{ $produit->id }}" data-prix_achat="{{ $produit->prix_achat }}">
+                                                {{ $produit->nom }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" name="produits[${index}][prix_achat]" class="form-control prix_achat" value="${prix_achat}">
+                                </td>
+                                <td>
+                                    <input type="number" name="produits[${index}][quantite]" class="form-control quantite" value="1">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control total-ligne" readonly>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger remove">X</button>
+                                </td>
+                            </tr>
+                        @endif
                     `;
                     
                     document.querySelector('#table-produits tbody').insertAdjacentHTML('beforeend', row);
