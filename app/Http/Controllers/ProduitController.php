@@ -137,7 +137,7 @@ class ProduitController extends Controller
                 'unite_id' => $request->user()->unite_id,
                 'produit_id' => $produit->id,
                 'type' => 'entree',
-                'quantite' => 1,
+                'quantite' => $produit->stock,
                 'reference' => 'MVT/PRD-' . now()->timestamp,
                 'user_id' => $request->user()->id,
             ]);

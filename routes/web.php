@@ -25,12 +25,12 @@ use App\Models\Vente;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.landingPage');
 });
 
-Route::get('/test', function () {
-    return view('dashboard.index');
-})->name('test');
+// Route::get('/test', function () {
+//     return view('dashboard.index');
+// })->name('test');
 
 
 Route::get('/dashboard', function () {

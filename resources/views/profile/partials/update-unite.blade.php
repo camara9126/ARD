@@ -39,9 +39,9 @@
             </div>
 
             <div>
-                <x-input-label for="ninea" :value="__('Ninea')" />
-                <x-text-input id="" name="ninea" type="text" class="mt-1 block w-full" :value="old('ninea', $unite->ninea)" autofocus autocomplete="ninea" />
-                <x-input-error class="mt-2" :messages="$errors->get('ninea')" />
+                <x-input-label for="categorie" :value="__('Categorie')" />
+                <x-text-input id="" name="categorie_id" type="text" readonly class="mt-1 block w-full" :value="old('categorie_id', $unite->categorie->nom)" autofocus autocomplete="categorie_id" />
+                <x-input-error class="mt-2" :messages="$errors->get('categorie')" />
             </div>
 
             <div>
