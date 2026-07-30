@@ -56,12 +56,17 @@ class AchatController extends Controller
             'produits.*.nom' ,
             'produits.*.quantite' => 'numeric|min:1',
             'produits.*.prix_achat' => 'numeric|min:0',
+            'facture' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'note' => 'nullable',
         ]);
 
          DB::beginTransaction();
         // dd($request);
         try {
+
+            if ($request->hasFile('facture')) {
+                $facture = $request->file('facture')->store('factures-achats', 'public');
+            }
 
             // Création du bon de commande
             $achat = Achat::create([
@@ -70,7 +75,8 @@ class AchatController extends Controller
                 'fournisseur_id' => $request->fournisseur_id,
                 'total' => 0,
                 'note' => $request->note ?? 'null',
-                'statut' => 'recu'
+                'statut' => 'recu',
+                'facture' => $facture ?? null,
             ]);
 
             $total = 0;

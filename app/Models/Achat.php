@@ -11,6 +11,7 @@ class Achat extends Model
         'unite_id',
         'reference',
         'total',
+        'facture',
         'note',
         'statut',
     ];

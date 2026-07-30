@@ -66,7 +66,7 @@
                                                     </div>
                                                 @endif
                                                 <div class="table-responsive">
-                                                    <form action="{{ route('achat.store') }}" method="POST">
+                                                    <form action="{{ route('achat.store') }}" method="POST" enctype="multipart/form-data">
                                                         @csrf
 
                                                         <div class="row">
@@ -114,7 +114,7 @@
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
-                                                            @if(Auth::user()->unite->categorie->slug == 'Transformation' || Auth::user()->unite->categorie->slug == 'service')
+                                                            @if(Auth::user()->unite->categorie->slug == 'transformation' || Auth::user()->unite->categorie->slug == 'service')
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
@@ -173,6 +173,23 @@
                                                             <h4>Total : <span id="total-global">0</span> FCFA</h4>
                                                         </div>
 
+                                                        <!-- Facture Fournisseur -->
+                                                        <div class="mb-3">
+                                                            <label for="facture" class="form-label">
+                                                                Facture du fournisseur
+                                                            </label>
+
+                                                            <input type="file"
+                                                                name="facture"
+                                                                id="facture"
+                                                                class="form-control"
+                                                                accept=".pdf,.jpg,.jpeg,.png">
+
+                                                            <small class="text-muted">
+                                                                Facultatif — PDF, JPG ou PNG.
+                                                            </small>
+                                                        </div>
+                                                            
                                                         <!-- NOTE -->
                                                         <div class="mt-3">
                                                             <label>Note</label>

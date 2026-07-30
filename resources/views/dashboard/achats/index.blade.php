@@ -75,6 +75,7 @@
                                                                 <th>Date</th>
                                                                 <th>Total</th>
                                                                 <th>Statut</th>
+                                                                <th>Details</th>
                                                                 <th>Facture</th>
                                                                 <th>Action</th>
                                                             </tr>
@@ -104,8 +105,17 @@
                                                                     <td>
                                                                         <!-- Facture -->
                                                                         <a href="{{route('achat.edit', $a->id)}}" class="label bg-warning mr-2" title="afficher la facture">
-                                                                            <i class="fas fa-file-alt"></i>&nbsp;Afficher
+                                                                            <i class="fas fa-list"></i>&nbsp;Afficher
                                                                         </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($a->facture)
+                                                                            <a href="{{ asset('storage/' . $a->facture) }}" target="_blank" class="label bg-info mr-2" title="Voir la facture">
+                                                                                <i class="fas fa-file-invoice"></i>&nbsp;Voir facture
+                                                                            </a>
+                                                                        @else
+                                                                            <span class="text-muted">Aucune facture</span>
+                                                                        @endif
                                                                     </td>
 
                                                                     <td>
