@@ -224,7 +224,7 @@ use Illuminate\Support\Carbon;
                                                 <div class="card table-card">
                                                     <div class="card-header">
                                                         <h5>LISTE DES FACTURES</h5>
-                                                        <a href="{{ route('vente.facture') }}" style="color: var(--secondary); text-decoration: none; font-weight: 500;">Voir plus →</a>
+                                                        <!-- <a href="{{ route('vente.facture') }}" style="color: var(--secondary); text-decoration: none; font-weight: 500;">Voir plus →</a> -->
                                                     </div>
                                                     <div class="card-block">
                                                         <div class="table-responsive">
@@ -300,7 +300,7 @@ use Illuminate\Support\Carbon;
                                                 <div class="card table-card">
                                                     <div class="card-header">
                                                         <h5>MOUVEMENT DE STOCK</h5>
-                                                        <a href="{{ route('stock.index') }}" style="color: var(--secondary); text-decoration: none; font-weight: 500;">Voir plus →</a>
+                                                        <!-- <a href="{{ route('stock.index') }}" style="color: var(--secondary); text-decoration: none; font-weight: 500;">Voir plus →</a> -->
                                                     </div>
                                                     <div class="card-block">
                                                         <div class="table-responsive">
