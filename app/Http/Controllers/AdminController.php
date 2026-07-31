@@ -53,7 +53,7 @@ class AdminController extends Controller
 
                     $query->from('ventes')->selectRaw('COALESCE(SUM(total), 0)')->whereColumn('unite_id', 'unites.id')->whereMonth('created_at', $mois)->whereYear('created_at', $annee);
 
-                }, 'productivite')->where('productivite', '>', 0); // Ne montrer que les unités avec des ventes->get()
+                }, 'productivite')->having('productivite', '>', 0); // Ne montrer que les unités avec des ventes->get()
             
             $labels = $unites->pluck('nom')->toArray();
             $data = $unites->pluck('productivite')->toArray();
