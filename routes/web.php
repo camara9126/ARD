@@ -42,7 +42,7 @@ Route::get('/dashboard', function () {
 
     $unite = Unite::where('id', $user->unite_id)->first();
 
-    if ($user->role == 'commercial' && !$user->unite_id) {
+    if ($user->role == 'admin' && !$user->unite_id) {
 
         return redirect()->route('unite.create');
 
@@ -56,7 +56,7 @@ Route::get('/dashboard', function () {
 
     } else {
 
-        return view('dashboard.index');
+        return view('dashboard.index', compact('unite'));
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -142,3 +142,4 @@ Route::get('/support', function () {
 Route::resource('/equipements', EquipementController::class)->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';
+

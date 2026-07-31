@@ -125,6 +125,7 @@ class UniteController extends Controller
             'adresse' => $request->adresse,
             'logo' => $path  ?? $unite->logo,
             'ninea' => $request->ninea  ?? null,
+            'taux_tva' => $request->taux_tva ?? 0
         ]);
 
 
@@ -141,9 +142,18 @@ class UniteController extends Controller
     public function destroy(string $id)
     {
         $unite= Unite::findorFail($id);
-        $unite->delete();
+
+        $admin = request()->user();
+
+        if($admin->role != 'admin') {
+
+            return redirect()->back()->with('danger', 'Accès non autorisé. Droits administrateur requis.');
+        } else {
+            
+            $unite->delete();
+
         return redirect()->back()->with('success', 'Unite supprimé avec success');
-        
+        }
     }
 
 

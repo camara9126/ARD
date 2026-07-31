@@ -73,16 +73,10 @@
                                                     <h1 class="fw-bold text-center">Information Utilisateur</h1>
 
                                                     <div class="row">
-                                                        <div class="mb-3">
-                                                            <label for="name" class="form-label">Nom Complet</label>
-                                                            <input type="text" class="form-control" name="name" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
                                                         <div class="col-6">
                                                             <div class="mb-3">
-                                                                <label for="name" class="form-label">Telephone</label>
-                                                                <input type="text" class="form-control" name="telephone" required>
+                                                                <label for="name" class="form-label">Nom Complet</label>
+                                                                <input type="text" class="form-control" name="name" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
@@ -90,7 +84,14 @@
                                                                 <label for="email" class="form-label">Email</label>
                                                                 <input type="email" class="form-control" name="email" required>
                                                             </div>
+                                                           
                                                         </div>
+                                                        <!-- <div class="col-6">
+                                                            <div class="mb-3">
+                                                                <label for="name" class="form-label">Telephone</label>
+                                                                <input type="text" class="form-control" name="telephone" required>
+                                                            </div>
+                                                        </div> -->
                                                     </div>
 
                                                     <h1 class="text-center fw-bold mb-3 mt-3">Information Unite</h1>

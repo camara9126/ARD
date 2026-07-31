@@ -108,10 +108,12 @@ class AdminController extends Controller
 
         if($admin->role != 'admin') {
 
-            session()->flash('error', 'Vous n\'avez pas les droits administrateur.');
+            return redirect()->back()->with('danger', 'Accès non autorisé. Droits administrateur requis.');
+
         } else{
 
             $user->delete();
+
             return redirect()->back()->with('success', 'Utilisateur supprimé avec success');
         }
     
@@ -153,11 +155,9 @@ class AdminController extends Controller
 
 
         // Verification si c'est un User commercial ou Admin
-        if(!empty($request->nom && $request->addresse)) {
+        if(!empty($request->nom)) {
 
-        $unite= Unite::where('id', request()->user()->unite_id)->first();
-
-            $unites= Unite::create([
+            $newUnite= Unite::create([
                 'nom' => $request->nom,
                 'adresse' => $request->adresse,
                 'contact' => $request->contact,
@@ -174,20 +174,22 @@ class AdminController extends Controller
                 'telephone' => $request->telephone,
                 'password' => Hash::make($request->password),
                 'role' => 'commercial',
-                'unite_id' => $unites->id
+                'unite_id' => $newUnite->id
             ]);
 
             return redirect()->route('admin.unites')->with('success', 'Unite crée avec success');
 
         } else{
 
+            $unite= Unite::where('id', request()->user()->unite_id)->first();
+            
             //  Creation User Superviseur
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role' => 'superviseur',
-                'unite_id' => null
+                'unite_id' => $unite->id
             ]);
 
 
@@ -261,10 +263,12 @@ class AdminController extends Controller
     {
         // Vérifier si l'utilisateur a le droit d'accéder à ce dashboard
         $user = request()->user();
+
         $unite = Unite::findOrFail($unite->id);
        
-        if ($user->role !== 'admin') {
-            abort(403, 'Unauthorized action.');
+        if ($user->role != 'admin') {
+
+            return redirect()->back()->with('danger', 'Accès non autorisé. Droits administrateur requis.');
         }
         // Toutes les statistiques de cette unité
 

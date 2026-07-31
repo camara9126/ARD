@@ -70,7 +70,25 @@ use Illuminate\Support\Carbon;
                                 <div class="page-wrapper">
                                     <!-- Page-body start -->
                                     <div class="page-body">
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger text-center">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
 
+                                            @if(Session::has('success'))
+                                                <div class="alert alert-success" role="alert">
+                                                    {{ Session::get('success') }}
+                                                </div>
+                                            @elseif(Session::has('danger'))
+                                                <div class="alert alert-danger" role="alert">
+                                                    {{ Session::get('danger') }}
+                                                </div>
+                                            @endif
                                         <!-- Statistique start -->
                                         <div class="row">
                                             <!-- Material statustic card start -->

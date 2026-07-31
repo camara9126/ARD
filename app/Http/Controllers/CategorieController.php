@@ -35,13 +35,22 @@ class CategorieController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        Categorie::create([
+        $admin = request()->user();
+
+        if($admin->role != 'admin') {
+
+            return redirect()->back()->with('danger', 'Accès non autorisé. Droits administrateur requis.');
+        } else {
+
+            Categorie::create([
             'nom' => $request->nom,
             'description' => $request->description,
             'unite_id' => request()->user()->unite_id,
         ]);
 
         return redirect()->back()->with('success', 'Categorie ajouté');
+
+        }
     }
 
     /**
