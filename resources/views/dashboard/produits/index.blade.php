@@ -73,7 +73,7 @@
                                                             <tr>
                                                                 <th>Code</th>
                                                                 <th>Nom</th>
-                                                                @if(!$unite->categorie->slug == 'service' || !$unite->categorie->slug == 'transformation')
+                                                                @if($unite->categorie->slug != 'service' && $unite->categorie->slug != 'transformation')
                                                                     <th>Fournisseur</th>
                                                                     <th>Prix d'achat</th>
                                                                 @endif
@@ -88,7 +88,7 @@
                                                             <tr>
                                                                 <td><strong>{{$p->code}}</strong></td>
                                                                 <td>{{$p->nom}}</td>
-                                                                @if(!$unite->categorie->slug == 'service' || !$unite->categorie->slug == 'transformation')
+                                                                @if($unite->categorie->slug != 'service' && $unite->categorie->slug != 'transformation')
                                                                     <td>{{$p->fournisseur->nom ?? 'vide'}}</td>
                                                                     <td>{{number_format($p->prix_achat, 0,'',' ')}} XOF</td>
                                                                 @endif
@@ -218,89 +218,13 @@
                                                                         <div class="col-md-6">
                                                                             <div class="mb-3">
                                                                                 <label>Stock Minimum</label>
-                                                                                <select name="stock_min" id="" class="form-control">
-                                                                                    <option value="5">5</option>
-                                                                                    <option value="10">10</option>
-                                                                                    <option value="15">15</option>
-                                                                                </select>
+                                                                                <input type="number" name="stock_min" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     
                                                                 </div>
 
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">Nouveau service</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="mb-3">
-                                                                                <label>Nom service</label>
-                                                                                <input type="text" name="nom" class="form-control" required>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <div class="mb-3">
-                                                                                <label>Prix</label>
-                                                                                <input type="text" name="prix_vente" class="form-control">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <hr>
-
-                                                                    <!-- TABLE produits -->
-                                                                    <!-- <table class="table mb-3" id="table-intrants">
-                                                                        <h1 class="text-center fw-bold h4">Les consommables</h1>
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>designation</th>
-                                                                                <th>Quantité utilisé</th>
-                                                                                <th></th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <select name="intrants[0][id]" class="form-control">
-                                                                                        <option value="">Choisir</option>
-                                                                                        @foreach($intrants as $c)
-                                                                                            <option value="{{ $c->id }}">
-                                                                                                {{ $c->designation }}
-                                                                                            </option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <input type="number" name="intrants[0][quantite]" class="form-control"  style="width: 100px;">
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <button type="button" class="btn btn-danger remove">X</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table> -->
-
-                                                                    <!-- <button type="button" id="addRow" class="btn btn-primary text-center">+ Ajout intrant</button> -->
-                                                                    
-                                                                    <hr>
-
-                                                                    <!-- <div class="mb-3">
-                                                                        <label>Unite de mesure</label>
-                                                                        <input type="text" name="unite_de_mesure" class="form-control" placeholder="Ex: heure/jour">
-                                                                    </div> -->
-                                                                
-                                                                    <!-- <div class="mb-3">
-                                                                        <label>Description</label>
-                                                                        <textarea name="description" class="form-control" rows="3"></textarea>
-                                                                    </div> -->
-                                                                    
-                                                                </div>
                                                             <!-- Categorie Unite Vente Direct -->
                                                             @elseif($unite->categorie->slug == 'b2c')
                                                                 <div class="modal-header">
@@ -339,11 +263,7 @@
                                                                         <div class="col-md-6">
                                                                             <div class="mb-3">
                                                                                 <label>Stock Minimum</label>
-                                                                                <select name="stock_min" class="form-control">
-                                                                                    <option value="5">5</option>
-                                                                                    <option value="10">10</option>
-                                                                                    <option value="15">15</option>
-                                                                                </select>
+                                                                                <input type="number" name="stock_min" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                     </div>

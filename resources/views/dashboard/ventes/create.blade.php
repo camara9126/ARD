@@ -391,15 +391,15 @@
                                                                     <!-- Tableau des produits du panier -->
                                                                     <table class="produits-table" id="produitsTable">
                                                                         @if($unite->categorie->slug == 'service')
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>Service</th>
-                                                                                <th>prix unit.</th>
-                                                                                <th>unite de mesure</th>
-                                                                                <!-- <th>Categorie</th> -->
-                                                                                <th></th>
-                                                                            </tr>
-                                                                        </thead>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Service</th>
+                                                                                    <th>prix unit.</th>
+                                                                                    <th>unite de mesure</th>
+                                                                                    <!-- <th>Categorie</th> -->
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                            </thead>
                                                                             <tbody id="panierRows">
                                                                                 <tr id="row-0">
                                                                                     <td>

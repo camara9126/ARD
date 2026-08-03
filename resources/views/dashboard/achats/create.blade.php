@@ -163,7 +163,7 @@
                                                                                     </option>
                                                                                 @endforeach
                                                                             </select>
-                                                                            <input type="text" name="produits[0][nom]" class="form-control" placeholder="nouveau produit" produit-select>
+                                                                            <!-- <input type="text" name="produits[0][nom]" class="form-control" placeholder="nouveau produit" produit-select> -->
                                                                         </td>
 
                                                                         <td>

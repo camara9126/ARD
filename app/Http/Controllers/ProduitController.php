@@ -79,7 +79,7 @@ class ProduitController extends Controller
                     'nom' => $request->nom,
                     'code' => $this->generateCode($request->user()->unite_id),
                     'prix_vente' => $request->prix_vente,
-                    'stock_min' => $request->stock_min ?? 5,
+                    'stock_min' => $request->stock_min ?? 0,
                     'stock' => $request->stock ?? 0,
                 ]);
 
@@ -127,7 +127,7 @@ class ProduitController extends Controller
                     'code' => $this->generateCode($request->user()->unite_id),
                     'prix_achat' => $request->prix_achat,
                     'prix_vente' => $request->prix_vente,
-                    'stock_min' => $request->stock_min ?? 5,
+                    'stock_min' => $request->stock_min ?? 0,
                     'stock' => $request->stock ?? 0,
                 ]);
             }

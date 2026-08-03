@@ -123,11 +123,6 @@
                             <div class="">
                                 <div class="main-menu-header mt-3">
                                     <img class="img-90 img-radius mx-auto" src="{{asset('storage/'.$unite->logo)}}" alt="{{ Auth::user()->unite->nom }}">
-                                    @if($alerte)
-                                        <p class="alert alert-danger">
-                                            ⛔ Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock.
-                                        </p>
-                                    @endif
                                     <div class="user-details">
                                         <span id="more-details">{{ Auth::user()->unite->nom }}<i class="fa fa-caret-down"></i></span>
                                     </div>
@@ -437,3 +432,8 @@
 
                         </div>
                     </nav>
+                    @if($alerte)
+                        <p class="alert alert-danger mt-3 text-center">
+                            <marquee behavior="" direction="">⛔ Vous avez <b><?= $alerte ?></b> produit(s) en rupture de stock.</marquee>      
+                        </p>
+                    @endif

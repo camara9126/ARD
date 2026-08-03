@@ -120,8 +120,8 @@ class AchatController extends Controller
             $total = 0;
 
 
-            // Enregistrement du nouveau produit (designation) dans le AchatDetails
-            if(!empty($request->designation)) {
+            // Enregistrement du nouveau produit_intrant (designation) dans le AchatDetails
+            if(!empty($request->designation)) { // Categorie service ou transformation
 
                 foreach ($request->designation as $item) {
                     
@@ -212,7 +212,7 @@ class AchatController extends Controller
 
                 }
                 
-            } elseif(!empty($request->produits)) {
+            } elseif(!empty($request->produits)) { // Categorie B2C ou Vente directe
                 
                 foreach ($request->produits as $item) {
 
@@ -282,8 +282,8 @@ class AchatController extends Controller
                             'nom' => $item['nom'],
                             'code' => $this->generateCode($request->user()->unite_id),
                             'prix_achat' => $item['prix_achat'],
-                            'prix_vente' => 0,
-                            'stock_min' => 5,
+                            'prix_vente' => $item['prix_achat'] * 1.2, // Prix de vente par défaut avec une marge de 20%
+                            'stock_min' => 0,
                             'stock' => $item['quantite'],
                         ]);
 
