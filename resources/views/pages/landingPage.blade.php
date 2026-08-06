@@ -623,7 +623,7 @@
                     
                     <!-- Footer du menu mobile -->
                     <div class="mt-auto pt-6 pb-8 text-center">
-                        <p class="text-xs text-slate-400">ARD Saint-Louis &copy; 2024</p>
+                        <p class="text-xs text-slate-400">ARD Saint-Louis &copy; {{ date('Y') }}</p>
                     </div>
                 </div>
             `;
