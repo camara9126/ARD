@@ -27,7 +27,7 @@ class Achat extends Model
         return $this->hasMany(AchatDetail::class);
     }
 
-     public function entreprise()
+    public function entreprise()
     {
         return $this->belongsTo(Unite::class);
     }

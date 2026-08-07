@@ -8,6 +8,7 @@ use App\Models\Vente;
 use App\Models\MouvementStock;
 use App\Models\Produit;
 use App\Models\Unite;
+use App\Models\CompteBancaires;
 use Illuminate\Support\Carbon;
 
     $mouvements = MouvementStock::Where('unite_id', $unite->id)->latest()->get();
@@ -27,6 +28,8 @@ use Illuminate\Support\Carbon;
     $achatGlobal = Achat::where('statut', 'recu')->Where('unite_id', $unite->id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
 
     $depenseGlobal = Depense::where('statut', 'payee')->Where('unite_id', $unite->id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('montant');
+
+    $banque = CompteBancaires::where('unite_id', $unite->id)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('solde_initial');
 
     $resultatGlobal = $caMoisActuel - $depenseGlobal -  $chargeFixes - $amortissements;
 
@@ -144,8 +147,19 @@ use Illuminate\Support\Carbon;
                                                                         <i class="fas fa-chart-line text-c-blue f-24"></i>
                                                                     </div>
                                                                     <div class="col-8 p-l-0">
-                                                                        <h5>{{ number_format($resultatGlobal, '0', ',', ' ') }} FCFA</h5>
-                                                                        <p class="text-muted m-b-0">Resultat Global</p>
+                                                                        <h5>{{ number_format($banque, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-muted m-b-0">Solde Bancaire</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3 mx-auto mt-2 p-b-20 p-t-20" style="background-color: #6ae678;">
+                                                                <div class="row mt-2 align-items-center text-center">
+                                                                    <div class="col-4 p-r-0">
+                                                                        <i class="fas fa-money-bill-alt text-c-blue f-24"></i>
+                                                                    </div>
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5 class="text-white">{{ number_format($resultatGlobal, '0', ',', ' ') }} FCFA</h5>
+                                                                        <p class="text-white m-b-0">Caisse</p>
                                                                     </div>
                                                                 </div>
                                                             </div>

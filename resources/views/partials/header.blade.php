@@ -155,282 +155,299 @@
                                 </form>
                             </div>-->
                             <div class="pcoded-navigation-label">Navigation</div>
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="active">
-                                    <a href="{{ route('dashboard') }}" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
-                                        <span class="pcoded-mtext">Dashboard</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                            @if(Auth::user()->role == 'commercial')
-
-                                @if($unite->categorie->slug == 'gos')
-                                    <ul class="pcoded-item pcoded-left-item">
-                                        <li class="">
-                                            <a href="{{ route('abonne.index') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="fas fa-users"></i></span>
-                                                <span class="pcoded-mtext">Abonnees</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                @else
-                                    <ul class="pcoded-item pcoded-left-item">
-                                        <li class="pcoded-hasmenu ">
-                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i><b>A</b></span>
-                                                <span class="pcoded-mtext">Commercial</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                            <ul class="pcoded-submenu">
-                                                @if($unite->categorie->slug == 'service')
-                                                    <li class="">
-                                                        <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Prestation</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Nouvelle prestation</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                @else
-                                                    <li class="">
-                                                        <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Ventes</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Nouvelle vente</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="{{ route('client.index') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Clients</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                @endif
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                @endif
-
-                                @if($unite->categorie->slug !== 'gos')
-                                    <ul class="pcoded-item pcoded-left-item">
-                                        <li class="pcoded-hasmenu">
-                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
-                                                <span class="pcoded-mtext">Inventaire</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                            <ul class="pcoded-submenu">
-                                                
-                                                <li class="">
-                                                    <a href="{{ route('achat.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Achats</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-
-                                                @if($unite->categorie->slug == 'service')
-                                                    <li class=" ">
-                                                        <a href="{{ route('service.index') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                                <span class="pcoded-mtext">Services</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                @else
-                                                
-                                                    <li class=" ">
-                                                        <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Produits</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                @endif
-
-                                                <li class=" ">
-                                                    <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Fournisseurs</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                                <li class="">
-                                                    <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Mouvement Stock</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                                @if($unite->categorie->slug == 'service'  || $unite->categorie->slug == 'transformation')
-                                                    <li class="">
-                                                        <a href="{{ route('intrant.index') }}" class="waves-effect waves-dark">
-                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                            <span class="pcoded-mtext">Intrants</span>
-                                                            <span class="pcoded-mcaret"></span>
-                                                        </a>
-                                                    </li>
-                                                @endif
-                                            </ul>
-                                        </li>
-                                    </ul>  
-                                @endif   
-
                                 <ul class="pcoded-item pcoded-left-item">
-                                    <li class="pcoded-hasmenu">
-                                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>BC</b></span>
-                                            <span class="pcoded-mtext">Finance</span>
+                                    <li class="active">
+                                        <a href="{{ route('dashboard') }}" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                            <span class="pcoded-mtext">Dashboard</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
-                                        <ul class="pcoded-submenu">
-                                            @if($unite->categorie->slug !== 'gos')
-                                                <li class="">
-                                                    <a href="{{ route('paiement.index') }}" class="waves-effect waves-dark">
-                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                        <span class="pcoded-mtext">Paiements</span>
-                                                        <span class="pcoded-mcaret"></span>
-                                                    </a>
-                                                </li>
-                                            @endif
-                                            
-                                            <li class=" ">
-                                                <a href="{{ route('recette.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Recettes</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
+                                    </li>
+                                </ul>
+                                @if(Auth::user()->role == 'commercial')
+
+                                    @if($unite->categorie->slug == 'gos')
+                                        <ul class="pcoded-item pcoded-left-item">
                                             <li class="">
-                                                <a href="{{ route('depense.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Depenses</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="{{ route('chargefixe.index') }}" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                    <span class="pcoded-mtext">Charges Fixe</span>
+                                                <a href="{{ route('abonne.index') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="fas fa-users"></i></span>
+                                                    <span class="pcoded-mtext">Abonnees</span>
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
                                         </ul>
-                                    </li>
-                                </ul>     
+                                    @else
+                                        <ul class="pcoded-item pcoded-left-item">
+                                            <li class="pcoded-hasmenu ">
+                                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i><b>A</b></span>
+                                                    <span class="pcoded-mtext">Commercial</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                                <ul class="pcoded-submenu">
+                                                    @if($unite->categorie->slug == 'service')
+                                                        <li class="">
+                                                            <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Prestation</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Nouvelle prestation</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                    @else
+                                                        <li class="">
+                                                            <a href="{{ route('vente.index') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Ventes</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="{{ route('vente.create') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Nouvelle vente</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="{{ route('client.index') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Clients</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    @endif
 
-                                <!-- <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-box"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext">Produits</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>-->
+                                    @if($unite->categorie->slug !== 'gos')
+                                        <ul class="pcoded-item pcoded-left-item">
+                                            <li class="pcoded-hasmenu">
+                                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
+                                                    <span class="pcoded-mtext">Inventaire</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                                <ul class="pcoded-submenu">
+                                                    
+                                                    <li class="">
+                                                        <a href="{{ route('achat.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Achats</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+
+                                                    @if($unite->categorie->slug == 'service')
+                                                        <li class=" ">
+                                                            <a href="{{ route('service.index') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                    <span class="pcoded-mtext">Services</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                    @else
+                                                    
+                                                        <li class=" ">
+                                                            <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Produits</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    <li class=" ">
+                                                        <a href="{{ route('fournisseur.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Fournisseurs</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Mouvement Stock</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                    @if($unite->categorie->slug == 'service'  || $unite->categorie->slug == 'transformation')
+                                                        <li class="">
+                                                            <a href="{{ route('intrant.index') }}" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">Intrants</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </li>
+                                        </ul>  
+                                    @endif   
+
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="pcoded-hasmenu">
+                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>BC</b></span>
+                                                <span class="pcoded-mtext">Finance</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                @if($unite->categorie->slug !== 'gos')
+                                                    <li class="">
+                                                        <a href="{{ route('paiement.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Paiements</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                
+                                                <li class=" ">
+                                                    <a href="{{ route('recette.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Recettes</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="{{ route('depense.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Depenses</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="{{ route('chargefixe.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Charges Fixe</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="{{ route('compteBancaire.index') }}" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Comptes Bancaires</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>     
+
+                                    <!-- <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('produit.index') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-box"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext">Produits</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>-->
+                                    
                                 
-                               
-                                @if($unite->categorie->slug !== 'gos')
+                                    @if($unite->categorie->slug !== 'gos')
+                                        <ul class="pcoded-item pcoded-left-item">
+                                            <li class="">
+                                                <a href="{{ route('vente.facture') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="fas fa-file-invoice"></i><b>FC</b></span>
+                                                    <span class="pcoded-mtext">Factures</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                        </ul> 
+                                        
+                                        <ul class="pcoded-item pcoded-left-item">
+                                            <li class="">
+                                                <a href="{{ route('analyse') }}" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="fas fa-chart-bar"></i><b>FC</b></span>
+                                                    <span class="pcoded-mtext">Rapport & Analyse</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    @endif 
+
                                     <ul class="pcoded-item pcoded-left-item">
                                         <li class="">
-                                            <a href="{{ route('vente.facture') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="fas fa-file-invoice"></i><b>FC</b></span>
-                                                <span class="pcoded-mtext">Factures</span>
+                                            <a href="{{ route('equipements.index') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-tools"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext">Equip/Amortissement</span>
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
                                         </li>
                                     </ul> 
-                                    
+
                                     <ul class="pcoded-item pcoded-left-item">
                                         <li class="">
-                                            <a href="{{ route('analyse') }}" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="fas fa-chart-bar"></i><b>FC</b></span>
-                                                <span class="pcoded-mtext">Rapport & Analyse</span>
+                                            <a href="#" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-tools"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext">Mouvements bancaires</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul> 
+
+                                @elseif(Auth::user()->role == 'admin')
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('admin.unites') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-shop"></i><b>B</b></span>
+                                                <span class="pcoded-mtext">Unites</span>
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
                                         </li>
                                     </ul>
-                                @endif 
 
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('equipements.index') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-tools"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext">Equip/Amortissement</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul> 
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('admin.users') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-users"></i><b>M</b></span>
+                                                <span class="pcoded-mtext">Utilisateurs</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
 
-                            @elseif(Auth::user()->role == 'admin')
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('admin.unites') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-shop"></i><b>B</b></span>
-                                            <span class="pcoded-mtext">Unites</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('categorie.index') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>M</b></span>
+                                                <span class="pcoded-mtext">Categorie Unite</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
 
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('admin.users') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-users"></i><b>M</b></span>
-                                            <span class="pcoded-mtext">Utilisateurs</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('admin.directions') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-user"></i><b>M</b></span>
+                                                <span class="pcoded-mtext">Superviseurs</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
 
-                                 <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('categorie.index') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>M</b></span>
-                                            <span class="pcoded-mtext">Categorie Unite</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('admin.directions') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-user"></i><b>M</b></span>
-                                            <span class="pcoded-mtext">Superviseurs</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="{{ route('assistance') }}" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fas fa-cog"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext">Supports & Assistance</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul> 
-                            @endif
-
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="{{ route('assistance') }}" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="fas fa-cog"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext">Supports & Assistance</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul> 
+                                @endif
+                            </div>
                         </div>
                     </nav>
                     @if($alerte)
