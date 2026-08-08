@@ -258,7 +258,7 @@ use Illuminate\Support\Carbon;
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @forelse($factures->take(3) as $v)
+                                                                    @forelse($factures->take(5) as $v)
                                                                     @if($v->montant_restant == 0)
                                                                     <tr>
                                                                         <td><strong>{{$v->reference}}</strong></td>

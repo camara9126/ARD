@@ -13,7 +13,7 @@ class CompteBancaireController extends Controller
      */
     public function index()
     {
-        $compteBancaires = CompteBancaires::latest()->get();
+        $compteBancaires = CompteBancaires::where('unite_id', request()->user()->unite_id)->latest()->get();
 
         return view('dashboard.compteBancaires.index', compact('compteBancaires'));
     }
@@ -60,50 +60,6 @@ class CompteBancaireController extends Controller
 
     }
 
-    /**
-     * Store a newly created mouvement in storage.
-     */
-    public function mouvementStore(Request $request, $id)
-    {
-        $request->validate([
-            'type' => 'required|in:virement,retrait,depot,versement,encaissement,autre',
-            'montant' => 'required|numeric|min:0',
-            'frais' => 'nullable|numeric|min:0',
-            'motif' => 'required|string|max:255',
-            'reference' => 'required|string|max:255',
-            'date_operation' => 'required|date',
-        ]);
-
-        try {
-            $compteBancaire = CompteBancaires::findOrFail($id);
-
-            $mouvement = MouvementBancaires::create([
-                'type' => $request->type,
-                'montant' => $request->montant,
-                'frais' => $request->frais,
-                'motif' => $request->motif,
-                'reference' => $request->reference,
-                'date_operation' => $request->date_operation,
-                'compte_id' => $compteBancaire->id,
-            ]);
-
-            if ($request->type === 'depot' || $request->type === 'versement' || $request->type === 'encaissement') {
-
-                $compteBancaire->increment('solde_initial', $request->montant);
-            
-            } elseif ($request->type === 'retrait' || $request->type === 'virement') {
-
-                $compteBancaire->decrement('solde_initial', $request->montant);
-
-            }
-
-            return redirect()->back()->with('success', 'Mouvement bancaire enregistré avec succès.');
-
-        } catch (\Exception $e) {
-
-            return redirect()->back()->with('danger', "Erreur lors de l'enregistrement du mouvement bancaire : " . $e->getMessage());
-        }
-    }
 
     /**
      * Display the specified resource.

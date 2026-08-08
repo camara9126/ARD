@@ -132,7 +132,7 @@
                                     <ul>
                                         <li class="more-details">
                                             <a href="{{ route('profile.edit') }}"><i class="ti-user"></i>Profile</a>
-                                            <a href="{{ route('assistance') }}"><i class="fas fa-cog"></i>Supports & Assistance</a>
+                                            <!-- <a href="{{ route('assistance') }}"><i class="fas fa-cog"></i>Supports & Assistance</a> -->
                                             <form method="POST" action="{{ route('logout') }}">
                                                 @csrf
 
@@ -175,7 +175,7 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
-                                        </ul>
+                                        <!-- </ul> -->
                                     @else
                                         <ul class="pcoded-item pcoded-left-item">
                                             <li class="pcoded-hasmenu ">
@@ -276,6 +276,13 @@
                                                         <a href="{{ route('stock.index') }}" class="waves-effect waves-dark">
                                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                                             <span class="pcoded-mtext">Mouvement Stock</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="{{ route('mouvement.index') }}" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Mouvement Bancaire</span>
                                                             <span class="pcoded-mcaret"></span>
                                                         </a>
                                                     </li>

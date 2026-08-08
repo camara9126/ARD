@@ -94,9 +94,9 @@
                                                                         <a href="" class="action-btn text-warning" data-bs-toggle="modal" data-id="{{ $c->id }}" data-banque="{{ $c->banque }}" data-numero_compte="{{ $c->numero_compte }}" data-bs-target="#compteEditModal" title="Modifier">
                                                                             <i class="fas fa-edit"></i>
                                                                         </a>
-                                                                        <a href="" class="action-btn text-success" data-bs-toggle="modal" data-id="{{ $c->id }}" data-bs-target="#mouvementModal" title="Mouvements">
+                                                                        <!-- <a href="" class="action-btn text-success" data-bs-toggle="modal" data-id="{{ $c->id }}" data-bs-target="#mouvementModal" title="Mouvements">
                                                                             <i class="fas fa-repeat"></i>
-                                                                        </a>
+                                                                        </a> -->
                                                                 </tr>
                                                                 @empty
                                                                 <tr>

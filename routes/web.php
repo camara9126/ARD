@@ -22,6 +22,7 @@ use App\Http\Controllers\AbonneController;
 use App\Http\Controllers\PaiementAbonneController;
 use App\Http\Controllers\IntrantController;
 use App\Http\Controllers\CompteBancaireController;
+use App\Http\Controllers\MouvementBanqueController;
 use App\Models\Abonne;
 use App\Models\MouvementStock;
 use App\Models\Vente;
@@ -101,6 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/achatSearch', [AchatController::class, 'achatSearch'])->name('achat.search');
     Route::resource('/service', ServiceController::class);
     Route::resource('/intrant', IntrantController::class);
+    Route::resource('/mouvement', MouvementBanqueController::class);
 });
 
 
@@ -126,8 +128,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('/chargefixe', ChargeFixeController::class);
     Route::resource('/paiementAbonne', PaiementAbonneController::class);
     Route::resource('/compteBancaire', CompteBancaireController::class);
-    // Route pour enregistrement de mouvement bancaire
-    Route::post('/compteBancaire/{id}/mouvements', [CompteBancaireController::class, 'mouvementStore'])->name('compteBancaire.mouvements');
 });
 
 
