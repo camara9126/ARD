@@ -211,68 +211,6 @@
                                                         </div>
                                                     </div>
                                                     
-                                                    <!-- Modal mouvement -->
-                                                    <div class="modal fade" id="mouvementModal" tabindex="-1">
-                                                        <div class="modal-dialog modal-lg">
-                                                            <form action="" method="POST" class="contact-form">
-                                                                @csrf
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">Mouvements du Compte Bancaire</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-
-                                                                            <input type="hidden" name="compte_id" id="compte_id">
-
-                                                                            <!-- Type -->
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Type de Mouvement</label>
-                                                                                <select name="type" class="form-control" required>
-                                                                                    <option value="virement">Virement</option>
-                                                                                    <option value="retrait">Retrait</option>
-                                                                                    <option value="depot">Dépôt</option>
-                                                                                    <option value="versement">Versement</option>
-                                                                                    <option value="encaissement">Encaissement</option>
-                                                                                    <option value="autre">Autre</option>
-                                                                                </select>
-                                                                            </div>
-
-                                                                            <!-- Montant -->
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Montant (FCFA)</label>
-                                                                                <input type="number" name="montant" class="form-control" step="0.01" required>
-                                                                            </div>
-
-                                                                            <!-- Frais -->
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Frais (FCFA)</label>
-                                                                                <input type="number" name="frais" class="form-control" step="0.01" required>
-                                                                            </div>
-
-                                                                            <!-- Date operation -->
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Date d'opération</label>
-                                                                                <input type="date" name="date_operation" class="form-control" value="{{ date('Y-m-d') }}" required>
-                                                                            </div>
-
-                                                                            <!-- Motif -->
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Motif</label>
-                                                                                <input type="text" name="motif" class="form-control" placeholder="Ex : Versement de salaire" required>
-                                                                            </div>
-
-                                                                        <!-- Bouton -->
-                                                                        <div class="text-end">
-                                                                            <button type="submit" class="btn btn-primary">
-                                                                                💾 Enregistrer le compte
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>                                                                    
                                         </div>
@@ -309,28 +247,6 @@
                 
                 // Mettre à jour l'action du formulaire avec l'ID récupéré
                 const updateUrl = `/compteBancaire/${id}`;
-                form.action = updateUrl;
-            });
-        });
-    </script>
-
-    <!-- Mouvements -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const modal = document.getElementById('mouvementModal');
-            const form = document.getElementById('mouvementForm');
-
-            modal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-
-                // Récupération des données
-                const id = button.getAttribute('data-id');
-
-                // Remplir le formulaire
-                modal.querySelector('#compte_id').value = id;
-                
-                // Mettre à jour l'action du formulaire avec l'ID récupéré
-                const updateUrl = `/compteBancaire/${id}/mouvements`;
                 form.action = updateUrl;
             });
         });

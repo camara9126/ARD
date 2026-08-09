@@ -14,9 +14,10 @@ class MouvementBanqueController extends Controller
     public function index()
     {
 
-        $mouvementsBancaires =MouvementBancaires::where('unite_id', request()->user()->unite_id)->where('compte_id', '!=', null)->latest()->get();
+        $mouvementsBancaires =MouvementBancaires::where('compte_bancaires_id', '!=', null)->latest()->get();
+        $compteBancaires = CompteBancaires::where('unite_id', request()->user()->unite_id)->get();
 
-        return view('dashboard.mouvementBanque.index', compact('mouvementsBancaires'));
+        return view('dashboard.mouvementBanque.index', compact('mouvementsBancaires', 'compteBancaires'));
     }
 
     /**
@@ -32,26 +33,28 @@ class MouvementBanqueController extends Controller
      */
     public function store(Request $request)
     {
-               $request->validate([
+            $request->validate([
+            'compte_bancaires_id' => 'required|exists:compte_bancaires,id',
             'type' => 'required|in:virement,retrait,depot,versement,encaissement,autre',
             'montant' => 'required|numeric|min:0',
             'frais' => 'nullable|numeric|min:0',
-            'motif' => 'required|string|max:255',
-            'reference' => 'required|string|max:255',
+            'motif' => 'nullable|string|max:255',
+            'reference' => 'nullable|string|max:255',
             'date_operation' => 'required|date',
         ]);
 
         try {
-            $compteBancaire = CompteBancaires::findOrFail($id);
 
+            $compteBancaire = CompteBancaires::findOrFail($request->compte_bancaires_id);
+//dd($compteBancaire);
             $mouvement = MouvementBancaires::create([
                 'type' => $request->type,
                 'montant' => $request->montant,
                 'frais' => $request->frais,
                 'motif' => $request->motif,
-                'reference' => $request->reference,
+                'reference' => $request->reference ?? $request->type . '-' . now()->timestamp,
                 'date_operation' => $request->date_operation,
-                'compte_id' => $compteBancaire->id,
+                'compte_bancaires_id' => $compteBancaire->id,
             ]);
 
             if ($request->type === 'depot' || $request->type === 'versement' || $request->type === 'encaissement') {

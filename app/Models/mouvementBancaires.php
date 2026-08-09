@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class mouvementBancaires extends Model
 {
-     protected $fillable = [
-        'compte_id',
+        protected $fillable = [
+        'compte_bancaires_id',
         'type',
         'montant',
         'frais',
@@ -15,4 +15,9 @@ class mouvementBancaires extends Model
         'reference',
         'date_operation',
     ];
+
+    public function compte()
+    {
+        return $this->belongsTo(CompteBancaires::class, 'compte_bancaires_id');
+    }
 }

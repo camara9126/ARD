@@ -36,7 +36,7 @@
                                                 <h5>Mouvements Stock</h5>
                                                 <!--<span>use class <code>table</code> inside table element</span>-->
                                                 <div class="card-header-right">
-                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#exampleModal">Nouveau Mouvement →</a>
+                                                    <a href="" style="color: var(--primary); text-decoration: none; font-weight: 500;" data-bs-toggle="modal"  data-bs-target="#mouvementModal">Nouveau Mouvement →</a>
                                                     <!--<ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
                                                         <li><i class="fa fa-window-maximize full-card"></i></li>
@@ -71,9 +71,9 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Reference</th>
-                                                                <th>Produit</th>
+                                                                <th>Compte</th>
                                                                 <th>type</th>
-                                                                <th>Quantite</th>
+                                                                <th>Montant</th>
                                                                 <th>Date</th>
                                                             </tr>
                                                         </thead>
@@ -87,10 +87,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td>{{$m->produit->nom ?? $m->designation}}</td>
+                                                                <td>{{$m->compte->banque ?? $m->compte_bancaires_id}}</td>
                                                                 <td>{{$m->type}}</td>
-                                                                <td><strong>{{$m->quantite}}</strong></td>
-                                                                <td>{{$m->created_at->format('d/m/Y')}}</td>
+                                                                <td><strong>{{ number_format($m->montant, 0, ',',' ')}} XOF</strong></td>
+                                                                <td>{{$m->date_operation}}</td>
                                                             </tr>
                                                             @empty
                                                                 <tr>
@@ -101,44 +101,87 @@
                                                     </table>
                                                    
                                                     <!-- Modal Nouveau mouvement stck-->
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1">
+                                                    <div class="modal fade" id="mouvementModal" tabindex="-1">
                                                         <div class="modal-dialog">
-                                                            <form method="post" action="{{route('stock.store')}}">
+                                                            <form method="post" action="{{route('mouvement.store')}}">
                                                                 @csrf
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title">Mouvement Stock</h5>
+                                                                        <h5 class="modal-title">Mouvements Financiers</h5>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                                     </div>
 
                                                                     <div class="modal-body">
                                                                         <div class="mb-3">
-                                                                            <label>Produit</label>
-                                                                            <select class="form-control" name="produit_id" id="exampleFormControlSelect1">
-                                                                                <option value="">-- Veuillez choisir un produit --</option>
-                                                                               
+                                                                            <label>Compte Bancaire</label>
+                                                                            <select class="form-control" name="compte_bancaires_id" id="exampleFormControlSelect1" required>
+                                                                                <option value="">-- Veuillez choisir un compte bancaire --</option>
+                                                                                @foreach($compteBancaires as $compte)
+                                                                                    <option value="{{ $compte->id }}">{{ $compte->banque }} - {{ $compte->numero_compte }}</option>
+                                                                                @endforeach
                                                                             </select>
                                                                         </div>
 
+                                                                        <!-- Type -->
                                                                         <div class="mb-3">
-                                                                            <label>Type</label>
-                                                                            <select class="form-control" name="type" id="exampleFormControlSelect1">
-                                                                                <option value="">-- Veuillez choisir le type de mouvement --</option>
-                                                                                <option value="entree">Entree</option>
-                                                                                <option value="sortie">Sortie</option>
+                                                                            <label class="form-label">Type de Mouvement</label>
+                                                                            <select name="type" class="form-control" required>
+                                                                                <option value="">-- Veuillez choisir un type de mouvement --</option>
+                                                                                <option value="virement">Virement</option>
+                                                                                <option value="retrait">Retrait</option>
+                                                                                <option value="depot">Dépôt</option>
+                                                                                <option value="versement">Versement</option>
+                                                                                <option value="encaissement">Encaissement</option>
+                                                                                <option value="autre">Autre</option>
                                                                             </select>
                                                                         </div>
 
+                                                                        <div class="row mb-3">
+
+                                                                            <!-- Montant -->
+                                                                            <div class="col-6">
+                                                                                <div class="">
+                                                                                    <label class="form-label">Montant (FCFA)</label>
+                                                                                    <input type="number" name="montant" class="form-control" step="0.01" required>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!-- Frais -->
+                                                                            <div class="col-6">
+                                                                                <div class="">
+                                                                                    <label class="form-label">Frais (FCFA)</label>
+                                                                                    <input type="number" name="frais" class="form-control" step="0.01">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> 
+
+                                                                        <!-- Date operation -->
                                                                         <div class="mb-3">
-                                                                            <label>Quantite</label>
-                                                                            <input type="number" name="quantite" min="1" class="form-control" id="exampleInputquantity1">
+                                                                            <label class="form-label">Date d'opération</label>
+                                                                            <input type="date" name="date_operation" class="form-control" value="{{ date('Y-m-d') }}" required>
                                                                         </div>
 
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                                        <!-- Reference -->
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Référence</label>
+                                                                            <input type="text" name="reference" class="form-control" placeholder="Ex : REF-001">
+                                                                        </div>
+
+                                                                        <!-- Motif -->
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Motif</label>
+                                                                            <input type="text" name="motif" class="form-control" placeholder="Ex : Versement de salaire">
+                                                                        </div>
+
+                                                                        <!-- Bouton -->
+                                                                        <div class="text-end">
+                                                                            <button type="submit" class="btn btn-primary">
+                                                                                💾 Enregistrer le mouvement
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
+                               
                                                             </form>
                                                         </div>
                                                     </div> 

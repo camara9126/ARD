@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('motif');
             $table->string('reference');
             $table->date('date_operation');
-            $table->foreignId('compte_id')->constrained()->onDelete('cascade');
+            $table->foreignId('compte_bancaires_id')->constrained()->onDelete('cascade');            
             $table->timestamps();
         });
     }
