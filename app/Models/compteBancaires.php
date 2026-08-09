@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class compteBancaires extends Model
+class CompteBancaires extends Model
 {
     protected $fillable = [
         'banque',
@@ -16,7 +16,7 @@ class compteBancaires extends Model
         'statut',
     ];
 
-    public function entreprise()
+    public function unite()
     {
         return $this->belongsTo(Unite::class);
     }

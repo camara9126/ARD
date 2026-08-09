@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class mouvementBancaires extends Model
+class MouvementBancaires extends Model
 {
         protected $fillable = [
         'compte_bancaires_id',
@@ -15,6 +15,7 @@ class mouvementBancaires extends Model
         'reference',
         'date_operation',
     ];
+
 
     public function compte()
     {
