@@ -1,21 +1,4 @@
-   <script>
-       // Empêche le scroll chaining sur le sidebar
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.querySelector('.pcoded-navbar');
-            
-            if (sidebar) {
-                sidebar.addEventListener('wheel', function(e) {
-                    // Empêche le scroll de passer au parent
-                    const isAtTop = this.scrollTop === 0;
-                    const isAtBottom = this.scrollHeight - this.scrollTop === this.clientHeight;
-                    
-                    if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
-                        e.preventDefault();
-                    }
-                }, { passive: false });
-            }
-        });
-    </script>
+ 
    <!-- Required Jquery -->
     <script type="text/javascript" src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery-ui/jquery-ui.min.js') }}"></script>

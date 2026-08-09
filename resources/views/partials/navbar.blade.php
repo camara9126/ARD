@@ -1,12 +1,4 @@
-<?php
-    //Alert sotck
 
-    use App\Models\Produit;
-    use App\Models\Unite;
-
-    $unite= Unite::Where('id', request()->user()->unite_id)->first(); 
-    $alerte = Produit::produitsEnAlerte()->count();
-?>
             <nav class="navbar header-navbar pcoded-header">
                 <div class="navbar-wrapper">
                     <div class="navbar-logo">
@@ -68,26 +60,7 @@
                                             </div>
                                         </li>
                                     @endif
-                                    <!--<li class="waves-effect waves-light">
-                                        <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="assets/images/avatar-4.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Joseph William</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="waves-effect waves-light">
-                                        <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="assets/images/avatar-3.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Sara Soudein</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>-->
+                                   
                                 </ul>
                             </li>
                             <li class="user-profile header-notification">
@@ -107,16 +80,7 @@
                                             <i class="fas fa-cog"></i> Supports & Assistance
                                         </a>
                                     </li>
-                                    <!--<li class="waves-effect waves-light">
-                                        <a href="email-inbox.html">
-                                            <i class="ti-email"></i> My Messages
-                                        </a>
-                                    </li>
-                                    <li class="waves-effect waves-light">
-                                        <a href="auth-lock-screen.html">
-                                            <i class="ti-lock"></i> Lock Screen
-                                        </a>
-                                    </li>-->
+                                
                                     <li class="waves-effect waves-light">
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
@@ -125,9 +89,7 @@
                                                 <i class="ti-layout-sidebar-left"></i>Deconnexion
                                             </a>
                                         </form>
-                                        <!--<a href="auth-normal-sign-in.html">
-                                             Logout-->
-                                        </a>
+                                      
                                     </li>
                                 </ul>
                             </li>
