@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CompteBancaires;
 use App\Models\Achat;
 use App\Models\ChargeFixe;
 use App\Models\Depense;
@@ -8,7 +9,7 @@ use App\Models\Vente;
 use App\Models\MouvementStock;
 use App\Models\Produit;
 use App\Models\Unite;
-use App\Models\CompteBancaires;
+
 use Illuminate\Support\Carbon;
 
     $mouvements = MouvementStock::Where('unite_id', $unite->id)->latest()->get();
