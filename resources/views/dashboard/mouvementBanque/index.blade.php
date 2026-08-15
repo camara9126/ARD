@@ -80,12 +80,7 @@
                                                         <tbody>
                                                             @forelse($mouvementsBancaires as $m)
                                                             <tr>
-                                                                <td>
-                                                                    <div class="product-info">
-                                                                        <div>
-                                                                            <div style="font-weight: 600;">{{$m->reference}}</div>
-                                                                        </div>
-                                                                    </div>
+                                                                <td>{{$m->reference}}</td>
                                                                 </td>
                                                                 <td>{{$m->compte->banque ?? $m->compte_bancaires_id}}</td>
                                                                 <td>{{$m->type}}</td>
