@@ -390,7 +390,7 @@
                                         <li class="">
                                             <a href="{{ route('admin.unites') }}" class="waves-effect waves-dark">
                                                 <span class="pcoded-micon"><i class="fas fa-shop"></i><b>B</b></span>
-                                                <span class="pcoded-mtext">Unites</span>
+                                                <span class="pcoded-mtext">Unités</span>
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
                                         </li>
@@ -410,7 +410,7 @@
                                         <li class="">
                                             <a href="{{ route('categorie.index') }}" class="waves-effect waves-dark">
                                                 <span class="pcoded-micon"><i class="fas fa-right-left"></i><b>M</b></span>
-                                                <span class="pcoded-mtext">Categorie Unite</span>
+                                                <span class="pcoded-mtext">Categorie Unité</span>
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
                                         </li>
