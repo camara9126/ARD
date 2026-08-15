@@ -5300,7 +5300,6 @@ table tbody .border-bottom-info td {
 .pcoded .pcoded-header {
 	position: relative;
 	display: block;
-	/* overflow-y: auto; */
   	overscroll-behavior: contain;
 }
 
