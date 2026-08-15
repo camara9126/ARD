@@ -5297,12 +5297,6 @@ table tbody .border-bottom-info td {
   overscroll-behavior: contain;
 }
 
-.pcoded .pcoded-header {
-	position: relative;
-	display: block;
-	/* overflow-y: auto; */
-  	overscroll-behavior: contain;
-}
 
 .pcoded .pcoded-navbar {
 	display: block;

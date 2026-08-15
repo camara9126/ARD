@@ -54,6 +54,14 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .pcoded .pcoded-header {
+            position: relative;
+            display: block;
+            /* overflow-y: auto; */
+            overscroll-behavior: contain;
+        }
+    </style>
 </head>
 
 <body>
